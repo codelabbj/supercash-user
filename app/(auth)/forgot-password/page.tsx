@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -9,12 +9,12 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Card, CardContent } from "@/components/ui/card"
 import { authApi } from "@/lib/api-client"
 import { toast } from "react-hot-toast"
 import { Loader2, Eye, EyeOff, ArrowLeft, Mail, Lock, Code } from "lucide-react"
 import Image from "next/image"
 import { useTheme } from "next-themes"
-import { useEffect } from "react"
 
 // Form schemas
 const emailSchema = z.object({
@@ -77,7 +77,6 @@ export default function ForgotPasswordPage() {
       setEmail(data.email)
       setStep("otp")
       toast.success("Code OTP envoyé à votre email")
-      // Start resend timer
       setResendTimer(60)
       const interval = setInterval(() => {
         setResendTimer((prev) => {
@@ -107,7 +106,6 @@ export default function ForgotPasswordPage() {
     try {
       await authApi.resetPassword(otp, data.new_password, data.confirm_new_password)
       toast.success("Mot de passe réinitialisé avec succès!")
-      // Redirect to login after a short delay
       setTimeout(() => {
         router.push("/login")
       }, 1500)
@@ -163,18 +161,13 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row overflow-x-hidden">
+    <div className="min-h-screen h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-slate-50 lg:bg-background">
       {/* Left Side - Visual Design */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-gold via-gold/90 to-turquoise">
-        <div className="absolute inset-0 bg-black/5 backdrop-blur-[2px]"></div>
-
-        {/* Animated background elements */}
-        <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-white/10 rounded-full blur-[120px] animate-pulse"></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-turquoise/20 rounded-full blur-[100px] animate-pulse delay-1000"></div>
-
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-primary/95">
+        <div className="absolute inset-0 bg-black/5"></div>
         <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 w-full text-center">
-          <div className="mb-8 animate-in fade-in slide-in-from-bottom-5 duration-1000">
-            <div className="w-24 h-24 bg-white/10 backdrop-blur-xl rounded-[24px] p-4 shadow-2xl mb-8 mx-auto flex items-center justify-center border border-white/20">
+          <div className="mb-10">
+            <div className="w-24 h-24 bg-white/10 rounded-lg p-4 shadow-lg mb-8 mx-auto flex items-center justify-center border border-white/20">
               {mounted && (
                 <Image
                   src="/supercash-logo-mint.png"
@@ -185,58 +178,53 @@ export default function ForgotPasswordPage() {
                 />
               )}
             </div>
-            <h1 className="text-4xl xl:text-5xl font-black mb-4 tracking-tighter italic">
+            <h1 className="text-4xl lg:text-5xl font-bold mb-6">
               SUPERCASH
             </h1>
-            <p className="text-lg xl:text-xl text-white/90 max-w-md mx-auto font-medium">
-              Retrouvez l'accès à votre compte en quelques étapes
+            <p className="text-lg lg:text-xl text-white/90 max-w-md mx-auto">
+              Retrouvez l'accès à votre compte en quelques étapes.
             </p>
           </div>
 
-          <div className="mt-8 xl:mt-12 space-y-3 xl:space-y-4 w-full max-w-md">
-            <div className="flex items-center gap-3 text-white/80 text-sm xl:text-base">
-              <div className="w-2 h-2 rounded-full bg-white/60 flex-shrink-0"></div>
-              <span>Processus sécurisé</span>
+          <div className="mt-12 space-y-4 w-full max-w-sm">
+            <div className="flex items-center gap-4 bg-white/10 p-4 rounded-lg border border-white/20">
+              <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
+                <Lock className="w-6 h-6 text-white" />
+              </div>
+              <span className="font-semibold">Processus Sécurisé</span>
             </div>
-            <div className="flex items-center gap-3 text-white/80 text-sm xl:text-base">
-              <div className="w-2 h-2 rounded-full bg-white/60 flex-shrink-0"></div>
-              <span>Vérification par email</span>
-            </div>
-            <div className="flex items-center gap-3 text-white/80 text-sm xl:text-base">
-              <div className="w-2 h-2 rounded-full bg-white/60 flex-shrink-0"></div>
-              <span>Nouveau mot de passe instantané</span>
+            <div className="flex items-center gap-4 bg-white/10 p-4 rounded-lg border border-white/20">
+              <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
+                <Mail className="w-6 h-6 text-white" />
+              </div>
+              <span className="font-semibold">Vérification Email</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Right Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 lg:p-6 xl:p-8 bg-gradient-to-br from-background via-background to-primary/5 min-h-screen lg:min-h-0 w-full">
-        <div className="w-full max-w-md lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
-          {/* Header with back button */}
-          <div className="flex items-center gap-2 sm:gap-3 mb-6 sm:mb-8">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon"
-              onClick={goBack}
-              className="rounded-lg hover:bg-muted shrink-0"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
+      <div className="flex-1 flex flex-col items-center justify-center p-4 bg-slate-50 lg:bg-background overflow-y-auto lg:overflow-visible">
+        <div className="w-full max-w-sm lg:max-w-md flex flex-col items-center lg:block">
+          {/* Mobile Logo centered above card */}
+          <div className="mb-8 lg:hidden flex flex-col items-center">
+            {mounted && (
+              <Image
+                src="/supercash-logo-gold.png"
+                width={80}
+                height={80}
+                alt="Logo"
+                className="w-20 h-auto"
+              />
+            )}
+            <h1 className="text-2xl font-bold mt-4 text-primary tracking-tight">SUPERCASH</h1>
+          </div>
+
+          {/* Desktop Header */}
+          <div className="hidden lg:flex items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+
             <div className="flex-1">
-              <div className="inline-flex items-center justify-center w-16 h-16 sm:w-12 sm:h-12 rounded-xl bg-white dark:bg-card mb-4 lg:hidden shadow-lg p-2">
-                {mounted && (
-                  <Image
-                    src={resolvedTheme === "dark" ? "/supercash-logo-mint.png" : "/supercash-logo-gold.png"}
-                    width={40}
-                    height={40}
-                    alt="Logo"
-                    className="w-full h-auto"
-                  />
-                )}
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-black bg-gradient-to-r from-gold to-turquoise bg-clip-text text-transparent italic">
+              <h2 className="text-3xl sm:text-4xl font-black text-primary italic">
                 {step === "email" && "Réinitialiser"}
                 {step === "otp" && "Vérifier"}
                 {step === "password" && "Nouveau mot de passe"}
@@ -249,245 +237,224 @@ export default function ForgotPasswordPage() {
             </div>
           </div>
 
-          <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl">
-            {/* Step indicator */}
-            <div className="flex gap-2 sm:gap-3 mb-6 sm:mb-8">
-              {["email", "otp", "password"].map((s, index) => (
-                <div key={s} className="flex items-center gap-2 sm:gap-3">
+          <Card className="border-0 shadow-xl lg:shadow-md bg-white lg:bg-card w-full rounded-3xl lg:rounded-xl">
+            <CardContent className="p-6 sm:p-6 lg:p-6">
+              <div className="text-center mb-6 lg:hidden">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {step === "email" && "Mot de passe oublié"}
+                  {step === "otp" && "Vérification OTP"}
+                  {step === "password" && "Nouveau mot de passe"}
+                </h2>
+                <p className="text-gray-500 text-sm mt-1 px-4">
+                  {step === "email" && "Entrez votre email pour recevoir un code de réinitialisation"}
+                  {step === "otp" && "Entrez le code reçu dans votre email"}
+                  {step === "password" && "Créez votre nouveau mot de passe"}
+                </p>
+              </div>
+
+              {/* Step indicator - Hidden on mobile */}
+              <div className="hidden lg:flex w-full items-center mb-6 px-1">
+                {["email", "otp", "password"].map((s, index) => (
                   <div
-                    className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold transition-all ${(s === "email" && (step === "email" || step === "otp" || step === "password")) ||
+                    key={s}
+                    className={`flex items-center ${index < 2 ? "flex-1" : ""}`}
+                  >
+                    <div
+                      className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold shrink-0 transition-all ${(s === "email" && (step === "email" || step === "otp" || step === "password")) ||
                         (s === "otp" && (step === "otp" || step === "password")) ||
                         (s === "password" && step === "password")
-                        ? "bg-gradient-to-r from-primary to-accent text-white"
+                        ? "bg-primary text-white"
                         : "bg-muted text-muted-foreground"
-                      }`}
-                  >
-                    {index + 1}
-                  </div>
-                  {index < 2 && (
-                    <div
-                      className={`h-1 w-8 sm:w-12 rounded-full transition-all ${(s === "email" && (step === "otp" || step === "password")) ||
-                          (s === "otp" && step === "password")
-                          ? "bg-gradient-to-r from-primary to-accent"
-                          : "bg-muted"
                         }`}
-                    ></div>
-                  )}
-                </div>
-              ))}
-            </div>
+                    >
+                      {index + 1}
+                    </div>
+                    {index < 2 && (
+                      <div
+                        className={`h-1 flex-1 mx-4 rounded-full transition-all ${(s === "email" && (step === "otp" || step === "password")) ||
+                          (s === "otp" && step === "password")
+                          ? "bg-primary"
+                          : "bg-muted"
+                          }`}
+                      ></div>
+                    )}
+                  </div>
+                ))}
+              </div>
 
-            {/* Email Step */}
-            {step === "email" && (
-              <form onSubmit={emailForm.handleSubmit(handleEmailSubmit)} className="space-y-4 sm:space-y-5 md:space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-xs sm:text-sm font-semibold flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
-                    Email
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    placeholder="exemple@email.com"
-                    {...emailForm.register("email")}
+              {step === "email" && (
+                <form onSubmit={emailForm.handleSubmit(handleEmailSubmit)} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm font-semibold flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
+                      Email
+                    </Label>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="exemple@email.com"
+                      {...emailForm.register("email")}
+                      disabled={isLoading}
+                      className="h-10 rounded-lg bg-background/50 border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    />
+                    {emailForm.formState.errors.email && (
+                      <p className="text-xs text-destructive">{emailForm.formState.errors.email.message}</p>
+                    )}
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full h-12 lg:h-11 text-base lg:text-lg font-bold bg-primary hover:bg-primary/90 text-white shadow-lg shadow-gold/20"
                     disabled={isLoading}
-                    className="h-11 sm:h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                  />
-                  {emailForm.formState.errors.email && (
-                    <p className="text-xs sm:text-sm text-destructive">{emailForm.formState.errors.email.message}</p>
-                  )}
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full h-11 sm:h-12 text-sm sm:text-base font-semibold bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
-                      <span className="hidden sm:inline">Envoi en cours...</span>
-                      <span className="sm:hidden">Envoi...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      Envoyer le code
-                    </>
-                  )}
-                </Button>
-              </form>
-            )}
-
-            {/* OTP Step */}
-            {step === "otp" && (
-              <form onSubmit={otpForm.handleSubmit(handleOtpSubmit)} className="space-y-4 sm:space-y-5 md:space-y-6">
-                <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
-                  <p className="text-xs sm:text-sm text-muted-foreground">
-                    Un code de vérification a été envoyé à{" "}
-                    <span className="font-semibold text-foreground">{email}</span>
-                  </p>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="otp" className="text-xs sm:text-sm font-semibold flex items-center gap-2">
-                    <Code className="w-4 h-4" />
-                    Code OTP
-                  </Label>
-                  <Input
-                    id="otp"
-                    type="text"
-                    placeholder="000000"
-                    {...otpForm.register("otp")}
-                    disabled={isLoading}
-                    maxLength={6}
-                    className="h-11 sm:h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all tracking-widest text-center font-semibold"
-                  />
-                  {otpForm.formState.errors.otp && (
-                    <p className="text-xs sm:text-sm text-destructive">{otpForm.formState.errors.otp.message}</p>
-                  )}
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full h-11 sm:h-12 text-sm sm:text-base font-semibold bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
-                      Vérification...
-                    </>
-                  ) : (
-                    <>
-                      <Code className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      Continuer
-                    </>
-                  )}
-                </Button>
-
-                <div className="text-center">
-                  <p className="text-xs sm:text-sm text-muted-foreground mb-2">
-                    {resendTimer > 0 ? (
-                      <>Renvoyer dans {resendTimer}s</>
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Envoi en cours...
+                      </>
                     ) : (
                       <>
-                        Pas reçu le code?{" "}
-                        <Button
-                          type="button"
-                          variant="link"
-                          className="p-0 h-auto text-primary hover:underline font-semibold"
-                          onClick={handleResendOtp}
-                          disabled={isLoading}
-                        >
-                          Renvoyer
-                        </Button>
+                        <Mail className="mr-2 h-4 w-4" />
+                        Envoyer le code
                       </>
                     )}
-                  </p>
-                </div>
-              </form>
-            )}
+                  </Button>
+                </form>
+              )}
 
-            {/* Password Step */}
-            {step === "password" && (
-              <form onSubmit={passwordForm.handleSubmit(handlePasswordSubmit)} className="space-y-4 sm:space-y-5 md:space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="new_password" className="text-xs sm:text-sm font-semibold flex items-center gap-2">
-                    <Lock className="w-4 h-4" />
-                    Nouveau mot de passe
-                  </Label>
-                  <div className="relative">
-                    <Input
-                      id="new_password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="••••••••"
-                      {...passwordForm.register("new_password")}
-                      disabled={isLoading}
-                      className="h-11 sm:h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pr-10"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
-                      tabIndex={-1}
-                    >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
-                      ) : (
-                        <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
-                      )}
-                    </Button>
+              {step === "otp" && (
+                <form onSubmit={otpForm.handleSubmit(handleOtpSubmit)} className="space-y-4">
+                  <div className="bg-primary/5 border border-primary/20 rounded-lg p-3 mb-4">
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      Un code de vérification a été envoyé à{" "}
+                      <span className="font-semibold text-foreground">{email}</span>
+                    </p>
                   </div>
-                  {passwordForm.formState.errors.new_password && (
-                    <p className="text-xs sm:text-sm text-destructive">{passwordForm.formState.errors.new_password.message}</p>
-                  )}
-                </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="confirm_new_password" className="text-xs sm:text-sm font-semibold flex items-center gap-2">
-                    <Lock className="w-4 h-4" />
-                    Confirmer le mot de passe
-                  </Label>
-                  <div className="relative">
+                  <div className="space-y-2">
+                    <Label htmlFor="otp" className="text-sm font-semibold flex items-center gap-2">
+                      <Code className="w-4 h-4" />
+                      Code OTP
+                    </Label>
                     <Input
-                      id="confirm_new_password"
-                      type={showConfirmPassword ? "text" : "password"}
-                      placeholder="••••••••"
-                      {...passwordForm.register("confirm_new_password")}
+                      id="otp"
+                      type="text"
+                      placeholder="000000"
+                      {...otpForm.register("otp")}
                       disabled={isLoading}
-                      className="h-11 sm:h-12 text-sm sm:text-base bg-background/50 border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all pr-10"
+                      maxLength={6}
+                      className="h-10 rounded-lg bg-background/50 border-primary/20 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all tracking-widest text-center font-semibold"
                     />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="icon"
-                      className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                      tabIndex={-1}
-                    >
-                      {showConfirmPassword ? (
-                        <EyeOff className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
-                      ) : (
-                        <Eye className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground" />
-                      )}
-                    </Button>
+                    {otpForm.formState.errors.otp && (
+                      <p className="text-xs text-destructive">{otpForm.formState.errors.otp.message}</p>
+                    )}
                   </div>
-                  {passwordForm.formState.errors.confirm_new_password && (
-                    <p className="text-xs sm:text-sm text-destructive">{passwordForm.formState.errors.confirm_new_password.message}</p>
-                  )}
-                </div>
 
-                <Button
-                  type="submit"
-                  className="w-full h-11 sm:h-12 text-sm sm:text-base font-semibold bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
-                      <span className="hidden sm:inline">Réinitialisation...</span>
-                      <span className="sm:hidden">Réinit...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Lock className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
-                      Réinitialiser le mot de passe
-                    </>
-                  )}
-                </Button>
-              </form>
-            )}
+                  <Button
+                    type="submit"
+                    className="w-full h-11 sm:h-12 text-sm sm:text-base font-semibold bg-primary hover:bg-primary/90 text-white shadow-lg shadow-gold/20"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Vérification...
+                      </>
+                    ) : (
+                      <>
+                        <Code className="mr-2 h-4 w-4" />
+                        Continuer
+                      </>
+                    )}
+                  </Button>
+                </form>
+              )}
 
-            <div className="mt-4 sm:mt-6 text-xs sm:text-sm text-muted-foreground text-center">
-              Vous avez un compte?{" "}
-              <Link href="/login" className="text-primary hover:underline font-semibold">
-                Se connecter
-              </Link>
-            </div>
-          </div>
+              {step === "password" && (
+                <form onSubmit={passwordForm.handleSubmit(handlePasswordSubmit)} className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="new_password" className="text-sm font-semibold flex items-center gap-2">
+                      <Lock className="w-4 h-4" />
+                      Nouveau mot de passe
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="new_password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        {...passwordForm.register("new_password")}
+                        disabled={isLoading}
+                        className="h-10 rounded-lg bg-background/50 border-primary/20 focus:border-primary pr-10"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                        onClick={() => setShowPassword(!showPassword)}
+                      >
+                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                    {passwordForm.formState.errors.new_password && (
+                      <p className="text-xs text-destructive">{passwordForm.formState.errors.new_password.message}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="confirm_new_password" className="text-sm font-semibold flex items-center gap-2">
+                      <Lock className="w-4 h-4" />
+                      Confirmer le mot de passe
+                    </Label>
+                    <div className="relative">
+                      <Input
+                        id="confirm_new_password"
+                        type={showConfirmPassword ? "text" : "password"}
+                        placeholder="••••••••"
+                        {...passwordForm.register("confirm_new_password")}
+                        disabled={isLoading}
+                        className="h-10 rounded-lg bg-background/50 border-primary/20 focus:border-primary pr-10"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        className="absolute right-0 top-0 h-full px-3 hover:bg-transparent"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      >
+                        {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                      </Button>
+                    </div>
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="w-full h-12 lg:h-11 text-base lg:text-lg font-bold bg-primary hover:bg-primary/90 text-white shadow-lg shadow-gold/20"
+                    disabled={isLoading}
+                  >
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Réinitialisation...
+                      </>
+                    ) : (
+                      <>
+                        <Lock className="mr-2 h-4 w-4" />
+                        Réinitialiser
+                      </>
+                    )}
+                  </Button>
+                </form>
+              )}
+
+              <div className="mt-6 text-sm text-center">
+                <span className="text-muted-foreground">Vous vous souvenez de votre mot de passe ? </span><br />
+                <Link href="/login" className="text-primary hover:underline font-bold">
+                  Se connecter
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>

@@ -72,7 +72,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                       width={150}
                       height={150}
                       alt="SuperCash Logo"
-                      className="h-12 sm:h-16 w-auto"
+                      className="h-10 sm:h-16 w-auto"
                     />
                   )}
                   <h1 className="hidden sm:block text-xl sm:text-2xl font-bold ml-2 sm:ml-3 text-gold dark:text-turquoise">SUPERCASH</h1>
@@ -96,7 +96,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </Link>
               </Button>
               <Button
-                className="h-10 px-3 sm:h-11 sm:px-4 rounded-lg bg-gold text-white shadow-sm hover:brightness-110 hover:shadow-md transition-all duration-200 font-semibold flex items-center gap-1 sm:gap-2"
+                className="h-10 px-2 sm:h-11 sm:px-4 rounded-lg bg-gold text-white shadow-sm hover:brightness-110 hover:shadow-md transition-all duration-200 font-semibold flex items-center gap-1 sm:gap-2"
                 asChild
               >
                 <Link href="/dashboard/coupon" className="flex items-center gap-1 sm:gap-2">

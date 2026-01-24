@@ -17,7 +17,7 @@ const buttonVariants = cva(
         secondary:
           'bg-secondary text-secondary-foreground hover:bg-secondary/90 shadow-sm hover:shadow-md transition-shadow',
         ghost:
-          'hover:bg-accent hover:text-accent-foreground',
+          'hover:bg-muted hover:text-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         deposit: 'bg-gold text-white hover:brightness-110 shadow-sm hover:shadow-md transition-all',
         withdraw: 'bg-turquoise text-white hover:brightness-110 shadow-sm hover:shadow-md transition-all',

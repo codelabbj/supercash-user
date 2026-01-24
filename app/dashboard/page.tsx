@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ArrowDownToLine, ArrowUpFromLine, Wallet, Loader2, ArrowRight, RefreshCw, Phone, Gift } from "lucide-react"
+import { ArrowDownToLine, ArrowUpFromLine, Wallet, Loader2, ArrowRight, RefreshCw, Phone, Gift, Ticket } from "lucide-react"
 import Link from "next/link"
 import { transactionApi, advertisementApi } from "@/lib/api-client"
 import type { Advertisement, Transaction } from "@/lib/types"
@@ -86,7 +86,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6 sm:space-y-10 px-4 sm:px-0">
+    <div className="space-y-6 sm:space-y-10 px-4 sm:px-0 overflow-x-hidden">
       {/* Welcome section */}
       <div className="flex flex-col gap-1">
         <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
@@ -96,59 +96,73 @@ export default function DashboardPage() {
       </div>
 
       {/* Quick actions grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-4 gap-2 sm:gap-4">
         <Link href="/dashboard/deposit" className="group">
-          <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-lg overflow-hidden">
-            <CardContent className="p-5 flex flex-col items-start gap-3 min-h-[160px]">
-              <div className="p-2.5 rounded-lg bg-gold/5 text-gold border border-gold/10">
-                <ArrowDownToLine className="w-5 h-5" />
+          <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
+            <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-gold/5 text-gold border border-gold/10">
+                <ArrowDownToLine className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-foreground">Dépôt</h3>
-                <p className="text-sm text-muted-foreground">Rechargez rapidement votre compte</p>
+              <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
+                <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Dépôt</h3>
+                <p className="hidden sm:block text-sm text-muted-foreground">Rechargez rapidement votre compte</p>
               </div>
             </CardContent>
           </Card>
         </Link>
 
         <Link href="/dashboard/withdrawal" className="group">
-          <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-lg overflow-hidden">
-            <CardContent className="p-5 flex flex-col items-start gap-3 min-h-[160px]">
-              <div className="p-2.5 rounded-lg bg-turquoise/5 text-turquoise border border-turquoise/10">
-                <ArrowUpFromLine className="w-5 h-5" />
+          <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
+            <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-turquoise/5 text-turquoise border border-turquoise/10">
+                <ArrowUpFromLine className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-foreground">Retrait</h3>
-                <p className="text-sm text-muted-foreground">Retirez vos gains instantanément</p>
+              <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
+                <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Retrait</h3>
+                <p className="hidden sm:block text-sm text-muted-foreground">Retirez vos gains instantanément</p>
               </div>
             </CardContent>
           </Card>
         </Link>
 
         <Link href="/dashboard/phones" className="group">
-          <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-lg overflow-hidden">
-            <CardContent className="p-5 flex flex-col items-start gap-3 min-h-[160px]">
-              <div className="p-2.5 rounded-lg bg-muted/10 text-muted-foreground border border-border">
-                <Phone className="w-5 h-5" />
+          <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
+            <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
+              <div className="p-2 sm:p-2.5 rounded-xl bg-muted/10 text-muted-foreground border border-border">
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
-              <div className="space-y-1">
-                <h3 className="text-lg font-bold text-foreground">Numéros & IDs</h3>
-                <p className="text-sm text-muted-foreground">Gérez vos identifiants de jeux</p>
+              <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
+                <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Numéros</h3>
+                <p className="hidden sm:block text-sm text-muted-foreground">Gérez vos identifiants de jeux</p>
               </div>
             </CardContent>
           </Card>
         </Link>
 
-        {referralBonus && (
+        {referralBonus ? (
           <Link href="/dashboard/bonus" className="group">
-            <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-lg overflow-hidden">
-              <CardContent className="p-5 flex flex-col items-start gap-3 min-h-[160px]">
-                <div className="p-2.5 rounded-lg bg-turquoise/5 text-turquoise border border-turquoise/10">
-                  <Gift className="w-5 h-5" />
+            <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
+              <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
+                <div className="p-2 sm:p-2.5 rounded-xl bg-turquoise/5 text-turquoise border border-turquoise/10">
+                  <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
-                <div className="space-y-1">
-                  <h3 className="text-lg font-bold text-foreground">Bonus</h3>
-                  <p className="text-sm text-muted-foreground">Consultez vos récompenses</p>
+                <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
+                  <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Bonus</h3>
+                  <p className="hidden sm:block text-sm text-muted-foreground">Consultez vos récompenses</p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        ) : (
+          <Link href="/dashboard/coupon" className="group">
+            <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
+              <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
+                <div className="p-2 sm:p-2.5 rounded-xl bg-gold/5 text-gold border border-gold/10">
+                  <Ticket className="w-4 h-4 sm:w-5 sm:h-5" />
+                </div>
+                <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
+                  <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Coupons</h3>
+                  <p className="hidden sm:block text-sm text-muted-foreground">Vos coupons de réduction</p>
                 </div>
               </CardContent>
             </Card>
@@ -185,12 +199,12 @@ export default function DashboardPage() {
                 {advertisements.map((ad, index) =>
                   ad.enable ? (
                     <CarouselItem key={index}>
-                      <div className="relative w-full aspect-[21/9] sm:aspect-[21/6]">
+                      <div className="relative w-full aspect-[2/1] sm:aspect-[21/6]">
                         <Image
                           src={ad.image}
                           alt={`Publicité ${index + 1}`}
                           fill
-                          className="object-fit border-2 rounded-lg"
+                          className="object-cover border-2 rounded-2xl"
                           priority={index === 0}
                         />
                       </div>

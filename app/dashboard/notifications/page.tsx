@@ -40,9 +40,9 @@ export default function NotificationsPage() {
     try {
       setIsRefreshing(pageNum === 1);
       setIsLoading(pageNum === 1);
-      
+
       const response = await notificationApi.getAll(pageNum);
-      
+
       setNotifications(response.results);
       setHasNext(!!response.next);
       setHasPrevious(!!response.previous);
@@ -90,7 +90,7 @@ export default function NotificationsPage() {
 
     const handleFCMMessage = (payload: MessagePayload) => {
       console.log('FCM notification received in notifications page:', payload);
-      
+
       const fcmNotification: FCMNotification = {
         id: `fcm-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
         title: payload.notification?.title || 'New Notification',
@@ -115,14 +115,14 @@ export default function NotificationsPage() {
           console.warn('Notification API not available');
           return;
         }
-        
+
         // Check permission safely
         const permission = window.Notification?.permission;
         if (permission !== 'granted') {
           console.warn('Notification permission not granted:', permission);
           return;
         }
-        
+
         const notification = new window.Notification(fcmNotification.title, {
           body: fcmNotification.content,
           icon: '/placeholder-logo.png',
@@ -135,12 +135,12 @@ export default function NotificationsPage() {
         notification.onclick = (event) => {
           event.preventDefault();
           window.focus();
-          
+
           // Navigate to notification details or handle custom data
           if (payload.data?.url) {
             window.open(payload.data.url, '_blank');
           }
-          
+
           notification.close();
         };
       } catch (error) {
@@ -159,9 +159,9 @@ export default function NotificationsPage() {
           handleFCMMessage(payload);
         }
       };
-      
+
       navigator.serviceWorker.addEventListener('message', messageHandler);
-      
+
       return () => {
         navigator.serviceWorker.removeEventListener('message', messageHandler);
       };
@@ -176,13 +176,13 @@ export default function NotificationsPage() {
           notif.id === notificationId ? { ...notif, is_read: true } : notif
         )
       );
-      
+
       // Update localStorage
       const updated = fcmNotifications.map(notif =>
         notif.id === notificationId ? { ...notif, is_read: true } : notif
       );
       localStorage.setItem('fcm_notifications', JSON.stringify(updated));
-      
+
       toast.success('Notification marked as read');
       return;
     }
@@ -223,7 +223,7 @@ export default function NotificationsPage() {
   const unreadCount = allNotifications.filter(n => !n.is_read).length;
 
   return (
-    <div className="container mx-auto p-6 max-w-4xl">
+    <div className="container mx-auto p-3 sm:p-6 max-w-4xl">
       <div className="space-y-6">
         {/* Header with Back Button */}
         <div className="flex items-center justify-between">
@@ -234,23 +234,23 @@ export default function NotificationsPage() {
               onClick={() => router.back()}
               className="flex items-center gap-2"
             >
-                <ArrowLeft className="h-4 w-4" />
-                Retour
+              <ArrowLeft className="h-4 w-4" />
+              Retour
             </Button>
             <div className="space-y-1">
               <div className="flex items-center gap-2">
                 <Bell className="h-6 w-6" />
-                <h1 className="text-3xl font-bold">Notifications</h1>
+                <h1 className="text-xl sm:text-3xl font-bold">Notifications</h1>
               </div>
               <p className="text-muted-foreground">
-                Vos  notifications
+                Vos notifications
               </p>
             </div>
           </div>
-          
+
           {unreadCount > 0 && (
             <Badge variant="secondary" className="text-lg px-3 py-1">
-              {unreadCount} unread
+              {unreadCount} non lues
             </Badge>
           )}
         </div>
@@ -297,15 +297,14 @@ export default function NotificationsPage() {
             <div className="space-y-4">
               {allNotifications.map((notification) => {
                 const isFCM = 'is_fcm' in notification && notification.is_fcm;
-                
+
                 return (
                   <Card
                     key={notification.id}
-                    className={`transition-all hover:shadow-md ${
-                      !notification.is_read ? 'border-primary/50' : ''
-                    } ${isFCM ? 'border-blue-500/30' : ''}`}
+                    className={`transition-all hover:shadow-md rounded-2xl ${!notification.is_read ? 'border-primary/50' : ''
+                      } ${isFCM ? 'border-blue-500/30' : ''}`}
                   >
-                    <CardContent className="p-6">
+                    <CardContent className="p-4 sm:p-6">
                       <div className="flex items-start justify-between gap-4">
                         <div className="flex-1 space-y-2">
                           <div className="flex items-center gap-2">
@@ -324,11 +323,11 @@ export default function NotificationsPage() {
                               </Badge>
                             )}
                           </div>
-                          
+
                           <p className="text-muted-foreground">
                             {notification.content}
                           </p>
-                          
+
                           <div className="flex items-center gap-4 text-sm text-muted-foreground">
                             <span>{formatDate(notification.created_at)}</span>
                             {'reference' in notification && notification.reference && (
@@ -336,7 +335,7 @@ export default function NotificationsPage() {
                             )}
                           </div>
                         </div>
-                        
+
                         {!notification.is_read && (
                           <Button
                             variant="ghost"

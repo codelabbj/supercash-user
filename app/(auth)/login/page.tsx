@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,7 +17,6 @@ import { Loader2, Eye, EyeOff } from "lucide-react"
 import { setupNotifications } from "@/lib/fcm-helper"
 import Image from "next/image"
 import { useTheme } from "next-themes"
-import { useEffect } from "react"
 import { normalizePhoneNumber } from "@/lib/utils"
 import { MobileAppDownload } from "@/components/mobile-app-download"
 
@@ -52,7 +51,6 @@ export default function LoginPage() {
     setIsLoading(true)
     try {
       // Step 1: Authenticate user
-      // Normalize phone number if it looks like a phone (contains + or starts with digits)
       const emailOrPhone = data.email_or_phone.includes('@')
         ? data.email_or_phone
         : normalizePhoneNumber(data.email_or_phone)
@@ -62,33 +60,23 @@ export default function LoginPage() {
       // Step 2: Show success toast first
       toast.success("Connexion réussie!")
 
-      // Step 3: Request notification permission (shows native browser prompt)
+      // Step 3: Request notification permission
       try {
         const userId = response.data?.id
-
-        // Add small delay to ensure page is ready
         await new Promise(resolve => setTimeout(resolve, 100))
-
         console.log('[Login] Setting up notifications for user:', userId)
         const fcmToken = await setupNotifications(userId)
-
         if (fcmToken) {
           toast.success("Notifications activées!")
-          console.log('[Login] FCM Token registered:', fcmToken.substring(0, 20) + '...')
-        } else {
-          console.log('[Login] No FCM token - permission might be denied or not granted')
         }
       } catch (fcmError) {
-        // Non-critical error - don't block login
         console.error('[Login] Error setting up notifications:', fcmError)
       }
 
       // Step 4: Redirect to dashboard
-      // Wait a bit more to ensure notification prompt completes if shown
       await new Promise(resolve => setTimeout(resolve, 300))
       router.push("/dashboard")
     } catch (error) {
-      // Error is handled by api interceptor
       console.error("Login error:", error)
     } finally {
       setIsLoading(false)
@@ -96,9 +84,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen w-full flex flex-col lg:flex-row overflow-x-hidden bg-background">
+    <div className="min-h-screen h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-slate-50 lg:bg-background">
       {/* Left Side - Visual Design (Brand Section) */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-gold via-gold/90 to-turquoise">
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-primary/95">
         <div className="flex flex-col justify-center items-center text-white p-12 w-full text-center">
           <div className="mb-10">
             <div className="w-24 h-24 bg-white/10 rounded-lg p-4 shadow-lg mb-8 mx-auto flex items-center justify-center border border-white/20">
@@ -138,29 +126,39 @@ export default function LoginPage() {
       </div>
 
       {/* Right Side - Form Section */}
-      <div className="flex-1 flex items-center justify-center p-6 sm:p-12 lg:p-16 xl:p-24 bg-background">
-        <div className="w-full max-w-md">
-          <div className="mb-10 text-center lg:text-left">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-lg bg-white dark:bg-card mb-6 lg:hidden shadow-md p-3">
-              {mounted && (
-                <Image
-                  src={resolvedTheme === "dark" ? "/supercash-logo-mint.png" : "/supercash-logo-gold.png"}
-                  width={60}
-                  height={60}
-                  alt="Logo"
-                  className="w-full h-auto"
-                />
-              )}
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold mb-3 text-foreground">
-              Bienvenue! 👋
-            </h2>
-            <p className="text-base text-muted-foreground">Content de vous revoir sur Super Cash</p>
+      <div className="flex-1 flex flex-col items-center justify-center p-4 bg-slate-50 lg:bg-background overflow-y-auto lg:overflow-visible">
+        <div className="w-full max-w-sm lg:max-w-md flex flex-col items-center lg:block">
+          {/* Mobile Logo centered above card */}
+          <div className="mb-8 lg:hidden flex flex-col items-center">
+            {mounted && (
+              <Image
+                src="/supercash-logo-gold.png"
+                width={80}
+                height={80}
+                alt="Logo"
+                className="w-20 h-auto"
+              />
+            )}
+            <h1 className="text-2xl font-bold mt-4 text-primary tracking-tight">SUPERCASH</h1>
           </div>
 
-          <Card className="border shadow-md bg-card">
-            <CardContent className="p-6 sm:p-8">
-              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          {/* Desktop Header */}
+          <div className="hidden lg:block mb-4 lg:mb-6 text-center lg:text-left">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-2 text-foreground">
+              Bienvenue!
+            </h2>
+            <p className="text-sm sm:text-base text-muted-foreground">Connectez-vous à votre compte</p>
+          </div>
+
+          <Card className="border-0 shadow-xl lg:shadow-md bg-white lg:bg-card w-full rounded-3xl lg:rounded-xl">
+            <CardContent className="p-6 sm:p-6 lg:p-6">
+              {/* Mobile Title inside Card */}
+              <div className="text-center mb-6 lg:hidden">
+                <h2 className="text-2xl font-bold text-gray-900">Connexion</h2>
+                <p className="text-gray-500 text-sm mt-1">Connectez-vous à votre compte</p>
+              </div>
+
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
                 <div className="space-y-2">
                   <Label htmlFor="email_or_phone" className="text-sm font-semibold text-foreground">
                     Email ou Téléphone
@@ -171,19 +169,16 @@ export default function LoginPage() {
                     placeholder="exemple@email.com ou +225..."
                     {...register("email_or_phone")}
                     disabled={isLoading}
-                    className="h-11 rounded-lg border bg-background/50 focus:border-gold transition-colors"
+                    className="h-10 rounded-lg border bg-background/50 focus:border-gold transition-colors"
                   />
                   {errors.email_or_phone && <p className="text-xs font-semibold text-destructive mt-1">{errors.email_or_phone.message}</p>}
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-1.5 lg:space-y-2">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="password" className="text-sm font-semibold text-foreground">
                       Mot de passe
                     </Label>
-                    <Link href="/forgot-password" className="text-sm font-semibold text-gold hover:underline">
-                      Oublié?
-                    </Link>
                   </div>
                   <div className="relative">
                     <Input
@@ -192,7 +187,7 @@ export default function LoginPage() {
                       placeholder="••••••••"
                       {...register("password")}
                       disabled={isLoading}
-                      className="h-11 rounded-lg border bg-background/50 focus:border-gold transition-colors pr-12"
+                      className="h-10 rounded-lg border bg-background/50 focus:border-gold transition-colors pr-12"
                     />
                     <Button
                       type="button"
@@ -211,12 +206,15 @@ export default function LoginPage() {
                   </div>
                   {errors.password && <p className="text-xs font-semibold text-destructive mt-1">{errors.password.message}</p>}
                 </div>
+                <div className="flex justify-end">
+                  <Link href="/forgot-password" className="text-sm font-semibold text-primary hover:underline">
+                    Mot de passe oublié ?
+                  </Link>
+                </div>
 
                 <Button
                   type="submit"
-                  variant="action-ids"
-                  size="lg"
-                  className="w-full h-14 text-lg"
+                  className="w-full h-12 lg:h-11 text-base lg:text-lg rounded-xl font-bold shadow-lg shadow-gold/20"
                   disabled={isLoading}
                 >
                   {isLoading ? (
@@ -230,20 +228,8 @@ export default function LoginPage() {
                 </Button>
               </form>
 
-              <div className="mt-10 pt-8 border-t border-muted/50 text-center">
-                <p className="text-muted-foreground font-medium mb-4">Pas encore de compte?</p>
-                <Button asChild variant="outline" className="w-full h-11 rounded-lg font-semibold hover:bg-gold/5">
-                  <Link href="/signup">
-                    Créer un compte GRATUIT
-                  </Link>
-                </Button>
-              </div>
-
-              <div className="mt-8 flex justify-center">
-                <MobileAppDownload
-                  variant="ghost"
-                  className="text-gold font-semibold hover:bg-gold/5"
-                />
+              <div className="mt-4 pt-4 border-t border-muted/50 text-center">
+                <p className="text-muted-foreground font-medium mb-2 text-sm">Pas encore de compte? <Link href="/signup" className="text-primary font-bold hover:underline">S'inscrire</Link></p>
               </div>
             </CardContent>
           </Card>

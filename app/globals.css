@@ -23,7 +23,7 @@
   --border: #DFE6E9;
   --input: #DFE6E9;
   --ring: #DCB452;
-  --radius: 12px;
+  --radius: 1rem;
   --sidebar: #FFFFFF;
   --sidebar-foreground: #2D3436;
   --sidebar-primary: #DCB452;
@@ -114,7 +114,7 @@
   --color-deposit: var(--color-turquoise);
   --color-withdrawal: var(--color-gold);
 
-  --radius: 12px;
+  --radius: 1rem;
 
   /* Palette Or (Gold) étendue */
   --color-gold-50: #FBF6EF;
@@ -161,6 +161,7 @@
     font-feature-settings: "rlig" 1, "calt" 1;
     font-size: 16px;
     line-height: 1.6;
+    overflow-x: hidden;
   }
 
   /* Ensure dark mode works */
@@ -341,56 +342,192 @@
   }
 
   /* Classes utilities pour palettes étendues */
-  .bg-gold-50 { background-color: var(--color-gold-50); }
-  .bg-gold-100 { background-color: var(--color-gold-100); }
-  .bg-gold-200 { background-color: var(--color-gold-200); }
-  .bg-gold-300 { background-color: var(--color-gold-300); }
-  .bg-gold-400 { background-color: var(--color-gold-400); }
-  .bg-gold-500 { background-color: var(--color-gold-500); }
-  .bg-gold-600 { background-color: var(--color-gold-600); }
-  .bg-gold-700 { background-color: var(--color-gold-700); }
-  .bg-gold-800 { background-color: var(--color-gold-800); }
-  .bg-gold-900 { background-color: var(--color-gold-900); }
+  .bg-gold-50 {
+    background-color: var(--color-gold-50);
+  }
 
-  .bg-turquoise-50 { background-color: var(--color-turquoise-50); }
-  .bg-turquoise-100 { background-color: var(--color-turquoise-100); }
-  .bg-turquoise-200 { background-color: var(--color-turquoise-200); }
-  .bg-turquoise-300 { background-color: var(--color-turquoise-300); }
-  .bg-turquoise-400 { background-color: var(--color-turquoise-400); }
-  .bg-turquoise-500 { background-color: var(--color-turquoise-500); }
-  .bg-turquoise-600 { background-color: var(--color-turquoise-600); }
-  .bg-turquoise-700 { background-color: var(--color-turquoise-700); }
-  .bg-turquoise-800 { background-color: var(--color-turquoise-800); }
-  .bg-turquoise-900 { background-color: var(--color-turquoise-900); }
+  .bg-gold-100 {
+    background-color: var(--color-gold-100);
+  }
 
-  .text-gold-50 { color: var(--color-gold-50); }
-  .text-gold-100 { color: var(--color-gold-100); }
-  .text-gold-200 { color: var(--color-gold-200); }
-  .text-gold-300 { color: var(--color-gold-300); }
-  .text-gold-400 { color: var(--color-gold-400); }
-  .text-gold-500 { color: var(--color-gold-500); }
-  .text-gold-600 { color: var(--color-gold-600); }
-  .text-gold-700 { color: var(--color-gold-700); }
-  .text-gold-800 { color: var(--color-gold-800); }
-  .text-gold-900 { color: var(--color-gold-900); }
+  .bg-gold-200 {
+    background-color: var(--color-gold-200);
+  }
 
-  .text-turquoise-50 { color: var(--color-turquoise-50); }
-  .text-turquoise-100 { color: var(--color-turquoise-100); }
-  .text-turquoise-200 { color: var(--color-turquoise-200); }
-  .text-turquoise-300 { color: var(--color-turquoise-300); }
-  .text-turquoise-400 { color: var(--color-turquoise-400); }
-  .text-turquoise-500 { color: var(--color-turquoise-500); }
-  .text-turquoise-600 { color: var(--color-turquoise-600); }
-  .text-turquoise-700 { color: var(--color-turquoise-700); }
-  .text-turquoise-800 { color: var(--color-turquoise-800); }
-  .text-turquoise-900 { color: var(--color-turquoise-900); }
+  .bg-gold-300 {
+    background-color: var(--color-gold-300);
+  }
+
+  .bg-gold-400 {
+    background-color: var(--color-gold-400);
+  }
+
+  .bg-gold-500 {
+    background-color: var(--color-gold-500);
+  }
+
+  .bg-gold-600 {
+    background-color: var(--color-gold-600);
+  }
+
+  .bg-gold-700 {
+    background-color: var(--color-gold-700);
+  }
+
+  .bg-gold-800 {
+    background-color: var(--color-gold-800);
+  }
+
+  .bg-gold-900 {
+    background-color: var(--color-gold-900);
+  }
+
+  .bg-turquoise-50 {
+    background-color: var(--color-turquoise-50);
+  }
+
+  .bg-turquoise-100 {
+    background-color: var(--color-turquoise-100);
+  }
+
+  .bg-turquoise-200 {
+    background-color: var(--color-turquoise-200);
+  }
+
+  .bg-turquoise-300 {
+    background-color: var(--color-turquoise-300);
+  }
+
+  .bg-turquoise-400 {
+    background-color: var(--color-turquoise-400);
+  }
+
+  .bg-turquoise-500 {
+    background-color: var(--color-turquoise-500);
+  }
+
+  .bg-turquoise-600 {
+    background-color: var(--color-turquoise-600);
+  }
+
+  .bg-turquoise-700 {
+    background-color: var(--color-turquoise-700);
+  }
+
+  .bg-turquoise-800 {
+    background-color: var(--color-turquoise-800);
+  }
+
+  .bg-turquoise-900 {
+    background-color: var(--color-turquoise-900);
+  }
+
+  .text-gold-50 {
+    color: var(--color-gold-50);
+  }
+
+  .text-gold-100 {
+    color: var(--color-gold-100);
+  }
+
+  .text-gold-200 {
+    color: var(--color-gold-200);
+  }
+
+  .text-gold-300 {
+    color: var(--color-gold-300);
+  }
+
+  .text-gold-400 {
+    color: var(--color-gold-400);
+  }
+
+  .text-gold-500 {
+    color: var(--color-gold-500);
+  }
+
+  .text-gold-600 {
+    color: var(--color-gold-600);
+  }
+
+  .text-gold-700 {
+    color: var(--color-gold-700);
+  }
+
+  .text-gold-800 {
+    color: var(--color-gold-800);
+  }
+
+  .text-gold-900 {
+    color: var(--color-gold-900);
+  }
+
+  .text-turquoise-50 {
+    color: var(--color-turquoise-50);
+  }
+
+  .text-turquoise-100 {
+    color: var(--color-turquoise-100);
+  }
+
+  .text-turquoise-200 {
+    color: var(--color-turquoise-200);
+  }
+
+  .text-turquoise-300 {
+    color: var(--color-turquoise-300);
+  }
+
+  .text-turquoise-400 {
+    color: var(--color-turquoise-400);
+  }
+
+  .text-turquoise-500 {
+    color: var(--color-turquoise-500);
+  }
+
+  .text-turquoise-600 {
+    color: var(--color-turquoise-600);
+  }
+
+  .text-turquoise-700 {
+    color: var(--color-turquoise-700);
+  }
+
+  .text-turquoise-800 {
+    color: var(--color-turquoise-800);
+  }
+
+  .text-turquoise-900 {
+    color: var(--color-turquoise-900);
+  }
 
   /* Ombres premium */
-  .shadow-gold-sm { box-shadow: var(--shadow-gold-sm); }
-  .shadow-gold { box-shadow: var(--shadow-gold); }
-  .shadow-gold-lg { box-shadow: var(--shadow-gold-lg); }
-  .shadow-turquoise-sm { box-shadow: var(--shadow-turquoise-sm); }
-  .shadow-turquoise { box-shadow: var(--shadow-turquoise); }
-  .shadow-turquoise-lg { box-shadow: var(--shadow-turquoise-lg); }
-  .shadow-premium { box-shadow: var(--shadow-premium); }
+  .shadow-gold-sm {
+    box-shadow: var(--shadow-gold-sm);
+  }
+
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
+
+  .shadow-gold-lg {
+    box-shadow: var(--shadow-gold-lg);
+  }
+
+  .shadow-turquoise-sm {
+    box-shadow: var(--shadow-turquoise-sm);
+  }
+
+  .shadow-turquoise {
+    box-shadow: var(--shadow-turquoise);
+  }
+
+  .shadow-turquoise-lg {
+    box-shadow: var(--shadow-turquoise-lg);
+  }
+
+  .shadow-premium {
+    box-shadow: var(--shadow-premium);
+  }
 }

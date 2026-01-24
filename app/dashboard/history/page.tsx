@@ -7,11 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, Search, Filter, RefreshCw,ArrowLeft } from "lucide-react"
+import { Loader2, Search, Filter, RefreshCw, ArrowLeft } from "lucide-react"
 import { transactionApi } from "@/lib/api-client"
 import type { Transaction } from "@/lib/types"
 import { toast } from "react-hot-toast"
-import {TransactionCard} from "@/components/transaction/TransactionCard";
+import { TransactionCard } from "@/components/transaction/TransactionCard";
 
 export default function TransactionHistoryPage() {
   const { user } = useAuth()
@@ -46,11 +46,11 @@ export default function TransactionHistoryPage() {
         page: currentPage,
         page_size: 10,
       }
-      
+
       if (searchTerm) params.search = searchTerm
       if (typeFilter !== "all") params.type_trans = typeFilter
       if (statusFilter !== "all") params.status = statusFilter
-      
+
       const data = await transactionApi.getHistory(params)
       setTransactions(data.results)
       setTotalCount(data.count)
@@ -125,8 +125,8 @@ export default function TransactionHistoryPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <div className="relative sm:col-span-2 lg:col-span-1">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="relative col-span-2 sm:col-span-2 lg:col-span-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
                   placeholder="Rechercher..."
@@ -135,7 +135,7 @@ export default function TransactionHistoryPage() {
                   className="pl-10 text-sm"
                 />
               </div>
-              
+
               <Select value={typeFilter} onValueChange={(value) => handleFilterChange("type", value)}>
                 <SelectTrigger className="text-sm">
                   <SelectValue placeholder="Type" />
@@ -146,7 +146,7 @@ export default function TransactionHistoryPage() {
                   <SelectItem value="withdrawal">Retraits</SelectItem>
                 </SelectContent>
               </Select>
-              
+
               <Select value={statusFilter} onValueChange={(value) => handleFilterChange("status", value)}>
                 <SelectTrigger className="text-sm">
                   <SelectValue placeholder="Statut" />
@@ -159,8 +159,8 @@ export default function TransactionHistoryPage() {
                   <SelectItem value="timeout">Expiré</SelectItem>
                 </SelectContent>
               </Select>
-              
-              <Button variant="outline" onClick={clearFilters} className="text-sm w-full sm:w-auto">
+
+              <Button variant="outline" onClick={clearFilters} className="text-sm w-full sm:w-auto col-span-2 sm:col-span-1 lg:col-span-auto">
                 Effacer
               </Button>
             </div>
@@ -176,8 +176,8 @@ export default function TransactionHistoryPage() {
                 <span className="px-2 py-0.5 sm:py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium">{totalCount}</span>
               </div>
               <div className="flex gap-2">
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
                   onClick={fetchTransactions}
                   disabled={isLoading}
@@ -204,7 +204,7 @@ export default function TransactionHistoryPage() {
             ) : (
               <div className="space-y-3">
                 {transactions.map((transaction) => (
-                    <TransactionCard key={transaction.id} transaction={transaction}/>
+                  <TransactionCard key={transaction.id} transaction={transaction} />
                 ))}
               </div>
             )}

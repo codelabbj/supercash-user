@@ -29,7 +29,7 @@ export function MobileAppDownload({
         <>
           <Download className="h-4 w-4" />
           <span className="hidden sm:inline">Bientôt disponible</span>
-          <span className="sm:hidden">Bientôt</span>
+          <span className="sr-only sm:hidden">Bientôt</span>
         </>
       )}
     </Button>
