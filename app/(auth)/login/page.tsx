@@ -13,7 +13,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useAuth } from "@/lib/auth-context"
 import { authApi } from "@/lib/api-client"
 import { toast } from "react-hot-toast"
-import { Loader2, Eye, EyeOff } from "lucide-react"
+import { Loader2, Eye, EyeOff, CheckCircle } from "lucide-react"
 import { setupNotifications } from "@/lib/fcm-helper"
 import Image from "next/image"
 import { useTheme } from "next-themes"
@@ -85,41 +85,71 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-slate-50 lg:bg-background">
-      {/* Left Side - Visual Design (Brand Section) */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-primary/95">
-        <div className="flex flex-col justify-center items-center text-white p-12 w-full text-center">
-          <div className="mb-10">
-            <div className="w-24 h-24 bg-white/10 rounded-lg p-4 shadow-lg mb-8 mx-auto flex items-center justify-center border border-white/20">
-              {mounted && (
-                <Image
-                  src="/supercash-logo-mint.png"
-                  width={80}
-                  height={80}
-                  alt="Logo"
-                  className="w-full h-auto brightness-200 contrast-200"
-                />
-              )}
+      {/* Left Side - Visual Design (Animated Fresco) */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#D4AF37] bg-gradient-to-br from-[#D4AF37] via-[#C5A028] to-[#B8860B]">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 opacity-20">
+          <svg className="w-full h-full" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="400" cy="400" r="300" stroke="white" strokeWidth="1" strokeDasharray="10 10" className="animate-[dash_40s_linear_infinite]" />
+            <circle cx="400" cy="400" r="200" stroke="white" strokeWidth="1" strokeDasharray="5 5" className="animate-[dash_30s_linear_infinite] opacity-50" />
+            <path d="M0 400C200 350 400 450 800 400" stroke="white" strokeWidth="1" strokeDasharray="8 8" className="animate-dash" />
+          </svg>
+        </div>
+
+        <div className="relative z-10 flex flex-col justify-between h-full w-full p-12 text-white">
+          {/* Top Logo */}
+          <div className="relative z-20 flex items-center gap-3">
+            <div className="p-2 bg-white/20 backdrop-blur-md rounded-xl border border-white/30">
+              <Image src="/supercash-logo-mint.png" width={32} height={32} alt="Logo Small" className="brightness-200" />
             </div>
-            <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-              SUPERCASH
+            <span className="text-xl font-bold tracking-tight">Super Cash</span>
+          </div>
+
+          {/* Center Content */}
+          <div className="relative z-20 max-w-md">
+            <h1 className="text-6xl font-extrabold leading-tight mb-8">
+              Bon Retour<br />Parmi Nous.
             </h1>
-            <p className="text-lg lg:text-xl text-white/90 max-w-md mx-auto">
-              L'expérience premium pour vos transactions de jeux.
+            <p className="text-xl text-white/80 font-medium max-w-sm">
+              Votre portail vers le système de gestion de paris le plus sécurisé d'Afrique de l'Ouest. Prêt pour le prochain gain ?
             </p>
           </div>
 
-          <div className="mt-12 space-y-4 w-full max-w-sm">
-            <div className="flex items-center gap-4 bg-white/10 p-4 rounded-lg border border-white/20">
-              <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-white"></div>
-              </div>
-              <span className="font-semibold">Transactions Express</span>
+          {/* Animated Floating Objects Container */}
+          <div className="absolute top-1/2 right-[-5%] w-[400px] h-[400px] -translate-y-1/2 z-10">
+            {/* Security Shield */}
+            <div className="absolute top-[15%] left-[10%] w-32 h-32 bg-white/10 backdrop-blur-xl border-2 border-white/30 rounded-3xl shadow-2xl animate-float-slow rotate-[5deg] flex items-center justify-center">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#39D196]">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+              </svg>
             </div>
-            <div className="flex items-center gap-4 bg-white/10 p-4 rounded-lg border border-white/20">
-              <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
-                <div className="w-2 h-2 rounded-full bg-white"></div>
+
+            {/* Premium Card */}
+            <div className="absolute bottom-[20%] left-[25%] w-48 h-28 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-2xl border border-white/40 rounded-2xl shadow-2xl animate-float-medium rotate-[-10deg] z-20 p-4">
+              <div className="w-8 h-6 bg-white/20 rounded-md mb-8"></div>
+              <div className="space-y-1">
+                <div className="w-full h-1 bg-white/30 rounded-full"></div>
+                <div className="w-1/2 h-1 bg-white/30 rounded-full"></div>
               </div>
-              <span className="font-semibold">Sécurité 100% Garantie</span>
+            </div>
+
+            {/* Key Icon Turquoise */}
+            <div className="absolute top-[35%] right-[20%] w-14 h-14 bg-[#39D196] rounded-2xl shadow-xl shadow-[#39D196]/40 animate-float-fast rotate-[20deg] z-30 flex items-center justify-center border-2 border-white/30">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                <path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3-3.5 3.5z" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Bottom Footer Credits */}
+          <div className="relative z-20 flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] text-white/60 font-semibold">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-3 h-3" />
+              Sécurisé par SSL
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-white/40"></div>
+              Conformité Globale
             </div>
           </div>
         </div>

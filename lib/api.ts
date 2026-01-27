@@ -19,19 +19,19 @@ function detectLang(text: string) {
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("access_token")
   if (token) config.headers.Authorization = `Bearer ${token}`
-  
+
   // Ensure fresh data with cache busting
   config.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
   config.headers['Pragma'] = 'no-cache'
   config.headers['Expires'] = '0'
-  
+
   // Add timestamp to prevent caching
   if (config.params) {
     config.params._t = Date.now()
   } else {
     config.params = { _t: Date.now() }
   }
-  
+
   return config
 })
 
@@ -41,30 +41,46 @@ api.interceptors.response.use(
     const original = error.config
     if (error.response?.status === 401 && !original._retry) {
       original._retry = true
-        try {
-            const refresh = localStorage.getItem("refresh_token")
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}auth/refresh`, { refresh })
-            const newToken = res.data.access
-            localStorage.setItem("access_token", newToken)
-            original.headers.Authorization = `Bearer ${newToken}`
-            return api(original)
-        } catch {
-            localStorage.clear()
-            window.location.href = "/login"
-        }
+      try {
+        const refresh = localStorage.getItem("refresh_token")
+        const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}auth/refresh`, { refresh })
+        const newToken = res.data.access
+        localStorage.setItem("access_token", newToken)
+        original.headers.Authorization = `Bearer ${newToken}`
+        return api(original)
+      } catch {
+        localStorage.clear()
+        window.location.href = "/login"
+      }
     }
 
     const defaultLang = "fr"
     const fallback =
       defaultLang === "fr" ? "Une erreur est survenue. Veuillez réessayer." : "An unexpected error occurred."
 
-    // Check for rate limiting error (error_time_message) first
+    // Extract backend message
     let backendMsg = fallback
     if (error.response?.data?.error_time_message) {
       const timeMessage = Array.isArray(error.response.data.error_time_message)
         ? error.response.data.error_time_message[0]
         : error.response.data.error_time_message
       backendMsg = `Veuillez patienter ${timeMessage} avant de créer une nouvelle transaction`
+    } else if (error.response?.data && typeof error.response.data === 'object' && !Array.isArray(error.response.data)) {
+      // Handle field errors (e.g., { "email_or_phone": ["..."] })
+      const data = error.response.data as Record<string, any>;
+      const firstError = Object.values(data)[0];
+
+      if (Array.isArray(firstError) && firstError.length > 0) {
+        backendMsg = firstError[0];
+      } else if (typeof firstError === 'string') {
+        backendMsg = firstError;
+      } else {
+        backendMsg =
+          data.details ||
+          data.detail ||
+          data.error ||
+          data.message || fallback
+      }
     } else {
       backendMsg =
         error.response?.data?.details ||

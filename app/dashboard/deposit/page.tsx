@@ -207,7 +207,6 @@ export default function DepositPage() {
             selectedPlatform={selectedPlatform}
             onSelect={(platform) => {
               setSelectedPlatform(platform)
-              setTimeout(() => { setCurrentStep(currentStep + 1) }, 1000)
             }}
             onNext={handleNext}
             type="deposit"
@@ -220,7 +219,6 @@ export default function DepositPage() {
             selectedBetId={selectedBetId}
             onSelect={(betId) => {
               setSelectedBetId(betId)
-              setTimeout(() => { setCurrentStep(currentStep + 1) }, 1000)
             }}
             onNext={handleNext}
             type="deposit"
@@ -232,7 +230,6 @@ export default function DepositPage() {
             selectedNetwork={selectedNetwork}
             onSelect={(network) => {
               setSelectedNetwork(network)
-              setTimeout(() => { setCurrentStep(currentStep + 1) }, 1000)
             }}
             type="deposit"
           />
@@ -244,7 +241,6 @@ export default function DepositPage() {
             selectedPhone={selectedPhone}
             onSelect={(phone) => {
               setSelectedPhone(phone)
-              setTimeout(() => { setCurrentStep(currentStep + 1) }, 1000)
             }}
             onNext={handleNext}
             type="deposit"

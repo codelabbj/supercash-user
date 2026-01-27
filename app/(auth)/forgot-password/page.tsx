@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent } from "@/components/ui/card"
 import { authApi } from "@/lib/api-client"
 import { toast } from "react-hot-toast"
-import { Loader2, Eye, EyeOff, ArrowLeft, Mail, Lock, Code } from "lucide-react"
+import { Loader2, Eye, EyeOff, ArrowLeft, Mail, Lock, Code, CheckCircle } from "lucide-react"
 import Image from "next/image"
 import { useTheme } from "next-themes"
 
@@ -162,42 +162,63 @@ export default function ForgotPasswordPage() {
 
   return (
     <div className="min-h-screen h-screen w-full flex flex-col lg:flex-row overflow-hidden bg-slate-50 lg:bg-background">
-      {/* Left Side - Visual Design */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-primary/95">
-        <div className="absolute inset-0 bg-black/5"></div>
-        <div className="relative z-10 flex flex-col justify-center items-center text-white p-12 w-full text-center">
-          <div className="mb-10">
-            <div className="w-24 h-24 bg-white/10 rounded-lg p-4 shadow-lg mb-8 mx-auto flex items-center justify-center border border-white/20">
-              {mounted && (
-                <Image
-                  src="/supercash-logo-mint.png"
-                  width={80}
-                  height={80}
-                  alt="Logo"
-                  className="w-full h-auto brightness-200 contrast-200"
-                />
-              )}
+      {/* Left Side - Visual Design (Animated Fresco) */}
+      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-[#D4AF37] bg-gradient-to-br from-[#D4AF37] via-[#C5A028] to-[#B8860B]">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 opacity-20">
+          <svg className="w-full h-full" viewBox="0 0 800 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M-100 200C200 150 400 250 800 200" stroke="white" strokeWidth="1" strokeDasharray="10 10" className="animate-dash" />
+            <path d="M0 600C300 550 500 650 900 600" stroke="white" strokeWidth="1" strokeDasharray="5 5" className="animate-[dash_25s_linear_infinite]" />
+          </svg>
+        </div>
+
+        <div className="relative z-10 flex flex-col justify-between h-full w-full p-12 text-white">
+          {/* Top Logo */}
+          <div className="relative z-20 flex items-center gap-3">
+            <div className="p-2 bg-white/20 backdrop-blur-md rounded-xl border border-white/30">
+              <Image src="/supercash-logo-mint.png" width={32} height={32} alt="Logo Small" className="brightness-200" />
             </div>
-            <h1 className="text-4xl lg:text-5xl font-bold mb-6">
-              SUPERCASH
+            <span className="text-xl font-bold tracking-tight">Super Cash</span>
+          </div>
+
+          {/* Center Content */}
+          <div className="relative z-20 max-w-md">
+            <h1 className="text-6xl font-extrabold leading-tight mb-8">
+              Restez en<br />Sécurité.
             </h1>
-            <p className="text-lg lg:text-xl text-white/90 max-w-md mx-auto">
-              Retrouvez l'accès à votre compte en quelques étapes.
+            <p className="text-xl text-white/80 font-medium max-w-sm">
+              Pas d'inquiétude ! Nous vous aiderons à retrouver l'accès à votre compte en un clin d'œil. Votre sécurité est notre priorité.
             </p>
           </div>
 
-          <div className="mt-12 space-y-4 w-full max-w-sm">
-            <div className="flex items-center gap-4 bg-white/10 p-4 rounded-lg border border-white/20">
-              <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
-                <Lock className="w-6 h-6 text-white" />
-              </div>
-              <span className="font-semibold">Processus Sécurisé</span>
+          {/* Animated Floating Objects Container */}
+          <div className="absolute top-1/2 right-[-5%] w-[400px] h-[400px] -translate-y-1/2 z-10">
+            {/* Keyhole / Lock */}
+            <div className="absolute top-[20%] left-[15%] w-32 h-32 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full shadow-2xl animate-float-slow flex items-center justify-center">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#39D196]">
+                <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+              </svg>
             </div>
-            <div className="flex items-center gap-4 bg-white/10 p-4 rounded-lg border border-white/20">
-              <div className="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center">
-                <Mail className="w-6 h-6 text-white" />
-              </div>
-              <span className="font-semibold">Vérification Email</span>
+
+            {/* Reset Icon Badge */}
+            <div className="absolute bottom-[30%] right-[25%] w-20 h-20 bg-[#f59e0b] rounded-3xl shadow-xl shadow-[#f59e0b]/30 animate-float-medium rotate-[-15deg] z-20 flex items-center justify-center border-2 border-white/40">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                <path d="M3 3v5h5" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Bottom Footer Credits */}
+          <div className="relative z-20 flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] text-white/60 font-semibold">
+            <div className="flex items-center gap-2">
+              <CheckCircle className="w-3 h-3" />
+              Protection 2FA
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-1.5 h-1.5 rounded-full bg-white/40"></div>
+              Confidentialité Garantie
             </div>
           </div>
         </div>

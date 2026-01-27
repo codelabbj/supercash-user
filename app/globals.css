@@ -256,6 +256,44 @@
     }
   }
 
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0px) rotate(var(--tw-rotate, 0deg));
+    }
+
+    50% {
+      transform: translateY(-20px) rotate(var(--tw-rotate, 0deg));
+    }
+  }
+
+  @keyframes dash {
+    from {
+      stroke-dashoffset: 100;
+    }
+
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .animate-float-slow {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .animate-float-medium {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  .animate-float-fast {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-dash {
+    animation: dash 20s linear infinite;
+  }
+
   .delay-1000 {
     animation-delay: 1s;
   }
