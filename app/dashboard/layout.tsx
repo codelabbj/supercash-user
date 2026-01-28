@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { useTheme } from "next-themes"
@@ -15,14 +15,16 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { LogOut, User, Loader2, Bell, Ticket, Moon, Sun } from "lucide-react"
+import { LogOut, User, Loader2, Bell, Ticket, Moon, Sun, LayoutDashboard, History, Settings as SettingsIcon } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { MobileAppDownload } from "@/components/mobile-app-download"
 import { FloatingSocialButton } from "@/components/floating-social-button"
 import Image from "next/image";
+import { notificationApi } from "@/lib/api-client"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
+  const pathname = usePathname()
   const { user, isLoading, logout } = useAuth()
   const { theme, setTheme, resolvedTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
@@ -34,6 +36,27 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const handleThemeToggle = () => {
     const newTheme = theme === "light" ? "dark" : "light"
     setTheme(newTheme)
+  }
+
+  const [unreadCount, setUnreadCount] = useState(0)
+
+  useEffect(() => {
+    if (user) {
+      fetchUnreadCount()
+    }
+  }, [user])
+
+  const fetchUnreadCount = async () => {
+    try {
+      const data = await notificationApi.getAll()
+      const unread = data.results.filter(n => !n.is_read).length
+      // Note: If paginated, this only counts the first page. 
+      // Ideally the backend provides a dedicated unread count endpoint.
+      // For now, setting it based on the first page results.
+      setUnreadCount(unread)
+    } catch (error) {
+      console.error("Error fetching notification count:", error)
+    }
   }
 
   useEffect(() => {
@@ -62,65 +85,73 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
         <div className="container mx-auto px-3 sm:px-4">
           {/* Top row with logo and user menu */}
-          <div className="flex h-16 sm:h-20 items-center justify-between">
-            <div className="flex items-center gap-2 sm:gap-4">
-              <Link href="/dashboard" className="group">
-                <div className="flex items-center group-hover:scale-105 transition-transform">
-                  {mounted && (
-                    <Image
-                      src={resolvedTheme === "dark" ? "/supercash-logo-mint.png" : "/supercash-logo-gold.png"}
-                      width={150}
-                      height={150}
-                      alt="SuperCash Logo"
-                      className="h-10 sm:h-16 w-auto"
-                    />
-                  )}
-                  <h1 className="hidden sm:block text-xl sm:text-2xl font-bold ml-2 sm:ml-3 text-gold dark:text-turquoise">SUPERCASH</h1>
+          <div className="flex h-16 sm:h-20 items-center justify-between relative">
+            <div className="flex items-center gap-2">
+              <Link href="/dashboard" className="flex items-center gap-3 group">
+                <div className="relative w-11 h-11 group-hover:scale-105 transition-transform">
+                  <Image
+                    src={resolvedTheme === "dark" ? "/supercash-logo-mint.png" : "/supercash-logo-gold.png"}
+                    fill
+                    alt="SuperCash Logo"
+                    className="object-contain"
+                  />
                 </div>
+                <span className="text-xl font-bold tracking-tight text-[#1A1A1A] dark:text-white uppercase hidden sm:block">Super Cash</span>
               </Link>
             </div>
 
-            {/* Theme toggle and User menu */}
-            <div className="flex items-center gap-1 sm:gap-3">
-              <div className="hidden sm:flex">
+            {/* Middle Navigation - Horizontal */}
+            <nav className="hidden md:flex items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-50 dark:bg-white/5 p-2 rounded-2xl border border-slate-200/60 dark:border-white/10 gap-1 sm:gap-2">
+              <Link
+                href="/dashboard"
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${pathname === '/dashboard' ? 'bg-gold/10 text-gold shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                <span>Accueil</span>
+              </Link>
+              <Link
+                href="/dashboard/history"
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${pathname === '/dashboard/history' ? 'bg-gold/10 text-gold shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
+              >
+                <History className="w-4 h-4" />
+                <span>Historique</span>
+              </Link>
+
+            </nav>
+
+            {/* Right Side Tools */}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <ThemeToggle />
+                <Button
+                  variant="ghost"
+                  className="h-10 w-10 rounded-xl relative hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+                  asChild
+                >
+                  <Link href="/dashboard/notifications">
+                    <Bell className="h-5 w-5 text-slate-600 dark:text-slate-300" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-[10px] font-bold rounded-full border-2 border-white dark:border-[#0F0F0F] flex items-center justify-center">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </Link>
+                </Button>
               </div>
-              <Button
-                variant="ghost"
-                className="h-10 w-10 sm:h-11 sm:w-11 rounded-lg relative hidden sm:flex"
-                asChild
-                aria-label="Voir les notifications"
-              >
-                <Link href="/dashboard/notifications">
-                  <Bell className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
-                </Link>
-              </Button>
-              <Button
-                className="h-10 px-2 sm:h-11 sm:px-4 rounded-lg bg-gold text-white shadow-sm hover:brightness-110 hover:shadow-md transition-all duration-200 font-semibold flex items-center gap-1 sm:gap-2"
-                asChild
-              >
-                <Link href="/dashboard/coupon" className="flex items-center gap-1 sm:gap-2">
-                  <Ticket className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span className="hidden sm:inline">Coupons</span>
-                </Link>
-              </Button>
-              <MobileAppDownload
-                variant="outline"
-                className="h-10 px-2 sm:h-11 sm:px-4 rounded-lg transition-all duration-200"
-              />
+
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="relative h-10 w-10 sm:h-12 sm:w-12 rounded-full ring-2 ring-gold/20 hover:ring-gold/40 transition-all"
-                    aria-label="Menu utilisateur"
-                  >
-                    <Avatar className="h-10 w-10 sm:h-12 sm:w-12 ring-2 ring-gold/20">
-                      <AvatarFallback className="bg-gold text-white font-bold text-sm sm:text-lg">{userInitials}</AvatarFallback>
+                  <button className="flex items-center gap-3 p-1 pl-4 rounded-full hover:bg-slate-100 dark:hover:bg-white/5 transition-all outline-none group border border-transparent hover:border-slate-200 dark:hover:border-white/10">
+                    <div className="flex flex-col items-end hidden sm:flex">
+                      <span className="text-sm font-semibold text-[#1A1A1A] dark:text-white leading-tight">{user.first_name}</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">#{user.id?.toString().slice(-5) || "82739"}</span>
+                    </div>
+                    <Avatar className="h-10 w-10 sm:h-11 sm:w-11 rounded-full ring-2 ring-gold/20 group-hover:ring-gold/40 transition-all">
+                      <AvatarFallback className="bg-gold text-white font-bold text-lg">{userInitials}</AvatarFallback>
                     </Avatar>
-                  </Button>
+                  </button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-48 sm:w-56 glass" align="end" forceMount>
+                <DropdownMenuContent className="w-56 glass" align="end" forceMount>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
                       <p className="text-sm font-medium leading-none">
@@ -130,30 +161,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
-
-                  {/* Mobile-only items */}
-                  <div className="sm:hidden">
-                    <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
-                      <Link href="/dashboard/notifications" className="flex items-center">
-                        <Bell className="mr-2 h-4 w-4" />
-                        <span>Notifications</span>
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={handleThemeToggle} className="rounded-lg cursor-pointer">
-                      {mounted && (
-                        <>
-                          {resolvedTheme === "dark" ? (
-                            <Sun className="mr-2 h-4 w-4" />
-                          ) : (
-                            <Moon className="mr-2 h-4 w-4" />
-                          )}
-                          <span>Mode {resolvedTheme === "dark" ? "clair" : "sombre"}</span>
-                        </>
-                      )}
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                  </div>
-
                   <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
                     <Link href="/dashboard/profile">
                       <User className="mr-2 h-4 w-4" />
@@ -171,23 +178,32 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </header>
+      {/* Mobile Bottom Navigation */}
+      <nav className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm px-4 py-3 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl flex items-center justify-around gap-2 scale-hover transition-all">
+        <Link
+          href="/dashboard"
+          className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${pathname === '/dashboard' ? 'text-gold bg-gold/5 px-4' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`}
+        >
+          <LayoutDashboard className="w-5 h-5" />
+          <span className="text-[10px] font-bold">Accueil</span>
+        </Link>
+        <Link
+          href="/dashboard/history"
+          className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${pathname === '/dashboard/history' ? 'text-gold bg-gold/5 px-4' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`}
+        >
+          <History className="w-5 h-5" />
+          <span className="text-[10px] font-bold">Historique</span>
+        </Link>
 
+      </nav>
       {/* Main content */}
       <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8 relative z-20">{children}</main>
 
-      <footer className="w-full bg-background relative z-10 py-4 sm:py-6">
-        <div className="container mx-auto px-3 sm:px-6">
-          <div className="flex items-center justify-center">
-            <p className="text-sm text-muted-foreground">
-              Développé par{" "}
-              <Link
-                href="https://codelab.bj/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-semibold text-primary hover:underline transition-all duration-300"
-              >
-                Code Lab
-              </Link>
+      <footer className="w-full bg-background relative z-10 py-8">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-center border-t border-slate-200/60 dark:border-white/5 pt-8">
+            <p className="text-sm text-slate-400 dark:text-slate-500 font-medium">
+              © 2024 Super Cash Fintech — West African Operations
             </p>
           </div>
         </div>

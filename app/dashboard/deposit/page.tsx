@@ -267,76 +267,44 @@ export default function DepositPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-      <div className="space-y-10">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="space-y-6 sm:space-y-8">
         {/* Header */}
-        <div className="flex flex-col items-center gap-6">
-          <div className="flex w-full items-center justify-between">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => router.back()}
-              className="rounded-lg bg-muted/50 hover:bg-muted shrink-0 h-11 w-11"
-            >
-              <ArrowLeft className="h-5 w-5" />
-            </Button>
-            <div className="text-center flex-1">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gold dark:text-turquoise">
-                SUPERCASH
-              </h1>
-            </div>
-            <div className="w-12" /> {/* Spacer */}
-          </div>
-
-          <div className="space-y-1 text-center">
-            <h2 className="text-lg sm:text-xl font-bold">Recharge Immédiate</h2>
-            <p className="text-muted-foreground">Suivez les étapes pour alimenter votre compte</p>
+        <div className="flex items-center gap-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => router.back()}
+            className="rounded-lg hover:bg-muted shrink-0"
+          >
+            <ArrowLeft className="h-5 w-5" />
+          </Button>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Effectuer un dépôt</h1>
           </div>
         </div>
 
-        {/* Progress Indicator */}
-        <div className="max-w-md mx-auto w-full">
-          <TransactionProgressBar
-            currentStep={currentStep}
-            totalSteps={totalSteps}
-            type="deposit"
-          />
-        </div>
+        {/* Progress Bar */}
+        <TransactionProgressBar
+          currentStep={currentStep}
+          totalSteps={totalSteps}
+          type="deposit"
+        />
 
         {/* Current Step */}
-        <div className="min-h-[400px]">
-          <div className="transition-all duration-300">
-            {renderCurrentStep()}
-          </div>
+        <div className="min-h-[300px] sm:min-h-[400px]">
+          {renderCurrentStep()}
         </div>
 
         {/* Navigation */}
         {currentStep < 5 && (
-          <div className="flex justify-between items-center bg-card/50 backdrop-blur-sm p-4 rounded-lg border mt-8">
-            <Button
-              variant="ghost"
-              onClick={handlePrevious}
-              disabled={currentStep === 1}
-              className="font-semibold disabled:opacity-30"
-            >
-              Retour
-            </Button>
-            <div className="flex items-center gap-1">
-              {Array.from({ length: totalSteps }).map((_, i) => (
-                <div key={i} className={cn(
-                  "w-1.5 h-1.5 rounded-full transition-all",
-                  i + 1 === currentStep ? "bg-gold w-4" : "bg-muted"
-                )} />
-              ))}
-            </div>
-            <Button
-              onClick={handleNext}
-              disabled={!isStepValid()}
-              className="bg-gold hover:bg-gold/90 text-white font-semibold px-6 rounded-lg shadow-sm"
-            >
-              Suivant
-            </Button>
-          </div>
+          <StepNavigation
+            currentStep={currentStep}
+            totalSteps={totalSteps}
+            onPrevious={handlePrevious}
+            onNext={handleNext}
+            isNextDisabled={!isStepValid()}
+          />
         )}
 
         {/* Confirmation Dialog */}

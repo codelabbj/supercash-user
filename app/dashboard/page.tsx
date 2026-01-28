@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react"
 import { useAuth } from "@/lib/auth-context"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { ArrowDownToLine, ArrowUpFromLine, Wallet, Loader2, ArrowRight, RefreshCw, Phone, Gift, Ticket } from "lucide-react"
+import { ArrowDownToLine, ArrowUpFromLine, Wallet, Loader2, ArrowRight, RefreshCw, Phone, Gift, Ticket, Banknote, Smartphone, BookOpen, Search, Plus } from "lucide-react"
 import Link from "next/link"
 import { transactionApi, advertisementApi } from "@/lib/api-client"
 import type { Advertisement, Transaction } from "@/lib/types"
@@ -86,89 +86,114 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6 sm:space-y-10 px-4 sm:px-0 overflow-x-hidden">
-      {/* Welcome section */}
-      <div className="flex flex-col gap-1">
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
-          Bienvenue {user?.first_name}!
+    <div className="space-y-8 sm:space-y-12 px-2 sm:px-0 overflow-x-hidden pb-24 md:pb-0">
+      <div className="flex flex-col gap-1 sm:gap-2">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter text-[#1A1A1A] dark:text-white leading-tight">
+          Bienvenue, {user?.first_name} !
         </h1>
-        <p className="text-sm sm:text-base text-muted-foreground">Content de vous revoir</p>
+        <p className="text-base sm:text-lg text-slate-500 dark:text-slate-400 font-medium">Que souhaitez-vous faire aujourd'hui ?</p>
       </div>
 
       {/* Quick actions grid */}
-      <div className="grid grid-cols-4 gap-2 sm:gap-4">
-        <Link href="/dashboard/deposit" className="group">
-          <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
-            <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-gold/5 text-gold border border-gold/10">
-                <ArrowDownToLine className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
-                <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Dépôt</h3>
-                <p className="hidden sm:block text-sm text-muted-foreground">Rechargez rapidement votre compte</p>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-
-        <Link href="/dashboard/withdrawal" className="group">
-          <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
-            <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-turquoise/5 text-turquoise border border-turquoise/10">
-                <ArrowUpFromLine className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
-                <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Retrait</h3>
-                <p className="hidden sm:block text-sm text-muted-foreground">Retirez vos gains instantanément</p>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-
-        <Link href="/dashboard/phones" className="group">
-          <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
-            <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
-              <div className="p-2 sm:p-2.5 rounded-xl bg-muted/10 text-muted-foreground border border-border">
-                <Phone className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
-                <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Numéros</h3>
-                <p className="hidden sm:block text-sm text-muted-foreground">Gérez vos identifiants de jeux</p>
-              </div>
-            </CardContent>
-          </Card>
-        </Link>
-
-        {referralBonus ? (
-          <Link href="/dashboard/bonus" className="group">
-            <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
-              <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
-                <div className="p-2 sm:p-2.5 rounded-xl bg-turquoise/5 text-turquoise border border-turquoise/10">
-                  <Gift className="w-4 h-4 sm:w-5 sm:h-5" />
+      {/* Quick actions grid */}
+      {/* Quick actions grid */}
+      <>
+        {/* Mobile View: Single Card with 4 buttons */}
+        <Card className="block sm:hidden border-0 shadow-sm bg-white dark:bg-white/5 rounded-2xl overflow-hidden p-4">
+          <div className="grid grid-cols-4 gap-2">
+            <Link href="/dashboard/deposit" className="group flex flex-col items-center gap-2">
+              <div className="w-12 h-12 rounded-xl bg-[#FFF9EB] dark:bg-gold/10 flex items-center justify-center text-[#DCB452] dark:text-gold shrink-0">
+                <div className="w-7 h-7 rounded-full border-2 border-[#DCB452] dark:border-gold flex items-center justify-center">
+                  <Plus className="w-4 h-4 stroke-[3]" />
                 </div>
-                <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
-                  <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Bonus</h3>
-                  <p className="hidden sm:block text-sm text-muted-foreground">Consultez vos récompenses</p>
+              </div>
+              <h3 className="text-[10px] font-bold text-[#1A1A1A] dark:text-white text-center leading-tight">Dépôt</h3>
+            </Link>
+
+            <Link href="/dashboard/withdrawal" className="group flex flex-col items-center gap-2">
+              <div className="w-12 h-12 rounded-xl bg-[#E6FFF5] dark:bg-[#39D196]/10 flex items-center justify-center text-[#39D196] shrink-0">
+                <Banknote className="w-6 h-6" />
+              </div>
+              <h3 className="text-[10px] font-bold text-[#1A1A1A] dark:text-white text-center leading-tight">Retrait</h3>
+            </Link>
+
+            <Link href="/dashboard/phones" className="group flex flex-col items-center gap-2">
+              <div className="w-12 h-12 rounded-xl bg-[#EBF2FF] dark:bg-[#4B89FF]/10 flex items-center justify-center text-[#4B89FF] shrink-0">
+                <Smartphone className="w-6 h-6" />
+              </div>
+              <h3 className="text-[10px] font-bold text-[#1A1A1A] dark:text-white text-center leading-tight">Numéros</h3>
+            </Link>
+
+            <Link href="/dashboard/coupon" className="group flex flex-col items-center gap-2">
+              <div className="w-12 h-12 rounded-xl bg-[#FFF1F1] dark:bg-[#FF5B5B]/10 flex items-center justify-center text-[#FF5B5B] shrink-0">
+                <Ticket className="w-6 h-6" />
+              </div>
+              <h3 className="text-[10px] font-bold text-[#1A1A1A] dark:text-white text-center leading-tight">Coupons</h3>
+            </Link>
+          </div>
+        </Card>
+
+        {/* Desktop View: Separate Cards */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Link href="/dashboard/deposit" className="group">
+            <Card className="h-full border-0 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-white/5 rounded-[2.5rem] overflow-hidden p-8">
+              <div className="flex flex-col gap-6">
+                <div className="w-16 h-16 rounded-2xl bg-[#FFF9EB] dark:bg-gold/10 flex items-center justify-center text-[#DCB452] dark:text-gold">
+                  <div className="w-8 h-8 rounded-full border-2 border-[#DCB452] dark:border-gold flex items-center justify-center">
+                    <Plus className="w-5 h-5 stroke-[3]" />
+                  </div>
                 </div>
-              </CardContent>
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-bold text-[#1A1A1A] dark:text-white">Dépôt</h3>
+                  <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">Approvisionnez votre compte instantanément.</p>
+                </div>
+              </div>
             </Card>
           </Link>
-        ) : (
+
+          <Link href="/dashboard/withdrawal" className="group">
+            <Card className="h-full border-0 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-white/5 rounded-[2.5rem] overflow-hidden p-8">
+              <div className="flex flex-col gap-6">
+                <div className="w-16 h-16 rounded-2xl bg-[#E6FFF5] dark:bg-[#39D196]/10 flex items-center justify-center text-[#39D196]">
+                  <Banknote className="w-8 h-8" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-bold text-[#1A1A1A] dark:text-white">Retrait</h3>
+                  <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">Récupérez vos gains en un clic.</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
+          <Link href="/dashboard/phones" className="group">
+            <Card className="h-full border-0 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-white/5 rounded-[2.5rem] overflow-hidden p-8">
+              <div className="flex flex-col gap-6">
+                <div className="w-16 h-16 rounded-2xl bg-[#EBF2FF] dark:bg-[#4B89FF]/10 flex items-center justify-center text-[#4B89FF]">
+                  <Smartphone className="w-8 h-8" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-bold text-[#1A1A1A] dark:text-white">Numéros</h3>
+                  <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">Gérez vos identifiants de jeu.</p>
+                </div>
+              </div>
+            </Card>
+          </Link>
+
           <Link href="/dashboard/coupon" className="group">
-            <Card className="h-full border transition-all duration-300 hover:shadow-md active:scale-[0.99] bg-card rounded-2xl overflow-hidden">
-              <CardContent className="p-2 sm:p-5 flex flex-col items-center sm:items-start gap-1.5 sm:gap-3 min-h-[auto] sm:min-h-[160px]">
-                <div className="p-2 sm:p-2.5 rounded-xl bg-gold/5 text-gold border border-gold/10">
-                  <Ticket className="w-4 h-4 sm:w-5 sm:h-5" />
+            <Card className="h-full border-0 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-white dark:bg-white/5 rounded-[2.5rem] overflow-hidden p-8">
+              <div className="flex flex-col gap-6">
+                <div className="w-16 h-16 rounded-2xl bg-[#FFF1F1] dark:bg-[#FF5B5B]/10 flex items-center justify-center text-[#FF5B5B]">
+                  <Ticket className="w-8 h-8" />
                 </div>
-                <div className="space-y-0.5 sm:space-y-1 w-full text-center sm:text-left">
-                  <h3 className="text-xs sm:text-lg font-bold text-foreground truncate w-full">Coupons</h3>
-                  <p className="hidden sm:block text-sm text-muted-foreground">Vos coupons de réduction</p>
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-bold text-[#1A1A1A] dark:text-white">Coupons</h3>
+                  <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">Utilisez vos codes promos et bonus.</p>
                 </div>
-              </CardContent>
+              </div>
             </Card>
           </Link>
-        )}
-      </div>
+        </div>
+      </>
 
       {/* Ads Section */}
       {
@@ -239,11 +264,10 @@ export default function DashboardPage() {
         )
       }
 
-      {/* Recent activity */}
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-xl sm:text-2xl font-bold text-foreground">Transactions récentes</h2>
-          <Button asChild variant="ghost" className="font-semibold hover:text-muted-foreground">
+          <Button asChild variant="ghost" className="font-semibold hover:text-muted-foreground transition-colors">
             <Link href="/dashboard/history" className="flex items-center gap-2">
               Voir tout <ArrowRight className="w-5 h-5" />
             </Link>
@@ -257,17 +281,24 @@ export default function DashboardPage() {
             ))}
           </div>
         ) : recentTransactions.length === 0 ? (
-          <Card className="border-2 border-dashed border-muted-foreground/20 bg-muted/5">
-            <CardContent className="flex flex-col items-center justify-center py-16 sm:py-24">
-              <div className="p-6 rounded-full bg-muted/20 mb-6 drop-shadow-sm">
-                <Wallet className="h-16 w-16 text-muted-foreground/50" />
+          <div className="w-full border-2 border-dashed border-slate-200 dark:border-white/10 rounded-[3rem] bg-white dark:bg-white/5 p-12 sm:p-20">
+            <div className="flex flex-col items-center text-center max-w-md mx-auto space-y-6">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-3xl bg-slate-50 dark:bg-white/5 flex items-center justify-center">
+                  <Wallet className="h-10 w-10 text-slate-300 dark:text-white/20" />
+                </div>
+                <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-white dark:bg-[#1A1A1A] border border-slate-100 dark:border-white/10 flex items-center justify-center shadow-sm">
+                  <Search className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                </div>
               </div>
-              <h3 className="text-xl font-bold text-muted-foreground mb-2">Aucune transaction</h3>
-              <p className="text-sm text-muted-foreground/70 text-center max-w-xs">
-                Vos activités apparaîtront ici dès que vous commencerez à utiliser Super Cash.
-              </p>
-            </CardContent>
-          </Card>
+              <div className="space-y-3">
+                <h3 className="text-2xl font-bold text-[#1A1A1A] dark:text-white">Aucune transaction récente</h3>
+                <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                  Vos opérations s'afficheront ici dès que vous aurez effectué votre premier dépôt ou retrait.
+                </p>
+              </div>
+            </div>
+          </div>
         ) : (
           <div className="space-y-3">
             {recentTransactions.map((transaction) => (

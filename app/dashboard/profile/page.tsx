@@ -203,25 +203,26 @@ export default function ProfilePage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6">
       <div className="space-y-6 sm:space-y-8">
         {/* Header */}
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+        <div className="flex items-center justify-between gap-2 sm:gap-4">
+          <div className="flex items-center gap-3 sm:gap-4">
             <Button
               variant="ghost"
               size="icon"
               onClick={() => router.back()}
-              className="rounded-lg hover:bg-muted shrink-0"
+              className="rounded-lg hover:bg-muted shrink-0 w-10 h-10 sm:w-11 sm:h-11"
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Mon Profil</h1>
-              <p className="text-sm text-muted-foreground mt-1">Gérez vos informations personnelles</p>
+            <div className="flex flex-col">
+              <h1 className="text-xl sm:text-2xl md:text-3xl font-black tracking-tighter leading-tight">Mon Profil</h1>
+              <p className="text-[10px] sm:text-sm text-muted-foreground font-medium hidden xs:block">Gérez vos informations personnelles</p>
             </div>
           </div>
           {!isEditing && (
-            <Button onClick={handleEdit} className="rounded-lg">
+            <Button onClick={handleEdit} className="rounded-xl h-10 sm:h-12 px-4 sm:px-6 bg-gold hover:bg-gold/90 text-white font-bold shadow-lg shadow-gold/20 shrink-0">
               <Edit className="h-4 w-4 mr-2" />
-              Modifier
+              <span className="hidden xs:inline">Modifier</span>
+              <span className="xs:hidden">Modifier</span>
             </Button>
           )}
         </div>

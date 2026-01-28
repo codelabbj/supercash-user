@@ -239,7 +239,6 @@ export default function NotificationsPage() {
             </Button>
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <Bell className="h-6 w-6" />
                 <h1 className="text-xl sm:text-3xl font-bold">Notifications</h1>
               </div>
               <p className="text-muted-foreground">

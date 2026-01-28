@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, Search, Filter, RefreshCw, ArrowLeft } from "lucide-react"
+import { Loader2, Search, Filter, RefreshCw, ArrowLeft, Wallet } from "lucide-react"
 import { transactionApi } from "@/lib/api-client"
 import type { Transaction } from "@/lib/types"
 import { toast } from "react-hot-toast"
@@ -170,7 +170,7 @@ export default function TransactionHistoryPage() {
         {/* Transactions List */}
         <Card className="border bg-card">
           <CardHeader className="pb-3 sm:pb-4">
-            <CardTitle className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-0 text-base sm:text-lg">
+            <CardTitle className="flex items-center justify-between gap-3 text-base sm:text-lg">
               <div className="flex items-center gap-2">
                 <span>Transactions</span>
                 <span className="px-2 py-0.5 sm:py-1 rounded-full bg-primary/10 text-primary text-xs sm:text-sm font-medium">{totalCount}</span>
@@ -195,11 +195,23 @@ export default function TransactionHistoryPage() {
                 <Loader2 className="h-8 w-8 animate-spin" />
               </div>
             ) : transactions.length === 0 ? (
-              <div className="text-center py-8 sm:py-12">
-                <p className="text-sm sm:text-base text-muted-foreground">Aucune transaction trouvée</p>
-                <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-                  Vos transactions apparaîtront ici une fois effectuées
-                </p>
+              <div className="w-full border-2 border-dashed border-slate-200 dark:border-white/10 rounded-[2rem] bg-white dark:bg-white/5 py-16 sm:py-24">
+                <div className="flex flex-col items-center text-center max-w-md mx-auto space-y-6">
+                  <div className="relative">
+                    <div className="w-24 h-24 rounded-3xl bg-slate-50 dark:bg-white/5 flex items-center justify-center">
+                      <Wallet className="h-10 w-10 text-slate-300 dark:text-white/20" />
+                    </div>
+                    <div className="absolute -bottom-2 -right-2 w-10 h-10 rounded-full bg-white dark:bg-[#1A1A1A] border border-slate-100 dark:border-white/10 flex items-center justify-center shadow-sm">
+                      <Search className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <h3 className="text-2xl font-bold text-[#1A1A1A] dark:text-white">Aucune transaction récente</h3>
+                    <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                      Vos opérations s'afficheront ici dès que vous aurez effectué votre premier dépôt ou retrait.
+                    </p>
+                  </div>
+                </div>
               </div>
             ) : (
               <div className="space-y-3">
