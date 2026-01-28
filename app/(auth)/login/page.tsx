@@ -98,7 +98,7 @@ export default function LoginPage() {
 
         <div className="relative z-10 flex flex-col justify-between h-full w-full p-12 text-white">
           {/* Top Logo */}
-          <div className="relative z-20 flex items-center gap-3">
+          <div className="relative z-20 flex items-center gap-3 animate-reveal [animation-delay:100ms]">
             <div className="p-2 bg-white/20 backdrop-blur-md rounded-xl border border-white/30">
               <Image src="/supercash-logo-mint.png" width={32} height={32} alt="Logo Small" className="brightness-200" />
             </div>
@@ -107,10 +107,10 @@ export default function LoginPage() {
 
           {/* Center Content */}
           <div className="relative z-20 max-w-md">
-            <h1 className="text-6xl font-extrabold leading-tight mb-8">
+            <h1 className="text-6xl font-extrabold leading-tight mb-8 animate-reveal [animation-delay:300ms]">
               Bon Retour<br />Parmi Nous.
             </h1>
-            <p className="text-xl text-white/80 font-medium max-w-sm">
+            <p className="text-xl text-white/80 font-medium max-w-sm animate-reveal [animation-delay:500ms]">
               Votre portail vers le système de gestion de paris le plus sécurisé d'Afrique de l'Ouest. Prêt pour le prochain gain ?
             </p>
           </div>
@@ -118,31 +118,37 @@ export default function LoginPage() {
           {/* Animated Floating Objects Container */}
           <div className="absolute top-1/2 right-[-5%] w-[400px] h-[400px] -translate-y-1/2 z-10">
             {/* Security Shield */}
-            <div className="absolute top-[15%] left-[10%] w-32 h-32 bg-white/10 backdrop-blur-xl border-2 border-white/30 rounded-3xl shadow-2xl animate-float-slow rotate-[5deg] flex items-center justify-center">
-              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#39D196]">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
-              </svg>
+            <div className="absolute top-[15%] left-[10%] w-32 h-32 animate-reveal [animation-delay:600ms]">
+              <div className="w-full h-full bg-white/10 backdrop-blur-xl border-2 border-white/30 rounded-3xl shadow-2xl animate-float-slow rotate-[5deg] flex items-center justify-center">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#39D196]">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+                </svg>
+              </div>
             </div>
 
             {/* Premium Card */}
-            <div className="absolute bottom-[20%] left-[25%] w-48 h-28 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-2xl border border-white/40 rounded-2xl shadow-2xl animate-float-medium rotate-[-10deg] z-20 p-4">
-              <div className="w-8 h-6 bg-white/20 rounded-md mb-8"></div>
-              <div className="space-y-1">
-                <div className="w-full h-1 bg-white/30 rounded-full"></div>
-                <div className="w-1/2 h-1 bg-white/30 rounded-full"></div>
+            <div className="absolute bottom-[20%] left-[25%] animate-reveal [animation-delay:750ms]">
+              <div className="w-48 h-28 bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-2xl border border-white/40 rounded-2xl shadow-2xl animate-float-medium rotate-[-10deg] p-4">
+                <div className="w-8 h-6 bg-white/20 rounded-md mb-8"></div>
+                <div className="space-y-1">
+                  <div className="w-full h-1 bg-white/30 rounded-full"></div>
+                  <div className="w-1/2 h-1 bg-white/30 rounded-full"></div>
+                </div>
               </div>
             </div>
 
             {/* Key Icon Turquoise */}
-            <div className="absolute top-[35%] right-[20%] w-14 h-14 bg-[#39D196] rounded-2xl shadow-xl shadow-[#39D196]/40 animate-float-fast rotate-[20deg] z-30 flex items-center justify-center border-2 border-white/30">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                <path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3-3.5 3.5z" />
-              </svg>
+            <div className="absolute top-[35%] right-[20%] animate-reveal [animation-delay:900ms]">
+              <div className="w-14 h-14 bg-[#39D196] rounded-2xl shadow-xl shadow-[#39D196]/40 animate-float-fast rotate-[20deg] flex items-center justify-center border-2 border-white/30">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                  <path d="m21 2-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0 3 3L22 7l-3-3-3.5 3.5z" />
+                </svg>
+              </div>
             </div>
           </div>
 
           {/* Bottom Footer Credits */}
-          <div className="relative z-20 flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] text-white/60 font-semibold">
+          <div className="relative z-20 flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] text-white/60 font-semibold animate-reveal [animation-delay:1100ms]">
             <div className="flex items-center gap-2">
               <CheckCircle className="w-3 h-3" />
               Sécurisé par SSL

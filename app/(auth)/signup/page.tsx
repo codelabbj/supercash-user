@@ -123,7 +123,7 @@ export default function SignupPage() {
 
         <div className="relative z-10 flex flex-col justify-between h-full w-full p-12 text-white">
           {/* Top Logo - Fixed Z-index */}
-          <div className="relative z-20 flex items-center gap-3">
+          <div className="relative z-20 flex items-center gap-3 animate-reveal [animation-delay:100ms]">
             <div className="p-2 bg-white/20 backdrop-blur-md rounded-xl border border-white/30">
               <Image src="/supercash-logo-mint.png" width={32} height={32} alt="Logo Small" className="brightness-200" />
             </div>
@@ -132,10 +132,10 @@ export default function SignupPage() {
 
           {/* Center Content - High Z-index */}
           <div className="relative z-20 max-w-md">
-            <h1 className="text-6xl font-extrabold leading-tight mb-8">
+            <h1 className="text-6xl font-extrabold leading-tight mb-8 animate-reveal [animation-delay:300ms]">
               Maximisez<br />Vos Gains.
             </h1>
-            <p className="text-xl text-white/80 font-medium max-w-sm">
+            <p className="text-xl text-white/80 font-medium max-w-sm animate-reveal [animation-delay:500ms]">
               Le moyen le plus rapide de gérer vos transactions de paris en Afrique de l'Ouest. Sécurisé, instantané et fiable.
             </p>
           </div>
@@ -143,55 +143,69 @@ export default function SignupPage() {
           {/* Animated Floating Objects Container - Lower Z-index */}
           <div className="absolute top-1/2 right-[-5%] w-[400px] h-[400px] -translate-y-1/2 z-10">
             {/* Phone 1 (Glassmorphism) */}
-            <div className="absolute top-[10%] left-[5%] w-32 h-56 bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2.5rem] shadow-2xl animate-float-slow rotate-[-15deg] flex items-center justify-center overflow-hidden">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
-                <div className="grid grid-cols-2 gap-1">
-                  <div className="w-2 h-2 bg-white/40 rounded-sm"></div>
-                  <div className="w-2 h-2 bg-white/40 rounded-sm"></div>
-                  <div className="w-2 h-2 bg-white/40 rounded-sm"></div>
-                  <div className="w-2 h-2 bg-white/40 rounded-sm"></div>
+            <div className="absolute top-[10%] left-[5%] animate-reveal [animation-delay:600ms]">
+              <div className="w-32 h-56 bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2.5rem] shadow-2xl animate-float-slow rotate-[-15deg] flex items-center justify-center overflow-hidden">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                  <div className="grid grid-cols-2 gap-1">
+                    <div className="w-2 h-2 bg-white/40 rounded-sm"></div>
+                    <div className="w-2 h-2 bg-white/40 rounded-sm"></div>
+                    <div className="w-2 h-2 bg-white/40 rounded-sm"></div>
+                    <div className="w-2 h-2 bg-white/40 rounded-sm"></div>
+                  </div>
                 </div>
-              </div>
-              {/* Turquoise Badge */}
-              <div className="absolute -top-4 -right-4 w-10 h-10 bg-[#39D196] rounded-full shadow-lg flex items-center justify-center border-2 border-white/20 animate-pulse">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
-                  <path d="m3 11 18-5v12L3 11Z" />
-                </svg>
+                {/* Turquoise Badge */}
+                <div className="absolute -top-4 -right-4 w-10 h-10 bg-[#39D196] rounded-full shadow-lg flex items-center justify-center border-2 border-white/20 animate-pulse">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="text-white">
+                    <path d="m3 11 18-5v12L3 11Z" />
+                  </svg>
+                </div>
               </div>
             </div>
 
             {/* FCFA Badge Large */}
-            <div className="absolute top-[45%] left-[30%] px-6 py-4 bg-white/10 backdrop-blur-2xl border border-white/30 rounded-2xl shadow-xl animate-float-medium rotate-[5deg] z-20">
-              <span className="text-3xl font-black tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">FCFA</span>
+            <div className="absolute top-[45%] left-[30%] animate-reveal [animation-delay:800ms]">
+              <div className="px-6 py-4 bg-white/10 backdrop-blur-2xl border border-white/30 rounded-2xl shadow-xl animate-float-medium rotate-[5deg] z-20">
+                <span className="text-3xl font-black tracking-widest bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60">FCFA</span>
+              </div>
             </div>
 
             {/* Instant Badge Turquoise */}
-            <div className="absolute top-[25%] right-[20%] px-5 py-3 bg-[#39D196] border border-white/30 rounded-xl shadow-lg shadow-[#39D196]/30 animate-float-fast rotate-[-5deg] z-30 flex items-center gap-2">
-              <ArrowRight className="w-4 h-4 text-white -rotate-45" />
-              <span className="font-bold text-sm tracking-wide">Instant</span>
+            <div className="absolute top-[25%] right-[20%] animate-reveal [animation-delay:1000ms]">
+              <div className="px-5 py-3 bg-[#39D196] border border-white/30 rounded-xl shadow-lg shadow-[#39D196]/30 animate-float-fast rotate-[-5deg] z-30 flex items-center gap-2">
+                <ArrowRight className="w-4 h-4 text-white -rotate-45" />
+                <span className="font-bold text-sm tracking-wide">Instant</span>
+              </div>
             </div>
 
             {/* Phone 2 Small */}
-            <div className="absolute bottom-[10%] right-[15%] w-24 h-40 bg-white/5 backdrop-blur-lg border border-white/10 rounded-[1.5rem] shadow-xl animate-float-slow rotate-[10deg] flex items-center justify-center">
-              <div className="w-8 h-8 bg-white/10 rounded-lg"></div>
-              {/* FCFA Small Badge */}
-              <div className="absolute -top-3 -left-10 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full border border-white/20">
-                <span className="text-[10px] font-bold">FCFA</span>
-              </div>
-              {/* +221 PAY Badge */}
-              <div className="absolute top-1/2 -right-16 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/10 whitespace-nowrap">
-                <span className="text-[10px] text-white/60 font-medium">+221 PAY</span>
+            <div className="absolute bottom-[10%] right-[15%] animate-reveal [animation-delay:700ms]">
+              <div className="w-24 h-40 bg-white/5 backdrop-blur-lg border border-white/10 rounded-[1.5rem] shadow-xl animate-float-slow rotate-[10deg] flex items-center justify-center">
+                <div className="w-8 h-8 bg-white/10 rounded-lg"></div>
+                {/* FCFA Small Badge */}
+                <div className="absolute -top-3 -left-10 px-3 py-1 bg-white/20 backdrop-blur-md rounded-full border border-white/20">
+                  <span className="text-[10px] font-bold">FCFA</span>
+                </div>
+                {/* +221 PAY Badge */}
+                <div className="absolute top-1/2 -right-16 px-3 py-1 bg-white/10 backdrop-blur-md rounded-full border border-white/10 whitespace-nowrap">
+                  <span className="text-[10px] text-white/60 font-medium">+221 PAY</span>
+                </div>
               </div>
             </div>
 
             {/* Small Dots and Decor */}
-            <div className="absolute top-[20%] left-[45%] w-2 h-2 bg-white/30 rounded-full animate-ping"></div>
-            <div className="absolute bottom-[30%] left-[10%] w-1 h-1 bg-white/50 rounded-full"></div>
-            <div className="absolute top-[60%] right-[5%] w-3 h-3 border border-white/20 rounded-full animate-bounce"></div>
+            <div className="absolute top-[20%] left-[45%] animate-reveal [animation-delay:1200ms]">
+              <div className="w-2 h-2 bg-white/30 rounded-full animate-ping"></div>
+            </div>
+            <div className="absolute bottom-[30%] left-[10%] animate-reveal [animation-delay:1300ms]">
+              <div className="w-1 h-1 bg-white/50 rounded-full"></div>
+            </div>
+            <div className="absolute top-[60%] right-[5%] animate-reveal [animation-delay:1150ms]">
+              <div className="w-3 h-3 border border-white/20 rounded-full animate-bounce"></div>
+            </div>
           </div>
 
           {/* Bottom Footer Credits - High Z-index */}
-          <div className="relative z-20 flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] text-white/60 font-semibold">
+          <div className="relative z-20 flex items-center gap-6 text-[10px] uppercase tracking-[0.2em] text-white/60 font-semibold animate-reveal [animation-delay:1400ms]">
             <div className="flex items-center gap-2">
               <CheckCircle className="w-3 h-3" />
               Confiance à chaque transaction
