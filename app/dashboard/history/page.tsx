@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Loader2, Search, Filter, RefreshCw, ArrowLeft, Wallet } from "lucide-react"
+import { Loader2, Search, Filter, RefreshCw, ArrowLeft, Wallet, XCircle } from "lucide-react"
 import { transactionApi } from "@/lib/api-client"
 import type { Transaction } from "@/lib/types"
 import { toast } from "react-hot-toast"
@@ -125,44 +125,55 @@ export default function TransactionHistoryPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="pt-0">
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              <div className="relative col-span-2 sm:col-span-2 lg:col-span-1">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+            <div className="flex flex-col gap-3">
+              <div className="relative w-full">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground h-4 w-4" />
                 <Input
-                  placeholder="Rechercher..."
+                  placeholder="Rechercher par référence ou montant..."
                   value={searchTerm}
                   onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-10 text-sm"
+                  className="pl-10 h-11 text-sm bg-slate-50 dark:bg-white/5 border-none focus-visible:ring-1 focus-visible:ring-gold/50"
                 />
               </div>
 
-              <Select value={typeFilter} onValueChange={(value) => handleFilterChange("type", value)}>
-                <SelectTrigger className="text-sm">
-                  <SelectValue placeholder="Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Tous les types</SelectItem>
-                  <SelectItem value="deposit">Dépôts</SelectItem>
-                  <SelectItem value="withdrawal">Retraits</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4">
+                <Select value={typeFilter} onValueChange={(value) => handleFilterChange("type", value)}>
+                  <SelectTrigger className="h-11 text-xs sm:text-sm bg-slate-50 dark:bg-white/5 border-none px-2 sm:px-3 focus:ring-1 focus:ring-gold/50 transition-all">
+                    <div className="flex items-center gap-2 truncate">
+                      <SelectValue placeholder="Type" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tous les types</SelectItem>
+                    <SelectItem value="deposit">Dépôts</SelectItem>
+                    <SelectItem value="withdrawal">Retraits</SelectItem>
+                  </SelectContent>
+                </Select>
 
-              <Select value={statusFilter} onValueChange={(value) => handleFilterChange("status", value)}>
-                <SelectTrigger className="text-sm">
-                  <SelectValue placeholder="Statut" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Tous les statuts</SelectItem>
-                  <SelectItem value="pending">En attente</SelectItem>
-                  <SelectItem value="accept">Accepté</SelectItem>
-                  <SelectItem value="reject">Rejeté</SelectItem>
-                  <SelectItem value="timeout">Expiré</SelectItem>
-                </SelectContent>
-              </Select>
+                <Select value={statusFilter} onValueChange={(value) => handleFilterChange("status", value)}>
+                  <SelectTrigger className="h-11 text-xs sm:text-sm bg-slate-50 dark:bg-white/5 border-none px-2 sm:px-3 focus:ring-1 focus:ring-gold/50 transition-all">
+                    <div className="flex items-center gap-2 truncate">
+                      <SelectValue placeholder="Statut" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Tous les statuts</SelectItem>
+                    <SelectItem value="pending">En attente</SelectItem>
+                    <SelectItem value="accept">Accepté</SelectItem>
+                    <SelectItem value="reject">Rejeté</SelectItem>
+                    <SelectItem value="timeout">Expiré</SelectItem>
+                  </SelectContent>
+                </Select>
 
-              <Button variant="outline" onClick={clearFilters} className="text-sm w-full sm:w-auto col-span-2 sm:col-span-1 lg:col-span-auto">
-                Effacer
-              </Button>
+                <Button
+                  variant="ghost"
+                  onClick={clearFilters}
+                  className="col-span-2 lg:col-span-2 h-11 text-[10px] sm:text-xs font-bold bg-slate-50 dark:bg-white/5 border-none hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-500/10 transition-all flex items-center justify-center gap-2"
+                >
+                  <XCircle className="h-3.5 w-3.5" />
+                  EFFACER LES FILTRES
+                </Button>
+              </div>
             </div>
           </CardContent>
         </Card>
