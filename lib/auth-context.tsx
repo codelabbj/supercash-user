@@ -24,21 +24,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Mark as hydrated first
     setIsHydrated(true)
-    
+
     // Then check localStorage
     const accessToken = localStorage.getItem("access_token")
     const userData = localStorage.getItem("user_data")
-    
-    console.log("AuthProvider useEffect - accessToken:", accessToken)
-    console.log("AuthProvider useEffect - userData:", userData)
+
+    // Only log in development mode and when debug is enabled
+    const isDev = process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === 'true'
+
+    if (isDev) {
+      console.log("Auth: Checking stored credentials")
+    }
 
     if (accessToken && userData && userData !== "undefined" && userData !== "null") {
       try {
         const parsedUser = JSON.parse(userData)
-        console.log("Parsed user data:", parsedUser)
         setUser(parsedUser)
+        if (isDev) {
+          console.log("Auth: User authenticated")
+        }
       } catch (error) {
-        console.error("Failed to parse user data:", error)
+        console.error("Auth: Failed to parse stored user data")
         localStorage.clear()
       }
     }
@@ -46,12 +52,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const login = (accessToken: string, refreshToken: string, userData: User) => {
-    console.log("Login called with:", { accessToken, refreshToken, userData })
     localStorage.setItem("access_token", accessToken)
     localStorage.setItem("refresh_token", refreshToken)
     localStorage.setItem("user_data", JSON.stringify(userData))
     setUser(userData)
-    console.log("User set to:", userData)
+
+    // Only log in development mode with debug enabled
+    if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === 'true') {
+      console.log("Auth: Login successful")
+    }
   }
 
   const logout = () => {

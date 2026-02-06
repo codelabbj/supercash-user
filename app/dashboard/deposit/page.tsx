@@ -13,6 +13,7 @@ import { BetIdStep } from "@/components/transaction/steps/bet-id-step"
 import { NetworkStep } from "@/components/transaction/steps/network-step"
 import { PhoneStep } from "@/components/transaction/steps/phone-step"
 import { AmountStep } from "@/components/transaction/steps/amount-step"
+import { PlatformHelpLinks } from "@/components/transaction/platform-help-links"
 import { transactionApi } from "@/lib/api-client"
 import type { Platform, UserAppId, Network, UserPhone } from "@/lib/types"
 import { toast } from "react-hot-toast"
@@ -207,6 +208,8 @@ export default function DepositPage() {
             selectedPlatform={selectedPlatform}
             onSelect={(platform) => {
               setSelectedPlatform(platform)
+              // Auto-advance after selection
+              setTimeout(handleNext, 300)
             }}
             onNext={handleNext}
             type="deposit"
@@ -219,6 +222,8 @@ export default function DepositPage() {
             selectedBetId={selectedBetId}
             onSelect={(betId) => {
               setSelectedBetId(betId)
+              // Auto-advance after selection
+              setTimeout(handleNext, 300)
             }}
             onNext={handleNext}
             type="deposit"
@@ -230,6 +235,8 @@ export default function DepositPage() {
             selectedNetwork={selectedNetwork}
             onSelect={(network) => {
               setSelectedNetwork(network)
+              // Auto-advance after selection
+              setTimeout(handleNext, 300)
             }}
             type="deposit"
           />
@@ -241,6 +248,8 @@ export default function DepositPage() {
             selectedPhone={selectedPhone}
             onSelect={(phone) => {
               setSelectedPhone(phone)
+              // Auto-advance after selection
+              setTimeout(handleNext, 300)
             }}
             onNext={handleNext}
             type="deposit"
@@ -291,12 +300,7 @@ export default function DepositPage() {
           type="deposit"
         />
 
-        {/* Current Step */}
-        <div className="min-h-[300px] sm:min-h-[400px]">
-          {renderCurrentStep()}
-        </div>
-
-        {/* Navigation */}
+        {/* Navigation - Moved above content */}
         {currentStep < 5 && (
           <StepNavigation
             currentStep={currentStep}
@@ -306,6 +310,17 @@ export default function DepositPage() {
             isNextDisabled={!isStepValid()}
           />
         )}
+
+        {/* Current Step */}
+        <div className="min-h-[300px] sm:min-h-[400px]">
+          {currentStep > 1 && (
+            <PlatformHelpLinks
+              platform={selectedPlatform}
+              type="deposit"
+            />
+          )}
+          {renderCurrentStep()}
+        </div>
 
         {/* Confirmation Dialog */}
         <ConfirmationDialog

@@ -27,22 +27,21 @@ export default function DashboardPage() {
 
 
   useEffect(() => {
-    if (user) {
-      fetchRecentTransactions()
-      fetchAdvertisements()
+    if (user?.id) {
+      fetchData()
     }
-  }, [user])
+  }, [user?.id])
 
   // Refetch data when the page gains focus
   useEffect(() => {
     const handleFocus = () => {
-      if (user) {
+      if (user?.id) {
         fetchRecentTransactions()
       }
     }
     window.addEventListener('focus', handleFocus)
     return () => window.removeEventListener('focus', handleFocus)
-  }, [user])
+  }, [user?.id])
 
   useEffect(() => {
     const autoScrollCarousel = () => {
@@ -56,12 +55,37 @@ export default function DashboardPage() {
     return () => clearInterval(intervalId)
   }, [isCarouselHovered]);
 
+  const fetchData = async () => {
+    try {
+      setIsLoadingTransactions(true)
+      setIsLoadingAd(true)
+
+      // Parallel API calls for better performance
+      const [transactionsData, adsData] = await Promise.all([
+        transactionApi.getHistory({
+          page: 1,
+          page_size: 5, // Get only the 5 most recent transactions
+        }),
+        advertisementApi.get()
+      ])
+
+      setRecentTransactions(transactionsData.results)
+      setAdvertisements(adsData.results)
+    } catch (error) {
+      console.error("Error fetching data:", error)
+      toast.error("Erreur lors du chargement des données")
+    } finally {
+      setIsLoadingTransactions(false)
+      setIsLoadingAd(false)
+    }
+  }
+
   const fetchRecentTransactions = async () => {
     try {
       setIsLoadingTransactions(true)
       const data = await transactionApi.getHistory({
         page: 1,
-        page_size: 5, // Get only the 5 most recent transactions
+        page_size: 5,
       })
       setRecentTransactions(data.results)
     } catch (error) {

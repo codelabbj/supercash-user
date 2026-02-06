@@ -13,7 +13,7 @@ const nextConfig = {
   generateBuildId: async () => {
     return 'build-' + Date.now()
   },
-  turbopack: {},
+  turbopack: {}, // Explicitly enable Turbopack (required when webpack config is present)
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.fallback = {
