@@ -10,10 +10,12 @@ import { transactionApi, advertisementApi } from "@/lib/api-client"
 import type { Advertisement, Transaction } from "@/lib/types"
 import { toast } from "react-hot-toast"
 import { useSettings } from "@/lib/hooks/use-settings"
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from "@/components/ui/carousel";
 import Image from "next/image"
 import { TransactionCard } from "@/components/transaction/TransactionCard";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { Dialog, DialogContent, DialogTitle, DialogOverlay, DialogPortal } from "@/components/ui/dialog";
+import { X } from "lucide-react";
 
 export default function DashboardPage() {
   const { user } = useAuth()
@@ -24,6 +26,19 @@ export default function DashboardPage() {
   const [isLoadingAd, setIsLoadingAd] = useState(true)
   const carouselRef = useRef<HTMLDivElement>(null)
   const [isCarouselHovered, setIsCarouselHovered] = useState<boolean>(false)
+
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [selectedAdIndex, setSelectedAdIndex] = useState(0)
+  const [modalApi, setModalApi] = useState<CarouselApi>()
+
+  // Effect to synchronize modal carousel with selected index
+  useEffect(() => {
+    if (isModalOpen && modalApi) {
+      modalApi.scrollTo(selectedAdIndex, true)
+    }
+  }, [isModalOpen, modalApi, selectedAdIndex])
+
 
 
   useEffect(() => {
@@ -118,8 +133,6 @@ export default function DashboardPage() {
         <p className="text-base sm:text-lg text-slate-500 dark:text-slate-400 font-medium">Que souhaitez-vous faire aujourd'hui ?</p>
       </div>
 
-      {/* Quick actions grid */}
-      {/* Quick actions grid */}
       {/* Quick actions grid */}
       <>
         {/* Mobile View: Single Card with 4 buttons */}
@@ -248,19 +261,24 @@ export default function DashboardPage() {
                 {advertisements.map((ad, index) =>
                   ad.enable ? (
                     <CarouselItem key={index}>
-                      <div className="relative w-full aspect-[2/1] sm:aspect-[21/6]">
+                      <div
+                        className="relative w-full aspect-[2/1] sm:aspect-[21/6] border-2 rounded-2xl overflow-hidden bg-muted/5 cursor-zoom-in group"
+                        onClick={() => {
+                          setSelectedAdIndex(index)
+                          setIsModalOpen(true)
+                        }}
+                      >
                         <Image
                           src={ad.image}
                           alt={`Publicité ${index + 1}`}
                           fill
-                          className="object-cover border-2 rounded-2xl"
+                          className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
                           priority={index === 0}
                         />
+                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
                       </div>
                     </CarouselItem>
-                  ) : (
-                    <></>
-                  )
+                  ) : null
                 )}
               </CarouselContent>
               {advertisements.length > 1 && (
@@ -331,6 +349,64 @@ export default function DashboardPage() {
           </div>
         )}
       </div>
+
+      {/* Ad Lightbox Modal */}
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogPortal>
+          <DialogOverlay className="bg-black/95 backdrop-blur-md z-[100]" />
+          <DialogContent
+            className="max-w-full max-h-screen w-full h-[100dvh] bg-transparent border-none p-0 shadow-none z-[101] flex flex-col items-center justify-center outline-none"
+            showCloseButton={false}
+          >
+            <DialogTitle className="sr-only">Aperçu Publicité</DialogTitle>
+
+            <div className="relative w-full h-[100dvh] flex flex-col items-center justify-center">
+              {/* Close Button - Always at top right */}
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="fixed top-6 right-6 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all z-[120] backdrop-blur-sm border border-white/20 shadow-2xl active:scale-95"
+              >
+                <X className="h-6 w-6" />
+              </button>
+
+              <div className="w-full h-full flex items-center justify-center">
+                <Carousel
+                  setApi={setModalApi}
+                  className="w-full flex items-center justify-center gap-1 sm:gap-8 px-2 sm:px-12"
+                  opts={{
+                    loop: true,
+                    startIndex: selectedAdIndex
+                  }}
+                >
+                  <CarouselPrevious
+                    className="static translate-y-0 opacity-60 hover:opacity-100 bg-white/10 border-white/20 text-white size-10 sm:size-14 shrink-0 pointer-events-auto"
+                  />
+
+                  <div className="flex-1 max-w-5xl h-full flex items-center justify-center">
+                    <CarouselContent className="h-full items-center">
+                      {advertisements.map((ad, index) =>
+                        ad.enable ? (
+                          <CarouselItem key={ad.id || index} className="h-full flex items-center justify-center p-2">
+                            <img
+                              src={ad.image}
+                              alt={`Publicité ${index + 1}`}
+                              className="max-w-full max-h-[85vh] object-contain shadow-2xl rounded-lg pointer-events-none select-none"
+                            />
+                          </CarouselItem>
+                        ) : null
+                      )}
+                    </CarouselContent>
+                  </div>
+
+                  <CarouselNext
+                    className="static translate-y-0 opacity-60 hover:opacity-100 bg-white/10 border-white/20 text-white size-10 sm:size-14 shrink-0 pointer-events-auto"
+                  />
+                </Carousel>
+              </div>
+            </div>
+          </DialogContent>
+        </DialogPortal>
+      </Dialog>
     </div>
   )
 }
