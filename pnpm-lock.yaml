@@ -119,9 +119,6 @@ importers:
       firebase:
         specifier: ^11.10.0
         version: 11.10.0
-      firebase-admin:
-        specifier: ^12.7.0
-        version: 12.7.0(encoding@0.1.13)
       input-otp:
         specifier: 1.4.1
         version: 1.4.1(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -183,6 +180,9 @@ importers:
       '@types/react-dom':
         specifier: ^19
         version: 19.2.3(@types/react@19.2.8)
+      firebase-admin:
+        specifier: ^12.7.0
+        version: 12.7.0(encoding@0.1.13)
       firebase-tools:
         specifier: ^13.35.1
         version: 13.35.1(@types/node@22.19.7)(encoding@0.1.13)

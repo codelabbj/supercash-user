@@ -6,12 +6,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { 
-  Bell, 
-  BellOff, 
-  Settings, 
-  CheckCircle, 
-  XCircle, 
+import {
+  Bell,
+  BellOff,
+  Settings,
+  CheckCircle,
+  XCircle,
   AlertCircle,
   Smartphone,
   Monitor
@@ -63,9 +63,9 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
       setState(prev => ({ ...prev, isSupported: supported }));
 
       if (!supported) {
-        setState(prev => ({ 
-          ...prev, 
-          error: 'Push notifications are not supported in this browser' 
+        setState(prev => ({
+          ...prev,
+          error: 'Push notifications are not supported in this browser'
         }));
         return;
       }
@@ -91,43 +91,43 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
       // Setup foreground message listener
       fcmService.setupForegroundListener((payload) => {
         console.log('Foreground message received:', payload);
-        
+
         // Show native browser notification
         try {
           if (typeof window === 'undefined' || !('Notification' in window) || !window.Notification) {
             console.warn('Notification API not available');
             return;
           }
-          
+
           // Check permission safely
           const permission = window.Notification?.permission;
           if (permission !== 'granted') {
             console.warn('Notification permission not granted:', permission);
             return;
           }
-          
+
           const title = payload.notification?.title || 'New Notification';
           const body = payload.notification?.body || payload.data?.body || 'You have a new notification';
           const icon = payload.notification?.icon || payload.fcmOptions?.link || '/placeholder-logo.png';
-          
+
           const notification = new window.Notification(title, {
-              body,
-              icon,
-              badge: '/placeholder-logo.png',
-              tag: payload.data?.id || `fcm-${Date.now()}`,
-              requireInteraction: false,
-            });
+            body,
+            icon,
+            badge: '/placeholder-logo.png',
+            tag: payload.data?.id || `fcm-${Date.now()}`,
+            requireInteraction: false,
+          });
 
           // Handle click on notification
           notification.onclick = (event) => {
             event.preventDefault();
             window.focus();
-            
+
             // Handle custom data (e.g., navigate to URL)
             if (payload.data?.url) {
               window.open(payload.data.url, '_blank');
             }
-            
+
             notification.close();
           };
         } catch (error) {
@@ -146,9 +146,9 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
 
     } catch (error) {
       console.error('Error initializing notifications:', error);
-      setState(prev => ({ 
-        ...prev, 
-        error: error instanceof Error ? error.message : 'Failed to initialize notifications' 
+      setState(prev => ({
+        ...prev,
+        error: error instanceof Error ? error.message : 'Failed to initialize notifications'
       }));
     } finally {
       setIsLoading(false);
@@ -162,7 +162,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
       // Navigate to URL
       window.open(data.url, '_blank');
     }
-    
+
     if (data.action) {
       // Handle custom actions
       console.log('Custom action:', data.action);
@@ -178,11 +178,11 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
 
     try {
       const permission = await fcmService.requestNotificationPermission();
-      
+
       if (permission === 'granted') {
         // Get token after permission is granted
         const token = await fcmService.refreshToken();
-        
+
         setState(prev => ({
           ...prev,
           permission,
@@ -197,14 +197,14 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
       } else {
         setState(prev => ({ ...prev, permission }));
         onPermissionChange?.(permission);
-        
+
         toast.error('Notification permission denied');
       }
     } catch (error) {
       console.error('Error requesting permission:', error);
-      setState(prev => ({ 
-        ...prev, 
-        error: error instanceof Error ? error.message : 'Failed to request permission' 
+      setState(prev => ({
+        ...prev,
+        error: error instanceof Error ? error.message : 'Failed to request permission'
       }));
       toast.error('Failed to enable notifications');
     } finally {
@@ -219,7 +219,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
 
     try {
       await fcmService.unsubscribe();
-      
+
       setState(prev => ({
         ...prev,
         token: null,
@@ -230,9 +230,9 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
       toast.success('Notifications disabled');
     } catch (error) {
       console.error('Error disabling notifications:', error);
-      setState(prev => ({ 
-        ...prev, 
-        error: error instanceof Error ? error.message : 'Failed to disable notifications' 
+      setState(prev => ({
+        ...prev,
+        error: error instanceof Error ? error.message : 'Failed to disable notifications'
       }));
       toast.error('Failed to disable notifications');
     } finally {
@@ -247,7 +247,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
 
     try {
       const token = await fcmService.refreshToken();
-      
+
       setState(prev => ({
         ...prev,
         token,
@@ -258,9 +258,9 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
       toast.success('Token refreshed successfully');
     } catch (error) {
       console.error('Error refreshing token:', error);
-      setState(prev => ({ 
-        ...prev, 
-        error: error instanceof Error ? error.message : 'Failed to refresh token' 
+      setState(prev => ({
+        ...prev,
+        error: error instanceof Error ? error.message : 'Failed to refresh token'
       }));
       toast.error('Failed to refresh token');
     } finally {
@@ -308,7 +308,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
           Manage push notifications for web and mobile platforms
         </CardDescription>
       </CardHeader>
-      
+
       <CardContent className="space-y-4">
         {/* Error Alert */}
         {state.error && (
@@ -388,7 +388,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
               Refresh Token
             </Button>
           )}
-          
+
           {state.permission === 'default' && (
             <Button
               size="sm"
@@ -398,7 +398,7 @@ export const NotificationManager: React.FC<NotificationManagerProps> = ({
               Enable Notifications
             </Button>
           )}
-          
+
           {state.permission === 'denied' && (
             <Button
               variant="outline"
