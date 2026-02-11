@@ -15,6 +15,7 @@ import { toast } from "react-hot-toast"
 import { Loader2, Eye, EyeOff, ArrowLeft, Mail, Lock, Code, CheckCircle } from "lucide-react"
 import Image from "next/image"
 import { useTheme } from "next-themes"
+import { MobileAppDownload } from "@/components/mobile-app-download"
 
 // Form schemas
 const emailSchema = z.object({
@@ -472,11 +473,16 @@ export default function ForgotPasswordPage() {
                 </form>
               )}
 
-              <div className="mt-6 text-sm text-center">
-                <span className="text-muted-foreground">Vous vous souvenez de votre mot de passe ? </span><br />
-                <Link href="/login" className="text-primary hover:underline font-bold">
-                  Se connecter
-                </Link>
+              <div className="mt-6 text-sm text-center border-t border-muted/50 pt-6 space-y-4">
+                <p className="text-sm">
+                  <span className="text-muted-foreground">Vous vous souvenez de votre mot de passe ? </span><br />
+                  <Link href="/login" className="text-primary hover:underline font-bold">
+                    Se connecter
+                  </Link>
+                </p>
+                <div className="flex justify-center">
+                  <MobileAppDownload />
+                </div>
               </div>
             </CardContent>
           </Card>

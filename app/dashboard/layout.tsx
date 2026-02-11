@@ -120,8 +120,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </nav>
 
             {/* Right Side Tools */}
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1 sm:gap-2">
+            <div className="flex items-center gap-1 sm:gap-1.5">
+              <div className="flex items-center gap-0 sm:gap-0.5">
+                <MobileAppDownload variant="header" />
                 <ThemeToggle />
                 <Button
                   variant="ghost"
@@ -141,7 +142,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="flex items-center gap-3 p-1 pl-4 rounded-full hover:bg-slate-100 dark:hover:bg-white/5 transition-all outline-none group border border-transparent hover:border-slate-200 dark:hover:border-white/10">
+                  <button className="flex items-center gap-1.5 p-1 pl-1.5 rounded-full hover:bg-slate-100 dark:hover:bg-white/5 transition-all outline-none group border border-transparent hover:border-slate-200 dark:hover:border-white/10">
                     <div className="flex flex-col items-end hidden sm:flex">
                       <span className="text-sm font-semibold text-[#1A1A1A] dark:text-white leading-tight">{user.first_name}</span>
                       <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">#{user.id?.toString().slice(-5) || "82739"}</span>

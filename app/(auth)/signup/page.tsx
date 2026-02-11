@@ -400,18 +400,16 @@ export default function SignupPage() {
                 </form>
               )}
 
-              <div className="mt-6 text-xs sm:text-sm text-center">
-                Déjà un compte?{" "}
-                <Link href="/login" className="text-primary hover:underline font-semibold">
-                  Se connecter
-                </Link>
-              </div>
-
-              <div className="mt-4 flex justify-center">
-                <MobileAppDownload
-                  variant="outline"
-                  className="border-primary/20 hover:border-primary/40 h-9 text-xs"
-                />
+              <div className="mt-6 text-sm text-center border-t border-muted/50 pt-6 space-y-4">
+                <p className="text-sm">
+                  Déjà un compte?{" "}
+                  <Link href="/login" className="text-primary hover:underline font-semibold">
+                    Se connecter
+                  </Link>
+                </p>
+                <div className="flex justify-center">
+                  <MobileAppDownload />
+                </div>
               </div>
             </CardContent>
           </Card>
