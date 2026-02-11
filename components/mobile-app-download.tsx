@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Download, Smartphone } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { useIsMobileApp } from "@/lib/hooks/use-is-mobile-app"
 
 interface MobileAppDownloadProps {
   className?: string
@@ -15,7 +16,11 @@ export function MobileAppDownload({
   showText = true,
   variant = "default"
 }: MobileAppDownloadProps) {
+  const isMobileApp = useIsMobileApp()
   const downloadUrl = "https://github.com/codelabbj/supercash-mobile-app/raw/refs/heads/main/public/release/SuperCash.apk"
+
+  // Non-intrusive: hide the button if the user is already inside the mobile app
+  if (isMobileApp) return null
 
   if (variant === "header") {
     return (
