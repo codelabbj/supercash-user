@@ -150,58 +150,80 @@ export function PhoneStep({ selectedNetwork, selectedPhone, onSelect, type }: Ph
   }
 
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-1 mb-6">
-        <h2 className="text-lg sm:text-xl font-bold text-foreground">Votre numéro de réception</h2>
-        <p className="text-sm text-muted-foreground font-medium">Sélectionnez le numéro pour recevoir vos fonds</p>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="text-center space-y-0.5 sm:space-y-1 mb-4 sm:mb-6">
+        <h2 className="text-base sm:text-xl font-bold text-foreground">Votre numéro de réception</h2>
+        <p className="text-xs sm:text-sm text-muted-foreground">Numéro pour recevoir vos fonds</p>
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-10 w-10 animate-spin text-gold dark:text-turquoise" />
+        <div className="flex items-center justify-center py-12 sm:py-20">
+          <Loader2 className="h-8 w-8 sm:h-10 sm:w-10 animate-spin text-gold dark:text-turquoise" />
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4">
           {phones.map((phone) => (
             <Card
               key={phone.id}
               className={cn(
-                "relative overflow-hidden cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.99] group rounded-lg",
+                "relative overflow-hidden cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.98] rounded-xl sm:rounded-lg",
                 selectedPhone?.id === phone.id
                   ? type === "deposit"
-                    ? "bg-gold text-white shadow-gold-lg ring-2 ring-gold/20"
-                    : "bg-turquoise text-white shadow-turquoise-lg ring-2 ring-turquoise/20"
-                  : "bg-white dark:bg-[#121212] hover:shadow-2xl"
+                    ? "bg-gold text-white shadow-lg ring-2 ring-gold/30"
+                    : "bg-turquoise text-white shadow-lg ring-2 ring-turquoise/30"
+                  : "bg-card border-border/80 hover:border-primary/20"
               )}
               onClick={() => onSelect(phone)}
             >
-              <CardContent className="p-4 flex flex-col justify-between h-[120px] relative z-10">
-                <div className="flex justify-between items-start">
-                  <div className="flex items-center gap-2">
-                    <div className={cn(
-                      "w-10 h-10 rounded-xl flex items-center justify-center transition-colors shadow-inner",
-                      selectedPhone?.id === phone.id ? "bg-white/20" : "bg-gold/5 text-gold"
-                    )}>
-                      <span className="font-black text-sm">+{phone.phone.slice(0, 3)}</span>
-                    </div>
-                    <div className="space-y-0">
-                      <h3 className="text-lg font-black tracking-tighter">
-                        {phone.phone.slice(3)}
-                      </h3>
-                      <p className={cn(
-                        "text-[8px] font-black uppercase tracking-widest opacity-60",
-                        selectedPhone?.id === phone.id ? "text-white" : "text-muted-foreground"
-                      )}>
-                        Numéro Enregistré
-                      </p>
-                    </div>
+              <CardContent className="p-2.5 sm:p-4 min-h-[88px] sm:min-h-[108px] flex flex-col justify-between relative z-10">
+                {/* Numéro bien mis en avant */}
+                <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+                  <div className={cn(
+                    "w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 text-[10px] sm:text-xs font-black",
+                    selectedPhone?.id === phone.id ? "bg-white/20" : "bg-gold/10 text-gold dark:bg-turquoise/10 dark:text-turquoise"
+                  )}>
+                    +{phone.phone.slice(0, 3)}
                   </div>
-                  <div className="flex gap-0.5">
+                  <div className="min-w-0 flex-1">
+                    <h3 className="text-sm sm:text-base font-black tracking-tight break-all">
+                      {phone.phone.slice(3)}
+                    </h3>
+                    <p className={cn(
+                      "text-[7px] sm:text-[8px] font-bold uppercase tracking-wider opacity-60",
+                      selectedPhone?.id === phone.id ? "text-white" : "text-muted-foreground"
+                    )}>
+                      Enregistré
+                    </p>
+                  </div>
+                </div>
+
+                {/* Bas : badge, date, icônes modifier / supprimer */}
+                <div className="flex items-center justify-between gap-1 mt-2 sm:mt-3">
+                  <div className="flex items-center gap-1 min-w-0">
+                    <Badge
+                      variant="secondary"
+                      className={cn(
+                        "font-bold text-[9px] sm:text-[10px] px-1.5 py-0 shrink-0",
+                        selectedPhone?.id === phone.id
+                          ? "bg-white/20 text-white"
+                          : "bg-gold/10 text-gold dark:bg-turquoise/10 dark:text-turquoise"
+                      )}
+                    >
+                      Prêt
+                    </Badge>
+                    <span className={cn(
+                      "text-[8px] sm:text-[9px] font-mono opacity-50 truncate",
+                      selectedPhone?.id === phone.id ? "text-white" : "text-muted-foreground"
+                    )}>
+                      {new Date(phone.created_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })}
+                    </span>
+                  </div>
+                  <div className="flex gap-0.5 shrink-0">
                     <Button
                       variant="ghost"
                       size="icon"
                       className={cn(
-                        "h-6 w-6 rounded-full transition-colors",
+                        "h-6 w-6 sm:h-7 sm:w-7 rounded-full transition-colors",
                         selectedPhone?.id === phone.id
                           ? "bg-white/10 hover:bg-white/20"
                           : "hover:bg-gold/10 dark:hover:bg-turquoise/10 hover:text-gold dark:hover:text-turquoise"
@@ -211,13 +233,13 @@ export function PhoneStep({ selectedNetwork, selectedPhone, onSelect, type }: Ph
                         openEditDialog(phone)
                       }}
                     >
-                      <Edit className="h-3 w-3" />
+                      <Edit className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
                       className={cn(
-                        "h-6 w-6 rounded-full transition-colors",
+                        "h-6 w-6 sm:h-7 sm:w-7 rounded-full transition-colors",
                         selectedPhone?.id === phone.id
                           ? "bg-white/10 hover:bg-white/20"
                           : "hover:bg-gold/10 dark:hover:bg-turquoise/10 hover:text-gold dark:hover:text-turquoise"
@@ -227,29 +249,9 @@ export function PhoneStep({ selectedNetwork, selectedPhone, onSelect, type }: Ph
                         handleDeletePhone(phone)
                       }}
                     >
-                      <Trash2 className="h-3 w-3" />
+                      <Trash2 className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                     </Button>
                   </div>
-                </div>
-
-                <div className="flex items-center gap-1">
-                  <Badge
-                    variant="secondary"
-                    className={cn(
-                      "font-bold text-[10px]",
-                      selectedPhone?.id === phone.id
-                        ? "bg-white/20 text-white"
-                        : "bg-gold/5 text-gold"
-                    )}
-                  >
-                    Prêt
-                  </Badge>
-                  <span className={cn(
-                    "text-[8px] font-mono opacity-50 ml-auto",
-                    selectedPhone?.id === phone.id ? "text-white" : "text-muted-foreground"
-                  )}>
-                    {new Date(phone.created_at).toLocaleDateString("fr-FR")}
-                  </span>
                 </div>
               </CardContent>
             </Card>
@@ -257,12 +259,12 @@ export function PhoneStep({ selectedNetwork, selectedPhone, onSelect, type }: Ph
 
           <button
             onClick={() => setIsAddDialogOpen(true)}
-            className="h-[120px] rounded-[24px] border-2 border-dashed border-muted-foreground/20 hover:border-gold/40 dark:hover:border-turquoise/40 hover:bg-gold/5 dark:hover:bg-turquoise/5 transition-all flex flex-col items-center justify-center gap-3 group"
+            className="min-h-[88px] sm:min-h-[108px] rounded-xl sm:rounded-2xl border-2 border-dashed border-muted-foreground/25 hover:border-gold/50 dark:hover:border-turquoise/50 hover:bg-gold/5 dark:hover:bg-turquoise/5 transition-all flex flex-col items-center justify-center gap-2 sm:gap-3 group"
           >
-            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-gold dark:group-hover:bg-turquoise group-hover:text-white dark:group-hover:text-black transition-colors">
-              <Plus className="h-5 w-5" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-gold dark:group-hover:bg-turquoise group-hover:text-white dark:group-hover:text-black transition-colors">
+              <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
-            <span className="font-black text-sm text-muted-foreground group-hover:text-gold dark:group-hover:text-turquoise transition-colors">Ajouter</span>
+            <span className="font-bold text-xs sm:text-sm text-muted-foreground group-hover:text-gold dark:group-hover:text-turquoise transition-colors">Ajouter</span>
           </button>
         </div>
       )}

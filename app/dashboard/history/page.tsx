@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import { useAuth } from "@/lib/auth-context"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -11,7 +12,7 @@ import { Loader2, Search, Filter, RefreshCw, ArrowLeft, Wallet, XCircle } from "
 import { transactionApi } from "@/lib/api-client"
 import type { Transaction } from "@/lib/types"
 import { toast } from "react-hot-toast"
-import { TransactionCard } from "@/components/transaction/TransactionCard";
+import { TransactionCard } from "@/components/transaction/TransactionCard"
 
 export default function TransactionHistoryPage() {
   const { user } = useAuth()
@@ -225,9 +226,11 @@ export default function TransactionHistoryPage() {
                 </div>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 {transactions.map((transaction) => (
-                  <TransactionCard key={transaction.id} transaction={transaction} />
+                  <Link key={transaction.id} href={`/dashboard/transactions?id=${transaction.id}`} className="block">
+                    <TransactionCard transaction={transaction} />
+                  </Link>
                 ))}
               </div>
             )}

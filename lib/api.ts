@@ -1,6 +1,9 @@
 import axios from "axios"
 import { toast } from "react-hot-toast"
 
+/** Mettre à true pour simuler un token invalide et tester le refresh (401). */
+const SIMULATE_INVALID_TOKEN = false
+
 const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   headers: {
@@ -10,6 +13,45 @@ const api = axios.create({
   }
 })
 
+/** Une seule refresh à la fois : toutes les requêtes 401 attendent ce promise. */
+let refreshPromise: Promise<string | null> | null = null
+
+function getRefreshUrl(): string {
+  const base = (process.env.NEXT_PUBLIC_BASE_URL || "").replace(/\/?$/, "/")
+  return `${base}auth/refresh`
+}
+
+async function doRefresh(): Promise<string | null> {
+  if (refreshPromise) return refreshPromise
+  const refresh = localStorage.getItem("refresh_token")
+  if (!refresh) {
+    localStorage.clear()
+    window.location.href = "/login"
+    return null
+  }
+  refreshPromise = (async () => {
+    try {
+      const res = await axios.post(getRefreshUrl(), { refresh })
+      const newToken = res.data?.access
+      if (newToken) localStorage.setItem("access_token", newToken)
+      return newToken || null
+    } catch {
+      localStorage.clear()
+      window.location.href = "/login"
+      return null
+    } finally {
+      refreshPromise = null
+    }
+  })()
+  return refreshPromise
+}
+
+/** Appelé à l’ouverture de l’app pour rafraîchir le token sans attendre un 401. */
+export async function refreshAccessToken(): Promise<boolean> {
+  const token = await doRefresh()
+  return !!token
+}
+
 function detectLang(text: string) {
   const frenchWords = ["le", "la", "de", "pas", "pour", "avec", "est", "une", "des"]
   const score = frenchWords.filter((w) => text.toLowerCase().includes(w)).length
@@ -18,7 +60,11 @@ function detectLang(text: string) {
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("access_token")
-  if (token) config.headers.Authorization = `Bearer ${token}`
+  // Ne pas écraser si déjà défini (ex. retry après refresh)
+  if (token && !config.headers.Authorization) {
+    const value = SIMULATE_INVALID_TOKEN ? `fake-${token}` : token
+    config.headers.Authorization = `Bearer ${value}`
+  }
 
   // Ensure fresh data with cache busting
   config.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
@@ -41,16 +87,10 @@ api.interceptors.response.use(
     const original = error.config
     if (error.response?.status === 401 && !original._retry) {
       original._retry = true
-      try {
-        const refresh = localStorage.getItem("refresh_token")
-        const res = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}auth/refresh`, { refresh })
-        const newToken = res.data.access
-        localStorage.setItem("access_token", newToken)
+      const newToken = await doRefresh()
+      if (newToken) {
         original.headers.Authorization = `Bearer ${newToken}`
         return api(original)
-      } catch {
-        localStorage.clear()
-        window.location.href = "/login"
       }
     }
 
@@ -90,7 +130,8 @@ api.interceptors.response.use(
     }
 
     const lang = detectLang(backendMsg)
-    toast.error(backendMsg, { style: { direction: "ltr" } })
+    const skipToast = (original as any).skipErrorToast === true
+    if (!skipToast) toast.error(backendMsg, { style: { direction: "ltr" } })
     return Promise.reject(error)
   },
 )

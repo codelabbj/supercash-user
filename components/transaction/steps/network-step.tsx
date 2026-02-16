@@ -47,29 +47,29 @@ export function NetworkStep({ selectedNetwork, onSelect, type }: NetworkStepProp
   }
 
   return (
-    <div className="space-y-6">
-      <div className="text-center space-y-1 mb-6">
-        <h2 className="text-lg sm:text-xl font-bold text-foreground">Choisissez votre réseau</h2>
-        <p className="text-sm text-muted-foreground">Sélectionnez votre moyen de paiement</p>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="text-center space-y-0.5 sm:space-y-1 mb-4 sm:mb-6">
+        <h2 className="text-base sm:text-xl font-bold text-foreground">Choisissez votre réseau</h2>
+        <p className="text-xs sm:text-sm text-muted-foreground">Moyen de paiement</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-2 sm:gap-4">
         {networks.map((network) => (
           <Card
             key={network.id}
             className={cn(
-              "cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.99] group rounded-lg",
+              "cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.98] rounded-xl sm:rounded-lg overflow-hidden",
               selectedNetwork?.id === network.id
                 ? type === "deposit"
-                  ? "bg-gold text-white border-gold"
-                  : "bg-turquoise text-white border-turquoise"
-                : "bg-card hover:border-primary/20"
+                  ? "bg-gold text-white border-gold ring-2 ring-gold/30 shadow-lg"
+                  : "bg-turquoise text-white border-turquoise ring-2 ring-turquoise/30 shadow-lg"
+                : "bg-card hover:border-primary/20 border-border/80"
             )}
             onClick={() => onSelect(network)}
           >
-            <CardContent className="p-4 flex flex-col items-center gap-3">
+            <CardContent className="p-2.5 sm:p-4 flex flex-col items-center gap-2 sm:gap-3">
               <div className={cn(
-                "w-14 h-14 sm:w-16 sm:h-16 rounded-lg overflow-hidden p-1",
+                "w-10 h-10 sm:w-14 sm:h-14 rounded-lg overflow-hidden p-0.5 sm:p-1 shrink-0",
                 selectedNetwork?.id === network.id ? "bg-white/20" : "bg-muted/50"
               )}>
                 <SafeImage
@@ -79,28 +79,28 @@ export function NetworkStep({ selectedNetwork, onSelect, type }: NetworkStepProp
                   fallbackText={network.public_name.charAt(0).toUpperCase()}
                 />
               </div>
-              <div className="text-center">
-                <h3 className="text-base sm:text-lg font-bold mb-0.5">{network.public_name}</h3>
+              <div className="text-center min-w-0 w-full">
+                <h3 className="text-sm sm:text-base font-bold truncate">{network.public_name}</h3>
                 <p className={cn(
-                  "text-xs font-semibold opacity-60 mb-2",
+                  "text-[10px] sm:text-xs font-medium opacity-70 truncate",
                   selectedNetwork?.id === network.id ? "text-white" : "text-muted-foreground"
                 )}>
                   {network.name}
                 </p>
-                <div className="flex justify-center gap-2">
+                <div className="flex justify-center gap-1 mt-0.5">
                   <Badge
                     variant="secondary"
                     className={cn(
-                      "font-semibold text-xs",
+                      "font-semibold text-[10px] sm:text-xs px-1.5 py-0",
                       selectedNetwork?.id === network.id
                         ? "bg-white/20 text-white"
-                        : "bg-gold/5 text-gold"
+                        : "bg-gold/10 text-gold"
                     )}
                   >
                     24/7
                   </Badge>
                   {network.country_code && (
-                    <Badge variant="outline" className="font-semibold text-xs">
+                    <Badge variant="outline" className="font-semibold text-[10px] sm:text-xs px-1.5 py-0">
                       {network.country_code}
                     </Badge>
                   )}
@@ -112,9 +112,9 @@ export function NetworkStep({ selectedNetwork, onSelect, type }: NetworkStepProp
       </div>
 
       {networks.length === 0 && (
-        <Card className="border-2 border-dashed border-muted-foreground/20 bg-muted/5">
-          <CardContent className="py-20 text-center">
-            <p className="text-muted-foreground font-semibold">Aucun réseau disponible pour cette opération</p>
+        <Card className="border-2 border-dashed border-muted-foreground/20 bg-muted/5 rounded-xl sm:rounded-lg">
+          <CardContent className="py-12 sm:py-20 text-center">
+            <p className="text-muted-foreground font-semibold text-sm sm:text-base">Aucun réseau disponible</p>
           </CardContent>
         </Card>
       )}

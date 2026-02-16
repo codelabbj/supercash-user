@@ -78,7 +78,7 @@ export default function WithdrawalPage() {
       })
 
       toast.success("Retrait initié avec succès!")
-      router.push("/dashboard")
+      router.push(`/dashboard/transactions?id=${response.id}`)
     } catch (error: any) {
       // Error message is already handled by API interceptor
       // Only show additional toast if it's not the rate limiting error
@@ -186,20 +186,21 @@ export default function WithdrawalPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6">
-      <div className="space-y-6 sm:space-y-8">
-        {/* Header */}
-        <div className="flex items-center gap-4">
+    <div className="max-w-4xl mx-auto px-3 sm:px-6 pb-24 sm:pb-8">
+      <div className="space-y-4 sm:space-y-6">
+        {/* Header - compact et clair sur mobile */}
+        <div className="flex items-center gap-3 sm:gap-4 pt-1">
           <Button
             variant="ghost"
             size="icon"
             onClick={() => router.back()}
-            className="rounded-lg hover:bg-muted shrink-0"
+            className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl hover:bg-muted/80 shrink-0 -ml-1"
           >
-            <ArrowLeft className="h-5 w-5" />
+            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Effectuer un retrait</h1>
+          <div className="min-w-0 flex-1">
+            <h1 className="text-lg sm:text-2xl font-bold tracking-tight text-foreground truncate">Effectuer un retrait</h1>
+            <p className="text-xs text-muted-foreground mt-0.5 hidden sm:block">Remplissez les étapes pour continuer</p>
           </div>
         </div>
 
@@ -210,7 +211,7 @@ export default function WithdrawalPage() {
           type="withdrawal"
         />
 
-        {/* Navigation - Moved above content */}
+        {/* Navigation */}
         {currentStep < 5 && (
           <StepNavigation
             currentStep={currentStep}
@@ -221,15 +222,17 @@ export default function WithdrawalPage() {
           />
         )}
 
-        {/* Current Step */}
-        <div className="min-h-[300px] sm:min-h-[400px]">
-          {currentStep > 1 && (
-            <PlatformHelpLinks
-              platform={selectedPlatform}
-              type="withdrawal"
-            />
-          )}
-          {renderCurrentStep()}
+        {/* Zone de contenu - carte légère sur mobile pour un rendu pro */}
+        <div className="rounded-2xl sm:rounded-xl border border-border/60 bg-card/50 sm:bg-transparent sm:border-0 shadow-sm sm:shadow-none overflow-hidden">
+          <div className="p-4 sm:p-0 min-h-[280px] sm:min-h-[360px]">
+            {currentStep > 1 && (
+              <PlatformHelpLinks
+                platform={selectedPlatform}
+                type="withdrawal"
+              />
+            )}
+            {renderCurrentStep()}
+          </div>
         </div>
 
         {/* Confirmation Dialog */}

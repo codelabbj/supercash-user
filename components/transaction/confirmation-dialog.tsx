@@ -65,32 +65,32 @@ export function ConfirmationDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg bg-white dark:bg-[#2D3436] border-none shadow-2xl rounded-[var(--radius)] overflow-hidden p-0">
+      <DialogContent className="w-[calc(100%-2rem)] sm:max-w-lg bg-white dark:bg-[#2D3436] border border-border/60 shadow-2xl rounded-2xl overflow-hidden p-0 mx-auto">
         <div className={cn(
-          "h-2 w-full bg-gradient-to-r",
+          "h-1.5 sm:h-2 w-full bg-gradient-to-r",
           type === "deposit" ? "from-gold to-turquoise" : "from-turquoise to-gold"
         )} />
 
-        <div className="p-8 space-y-8">
-          <div className="text-center space-y-2">
+        <div className="p-5 sm:p-8 space-y-5 sm:space-y-8">
+          <div className="text-center space-y-1.5 sm:space-y-2">
             <div className={cn(
-              "w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4",
+              "w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center mx-auto mb-2 sm:mb-4",
               type === "deposit" ? "bg-gold/10 text-gold" : "bg-turquoise/10 text-turquoise"
             )}>
-              <CheckCircle className="h-8 w-8" />
+              <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8" />
             </div>
-            <DialogTitle className="text-2xl sm:text-3xl font-black tracking-tight">
+            <DialogTitle className="text-xl sm:text-3xl font-black tracking-tight">
               Confirmer {type === "deposit" ? "le dépôt" : "le retrait"}
             </DialogTitle>
-            <DialogDescription className="font-medium">
-              Veuillez vérifier les informations de paiement
+            <DialogDescription className="font-medium text-sm sm:text-base">
+              Vérifiez les informations ci-dessous
             </DialogDescription>
           </div>
 
-          <div className="bg-[#F9FAFB] dark:bg-[#1E272E] rounded-3xl p-6 space-y-6 shadow-inner border border-muted/20">
-            <div className="text-center pb-4 border-b border-muted">
-              <p className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground mb-1">Montant Total</p>
-              <h2 className="text-4xl font-black tracking-tighter">
+          <div className="bg-muted/30 dark:bg-[#1E272E] rounded-2xl sm:rounded-3xl p-4 sm:p-6 space-y-4 sm:space-y-6 shadow-inner border border-muted/20">
+            <div className="text-center pb-3 sm:pb-4 border-b border-muted">
+              <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5 sm:mb-1">Montant Total</p>
+              <h2 className="text-2xl sm:text-4xl font-black tracking-tighter">
                 {transactionData.amount.toLocaleString("fr-FR", {
                   style: "currency",
                   currency: "XOF",
@@ -99,39 +99,39 @@ export function ConfirmationDialog({
               </h2>
             </div>
 
-            <div className="grid grid-cols-2 gap-y-6 gap-x-4">
-              <div className="space-y-1">
-                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Plateforme</p>
-                <p className="font-bold">{platformName}</p>
+            <div className="grid grid-cols-2 gap-y-4 sm:gap-y-6 gap-x-3 sm:gap-x-4">
+              <div className="space-y-0.5 sm:space-y-1">
+                <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-muted-foreground">Plateforme</p>
+                <p className="font-bold text-sm sm:text-base truncate">{platformName}</p>
               </div>
-              <div className="space-y-1">
-                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Réseau</p>
-                <p className="font-bold">{networkName}</p>
+              <div className="space-y-0.5 sm:space-y-1">
+                <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-muted-foreground">Réseau</p>
+                <p className="font-bold text-sm sm:text-base truncate">{networkName}</p>
               </div>
-              <div className="space-y-1 text-left">
-                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">ID de Pari</p>
-                <p className="font-bold truncate">{transactionData.user_app_id}</p>
+              <div className="space-y-0.5 sm:space-y-1 text-left">
+                <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-muted-foreground">ID de Pari</p>
+                <p className="font-bold text-sm sm:text-base truncate">{transactionData.user_app_id}</p>
               </div>
-              <div className="space-y-1 text-left">
-                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Numéro</p>
-                <p className="font-bold">+{transactionData.phone_number}</p>
+              <div className="space-y-0.5 sm:space-y-1 text-left">
+                <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-muted-foreground">Numéro</p>
+                <p className="font-bold text-sm sm:text-base truncate">+{transactionData.phone_number}</p>
               </div>
             </div>
 
             {type === "withdrawal" && transactionData.withdriwal_code && (
-              <div className="pt-4 border-t border-muted">
-                <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-1">Code de retrait</p>
-                <p className="font-mono font-bold bg-turquoise/5 p-2 rounded-lg text-turquoise text-center">{transactionData.withdriwal_code}</p>
+              <div className="pt-3 sm:pt-4 border-t border-muted">
+                <p className="text-[9px] sm:text-[10px] font-black uppercase tracking-wider text-muted-foreground mb-0.5 sm:mb-1">Code de retrait</p>
+                <p className="font-mono font-bold text-sm bg-turquoise/5 p-2 rounded-lg text-turquoise text-center">{transactionData.withdriwal_code}</p>
               </div>
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2 sm:gap-4">
             <Button
               variant="outline"
               onClick={onClose}
               disabled={isSubmitting || isLoading}
-              className="h-14 font-black uppercase tracking-widest rounded-2xl border-2"
+              className="h-11 sm:h-14 font-bold sm:font-black rounded-xl sm:rounded-2xl border-2"
             >
               Modifier
             </Button>
@@ -139,12 +139,12 @@ export function ConfirmationDialog({
               onClick={handleConfirm}
               disabled={isSubmitting || isLoading}
               className={cn(
-                "h-14 font-black uppercase tracking-widest rounded-2xl shadow-xl transition-all active:scale-95",
+                "h-11 sm:h-14 font-bold sm:font-black rounded-xl sm:rounded-2xl shadow-lg transition-all active:scale-95",
                 type === "deposit" ? "bg-gold hover:bg-gold/90 text-white shadow-gold/20" : "bg-turquoise hover:bg-turquoise/90 text-white shadow-turquoise/20"
               )}
             >
               {isSubmitting || isLoading ? (
-                <Loader2 className="h-6 w-6 animate-spin" />
+                <Loader2 className="h-5 w-5 sm:h-6 sm:w-6 animate-spin" />
               ) : (
                 "Confirmer"
               )}

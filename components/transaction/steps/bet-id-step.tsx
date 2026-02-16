@@ -181,75 +181,74 @@ export function BetIdStep({ selectedPlatform, selectedBetId, onSelect, type }: B
   }
 
   return (
-    <div className="space-y-8">
-      <div className="text-center space-y-1 mb-6">
-        <h2 className="text-lg sm:text-xl font-bold text-foreground">Choisissez votre compte</h2>
-        <p className="text-sm text-muted-foreground font-medium">Sélectionnez l'ID de pari pour cette opération</p>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="text-center space-y-0.5 sm:space-y-1 mb-4 sm:mb-6">
+        <h2 className="text-base sm:text-xl font-bold text-foreground">Choisissez votre compte</h2>
+        <p className="text-xs sm:text-sm text-muted-foreground">ID de pari pour cette opération</p>
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <Loader2 className="h-10 w-10 animate-spin text-gold dark:text-turquoise" />
+        <div className="flex items-center justify-center py-12 sm:py-20">
+          <Loader2 className="h-8 w-8 sm:h-10 sm:w-10 animate-spin text-gold dark:text-turquoise" />
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-2 sm:gap-4">
           {betIds.map((betId) => (
             <Card
               key={betId.id}
               className={cn(
-                "relative overflow-hidden cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.99] rounded-lg",
+                "relative overflow-hidden cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.98] rounded-xl sm:rounded-lg",
                 selectedBetId?.id === betId.id
                   ? type === "deposit"
-                    ? "bg-gold text-white shadow-gold-lg ring-2 ring-gold/20"
-                    : "bg-turquoise text-white shadow-turquoise-lg ring-2 ring-turquoise/20"
-                  : "bg-white dark:bg-[#121212] border border-border"
+                    ? "bg-gold text-white shadow-lg ring-2 ring-gold/30"
+                    : "bg-turquoise text-white shadow-lg ring-2 ring-turquoise/30"
+                  : "bg-card border-border/80 hover:border-primary/20"
               )}
               onClick={() => onSelect(betId)}
             >
-              {/* Card Background Pattern */}
-              <div className="absolute top-0 right-0 w-20 h-20 bg-white/5 rounded-full -mr-10 -mt-10 blur-xl" />
+              <div className="absolute top-0 right-0 w-16 h-16 sm:w-20 sm:h-20 bg-white/5 rounded-full -mr-8 -mt-8 sm:-mr-10 sm:-mt-10 blur-xl" />
 
-              <CardContent className="p-4 h-[120px] flex flex-col justify-between relative z-10">
-                <div className="flex justify-between items-start">
-                  <div className="space-y-0.5">
-                    <p className="text-[8px] font-black uppercase tracking-[0.2em] opacity-60">Membre Premium</p>
-                    <h3 className="text-lg font-black tracking-tight">{betId.user_app_id}</h3>
+              <CardContent className="p-2.5 sm:p-4 min-h-[88px] sm:min-h-[108px] flex flex-col justify-between relative z-10">
+                <div className="flex justify-between items-start gap-1">
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[7px] sm:text-[8px] font-black uppercase tracking-wider opacity-60">Membre</p>
+                    <h3 className="text-sm sm:text-base font-black tracking-tight truncate">{betId.user_app_id}</h3>
                   </div>
-                  <div className="flex gap-0.5">
+                  <div className="flex gap-0.5 shrink-0">
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6 rounded-full bg-white/10 hover:bg-white/20"
+                      className="h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-white/10 hover:bg-white/20"
                       onClick={(e) => {
                         e.stopPropagation()
                         openEditDialog(betId)
                       }}
                     >
-                      <Edit className="h-3 w-3" />
+                      <Edit className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-6 w-6 rounded-full bg-white/10 hover:bg-white/20"
+                      className="h-5 w-5 sm:h-6 sm:w-6 rounded-full bg-white/10 hover:bg-white/20"
                       onClick={(e) => {
                         e.stopPropagation()
                         handleDeleteBetId(betId)
                       }}
                     >
-                      <Trash2 className="h-3 w-3" />
+                      <Trash2 className="h-2.5 w-2.5 sm:h-3 sm:w-3" />
                     </Button>
                   </div>
                 </div>
 
-                <div className="flex justify-between items-end">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
-                      <CheckCircle className="h-4 w-4 text-white" />
+                <div className="flex justify-between items-center mt-1.5 sm:mt-2">
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <div className="w-5 h-5 sm:w-6 sm:h-6 rounded-full bg-white/20 flex items-center justify-center shrink-0">
+                      <CheckCircle className="h-2.5 w-2.5 sm:h-3 sm:w-3 text-white" />
                     </div>
-                    <span className="text-sm font-bold opacity-80">Compte Vérifié</span>
+                    <span className="text-[10px] sm:text-xs font-bold opacity-80">Vérifié</span>
                   </div>
-                  <span className="text-xs font-mono opacity-50">
-                    {new Date(betId.created_at).toLocaleDateString("fr-FR")}
+                  <span className="text-[9px] sm:text-xs font-mono opacity-50">
+                    {new Date(betId.created_at).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" })}
                   </span>
                 </div>
               </CardContent>
@@ -258,12 +257,12 @@ export function BetIdStep({ selectedPlatform, selectedBetId, onSelect, type }: B
 
           <button
             onClick={() => setIsAddDialogOpen(true)}
-            className="h-[120px] rounded-[24px] border-2 border-dashed border-muted-foreground/20 hover:border-gold/40 dark:hover:border-turquoise/40 hover:bg-gold/5 dark:hover:bg-turquoise/5 transition-all flex flex-col items-center justify-center gap-3 group"
+            className="min-h-[88px] sm:min-h-[108px] rounded-xl sm:rounded-2xl border-2 border-dashed border-muted-foreground/25 hover:border-gold/50 dark:hover:border-turquoise/50 hover:bg-gold/5 dark:hover:bg-turquoise/5 transition-all flex flex-col items-center justify-center gap-2 sm:gap-3 group"
           >
-            <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-gold dark:group-hover:bg-turquoise group-hover:text-white dark:group-hover:text-black transition-colors">
-              <Plus className="h-5 w-5" />
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-muted flex items-center justify-center group-hover:bg-gold dark:group-hover:bg-turquoise group-hover:text-white dark:group-hover:text-black transition-colors">
+              <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
             </div>
-            <span className="font-black text-sm text-muted-foreground group-hover:text-gold dark:group-hover:text-turquoise transition-colors">Ajouter</span>
+            <span className="font-bold text-xs sm:text-sm text-muted-foreground group-hover:text-gold dark:group-hover:text-turquoise transition-colors">Ajouter</span>
           </button>
         </div>
       )}

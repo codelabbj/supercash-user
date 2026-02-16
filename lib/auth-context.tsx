@@ -3,6 +3,7 @@
 import type React from "react"
 import { createContext, useContext, useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { refreshAccessToken } from "./api"
 import type { User } from "./types"
 
 interface AuthContextType {
@@ -25,30 +26,40 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Mark as hydrated first
     setIsHydrated(true)
 
-    // Then check localStorage
-    const accessToken = localStorage.getItem("access_token")
-    const userData = localStorage.getItem("user_data")
+    const run = async () => {
+      const accessToken = localStorage.getItem("access_token")
+      const refreshToken = localStorage.getItem("refresh_token")
+      const userData = localStorage.getItem("user_data")
 
-    // Only log in development mode and when debug is enabled
-    const isDev = process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === 'true'
-
-    if (isDev) {
-      console.log("Auth: Checking stored credentials")
-    }
-
-    if (accessToken && userData && userData !== "undefined" && userData !== "null") {
-      try {
-        const parsedUser = JSON.parse(userData)
-        setUser(parsedUser)
-        if (isDev) {
-          console.log("Auth: User authenticated")
-        }
-      } catch (error) {
-        console.error("Auth: Failed to parse stored user data")
-        localStorage.clear()
+      const isDev = process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_DEBUG === 'true'
+      if (isDev) {
+        console.log("Auth: Checking stored credentials")
       }
+
+      if (accessToken && userData && userData !== "undefined" && userData !== "null") {
+        try {
+          const parsedUser = JSON.parse(userData)
+          setUser(parsedUser)
+
+          // Refresh préventif à l’ouverture : un seul token frais pour éviter les 401 au chargement
+          if (refreshToken) {
+            const ok = await refreshAccessToken()
+            if (!ok) {
+              setUser(null)
+            }
+          }
+          if (isDev) {
+            console.log("Auth: User authenticated")
+          }
+        } catch (error) {
+          console.error("Auth: Failed to parse stored user data")
+          localStorage.clear()
+        }
+      }
+      setIsLoading(false)
     }
-    setIsLoading(false)
+
+    run()
   }, [])
 
   const login = (accessToken: string, refreshToken: string, userData: User) => {

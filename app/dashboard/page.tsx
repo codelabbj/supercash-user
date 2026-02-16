@@ -342,7 +342,7 @@ export default function DashboardPage() {
             </div>
           </div>
         ) : (
-          <div className="space-y-3">
+          <div className="space-y-2 sm:space-y-3">
             {recentTransactions.map((transaction) => (
               <TransactionCard key={transaction.id} transaction={transaction} />
             ))}
