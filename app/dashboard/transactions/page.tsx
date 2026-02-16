@@ -123,8 +123,8 @@ function TransactionDetailContent() {
             <Button variant="outline" onClick={() => router.push("/dashboard/history")} className="rounded-xl">
               Voir l&apos;historique
             </Button>
-            <Button variant="ghost" onClick={() => router.back()} className="block mx-auto rounded-xl">
-              Retour
+            <Button variant="ghost" onClick={() => router.push("/dashboard")} className="block mx-auto rounded-xl">
+              Retour à l&apos;accueil
             </Button>
           </CardContent>
         </Card>
@@ -142,7 +142,7 @@ function TransactionDetailContent() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => router.back()}
+            onClick={() => router.push("/dashboard")}
             className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl hover:bg-muted/80 shrink-0 -ml-1"
           >
             <ArrowLeft className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
