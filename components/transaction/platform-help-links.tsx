@@ -24,17 +24,17 @@ export function PlatformHelpLinks({ platform, type, className }: PlatformHelpLin
     if (!showDepositTuto && !showWithdrawalTuto && !showWithdrawalFail) return null
 
     return (
-        <div className={cn("flex flex-col gap-2 mb-6", className)}>
+        <div className={cn("flex flex-col gap-1.5 sm:gap-2 mb-4 sm:mb-6", className)}>
             {showDepositTuto && (
                 <a
                     href={depositTuto}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm font-bold text-gold hover:underline group w-fit"
+                    className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-gold hover:underline group w-fit py-1 rounded-lg hover:bg-gold/5 -mx-1 px-1"
                 >
-                    <PlayCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
-                    <span>Tutoriel pour dépôt sur {platform.name}</span>
-                    <ExternalLink className="h-3 w-3 opacity-50" />
+                    <PlayCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 transition-transform group-hover:scale-110" />
+                    <span>Tutoriel dépôt {platform.name}</span>
+                    <ExternalLink className="h-3 w-3 opacity-50 shrink-0" />
                 </a>
             )}
 
@@ -43,11 +43,11 @@ export function PlatformHelpLinks({ platform, type, className }: PlatformHelpLin
                     href={withdrawalTuto}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm font-bold text-turquoise hover:underline group w-fit"
+                    className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-turquoise hover:underline group w-fit py-1 rounded-lg hover:bg-turquoise/5 -mx-1 px-1"
                 >
-                    <PlayCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
-                    <span>Tutoriel pour retrait sur {platform.name}</span>
-                    <ExternalLink className="h-3 w-3 opacity-50" />
+                    <PlayCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 transition-transform group-hover:scale-110" />
+                    <span>Tutoriel retrait {platform.name}</span>
+                    <ExternalLink className="h-3 w-3 opacity-50 shrink-0" />
                 </a>
             )}
 
@@ -56,11 +56,11 @@ export function PlatformHelpLinks({ platform, type, className }: PlatformHelpLin
                     href={withdrawalFail}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm font-bold text-destructive hover:underline group w-fit"
+                    className="flex items-center gap-2 text-xs sm:text-sm font-semibold text-destructive hover:underline group w-fit py-1 rounded-lg hover:bg-destructive/5 -mx-1 px-1"
                 >
-                    <HelpCircle className="h-4 w-4 transition-transform group-hover:scale-110" />
+                    <HelpCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 transition-transform group-hover:scale-110" />
                     <span>Pourquoi le retrait échoue ?</span>
-                    <ExternalLink className="h-3 w-3 opacity-50" />
+                    <ExternalLink className="h-3 w-3 opacity-50 shrink-0" />
                 </a>
             )}
         </div>

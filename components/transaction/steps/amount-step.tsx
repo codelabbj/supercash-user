@@ -87,48 +87,48 @@ export function AmountStep({
   }
 
   return (
-    <div className="space-y-8 max-w-2xl mx-auto">
-      <div className="text-center space-y-1 mb-6">
-        <h2 className="text-lg sm:text-xl font-bold text-foreground">Dernière étape</h2>
-        <p className="text-sm text-muted-foreground">Vérifiez les détails et entrez le montant</p>
+    <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">
+      <div className="text-center space-y-0.5 sm:space-y-1 mb-4 sm:mb-6">
+        <h2 className="text-base sm:text-xl font-bold text-foreground">Dernière étape</h2>
+        <p className="text-xs sm:text-sm text-muted-foreground">Détails et montant</p>
       </div>
 
       {/* Transaction Summary */}
-      <Card className="border shadow-sm bg-card overflow-hidden rounded-lg">
-        <div className="bg-gold h-1 w-full" />
-        <CardContent className="p-4 space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+      <Card className="border border-border/80 shadow-sm bg-card overflow-hidden rounded-xl sm:rounded-lg">
+        <div className="bg-gold h-0.5 sm:h-1 w-full" />
+        <CardContent className="p-3 sm:p-4 space-y-3 sm:space-y-4">
+          <div className="grid grid-cols-2 gap-2 sm:gap-4">
             <div className="space-y-0.5">
-              <p className="text-[8px] font-semibold uppercase text-muted-foreground">Plateforme</p>
-              <p className="font-bold text-sm">{selectedPlatform.name}</p>
+              <p className="text-[7px] sm:text-[8px] font-semibold uppercase tracking-wider text-muted-foreground">Plateforme</p>
+              <p className="font-bold text-xs sm:text-sm truncate">{selectedPlatform.name}</p>
             </div>
             <div className="space-y-0.5">
-              <p className="text-[8px] font-semibold uppercase text-muted-foreground">ID de Pari</p>
-              <p className="font-bold text-sm">{selectedBetId.user_app_id}</p>
+              <p className="text-[7px] sm:text-[8px] font-semibold uppercase tracking-wider text-muted-foreground">ID de Pari</p>
+              <p className="font-bold text-xs sm:text-sm truncate">{selectedBetId.user_app_id}</p>
             </div>
             <div className="space-y-0.5">
-              <p className="text-[8px] font-semibold uppercase text-muted-foreground">Réseau</p>
-              <p className="font-bold text-sm">{selectedNetwork.public_name}</p>
+              <p className="text-[7px] sm:text-[8px] font-semibold uppercase tracking-wider text-muted-foreground">Réseau</p>
+              <p className="font-bold text-xs sm:text-sm truncate">{selectedNetwork.public_name}</p>
             </div>
             <div className="space-y-0.5">
-              <p className="text-[8px] font-semibold uppercase text-muted-foreground">Numéro</p>
-              <p className="font-bold text-sm">+{selectedPhone.phone}</p>
+              <p className="text-[7px] sm:text-[8px] font-semibold uppercase tracking-wider text-muted-foreground">Numéro</p>
+              <p className="font-bold text-xs sm:text-sm truncate">+{selectedPhone.phone}</p>
             </div>
           </div>
         </CardContent>
       </Card>
 
       {/* Amount Input area */}
-      <div className="space-y-6">
+      <div className="space-y-4 sm:space-y-6">
         <div className="relative group">
           <div className="absolute inset-0 bg-gold/20 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity" />
           <div className="relative">
-            <Label htmlFor="amount" className="text-xs font-semibold uppercase text-muted-foreground mb-2 block text-center">
-              Montant à {type === "deposit" ? "Déposer" : "Retirer"} (FCFA)
+            <Label htmlFor="amount" className="text-[10px] sm:text-xs font-semibold uppercase text-muted-foreground mb-1.5 sm:mb-2 block text-center">
+              Montant (FCFA)
             </Label>
 
             {/* Boutons de montants rapides */}
-            <div className="grid grid-cols-3 gap-2 mb-4">
+            <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-3 sm:mb-4">
               {[1000, 5000, 10000, 25000, 50000, 100000].map((presetAmount) => (
                 <Button
                   key={presetAmount}
@@ -136,17 +136,17 @@ export function AmountStep({
                   variant="outline"
                   onClick={() => handleAmountChange(presetAmount.toString())}
                   className={cn(
-                    "h-10 text-sm font-semibold transition-all hover:border-primary hover:bg-primary/5",
-                    amount === presetAmount && "border-primary bg-primary/10 text-primary"
+                    "h-8 sm:h-10 text-[10px] sm:text-sm font-semibold transition-all rounded-lg hover:border-primary hover:bg-primary/5",
+                    amount === presetAmount && "border-primary bg-primary/10 text-primary ring-1 ring-primary/20"
                   )}
                 >
-                  {presetAmount.toLocaleString()}
+                  {presetAmount >= 1000 ? `${presetAmount / 1000}k` : presetAmount}
                 </Button>
               ))}
             </div>
 
             <div className="relative flex items-center">
-              <span className="absolute left-4 text-lg font-black text-muted-foreground">XOF</span>
+              <span className="absolute left-3 sm:left-4 text-sm sm:text-lg font-black text-muted-foreground">XOF</span>
               <Input
                 id="amount"
                 type="number"
@@ -154,7 +154,7 @@ export function AmountStep({
                 onChange={(e) => handleAmountChange(e.target.value)}
                 placeholder="0"
                 className={cn(
-                  "h-16 sm:h-18 text-2xl sm:text-3xl font-bold text-center bg-card border shadow-sm rounded-lg focus-visible:ring-2 focus-visible:ring-gold/30 px-14 transition-all",
+                  "h-12 sm:h-16 text-xl sm:text-2xl font-bold text-center bg-card border border-border/80 shadow-sm rounded-xl focus-visible:ring-2 focus-visible:ring-gold/30 px-12 sm:px-14 transition-all",
                   errors.amount ? "text-red-500" : "text-foreground"
                 )}
               />
@@ -164,6 +164,18 @@ export function AmountStep({
 
         {errors.amount && (
           <p className="text-center text-sm font-bold text-red-500 animate-bounce">{errors.amount}</p>
+        )}
+
+        {/* Consigne dépôt : numéro à utiliser pour le paiement */}
+        {type === "deposit" && selectedPhone && (
+          <div className="rounded-2xl bg-primary/10 border border-primary/20 p-4 flex items-start gap-3">
+            <svg className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <p className="text-sm text-foreground leading-relaxed">
+              <strong>Important :</strong> Le numéro <strong>{selectedPhone.phone}</strong> est celui que vous avez choisi. C&apos;est avec ce même numéro que vous devez effectuer le paiement (USSD ou lien de paiement).
+            </p>
+          </div>
         )}
 
         {/* Network Message */}
@@ -204,7 +216,7 @@ export function AmountStep({
           onClick={onNext}
           disabled={!isFormValid()}
           variant="deposit"
-          className="w-full h-12 sm:h-14 text-lg sm:text-xl font-black shadow-xl hover:scale-[1.02] active:scale-95 transition-all rounded-[24px] mt-4"
+          className="w-full h-11 sm:h-12 text-base sm:text-lg font-black shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all rounded-xl sm:rounded-2xl mt-3 sm:mt-4"
         >
           {type === "deposit" ? "Confirmer le Dépôt" : "Confirmer le Retrait"}
         </Button>

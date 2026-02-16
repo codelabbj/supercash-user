@@ -37,12 +37,12 @@ export const TransactionCard = ({transaction} : Props) =>{
         }
 
         const config = statusConfig[status] || { variant: "outline" as const, label: status }
-        return <Badge variant={config.variant}>{config.label}</Badge>
+        return <Badge variant={config.variant} className="text-[10px] sm:text-xs px-1.5 py-0 sm:px-2 sm:py-0.5">{config.label}</Badge>
     }
 
     const getTypeBadge = (type: Transaction["type_trans"]) => {
         return (
-            <Badge variant={type === "deposit" ? "default" : "secondary"}>
+            <Badge variant={type === "deposit" ? "default" : "secondary"} className="text-[10px] sm:text-xs px-1.5 py-0 sm:px-2 sm:py-0.5">
                 {type === "deposit" ? "Dépôt" : "Retrait"}
             </Badge>
         )
@@ -50,28 +50,28 @@ export const TransactionCard = ({transaction} : Props) =>{
 
     return (
         <Card key={transaction.id} className="group hover:shadow-md hover:scale-[1.005] transition-all duration-200 border bg-card">
-            <CardContent className="p-3 sm:p-4 lg:p-5">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
-                    <div className="flex items-start gap-3 sm:gap-4 flex-1 min-w-0 w-full">
-                        <div className={`p-2 sm:p-3 rounded-lg shrink-0 ${
+            <CardContent className="p-2 sm:p-4 lg:p-5">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
+                    <div className="flex items-start gap-2 sm:gap-4 flex-1 min-w-0 w-full">
+                        <div className={`p-1.5 sm:p-3 rounded-lg shrink-0 ${
                             transaction.type_trans === "deposit"
                                 ? "bg-deposit/5 text-deposit border border-deposit/10"
                                 : "bg-withdrawal/5 text-withdrawal border border-withdrawal/10"
                         }`}>
                             {transaction.type_trans === "deposit" ? (
-                                <ArrowDownToLine className="h-4 w-4 sm:h-5 sm:w-5" />
+                                <ArrowDownToLine className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
                             ) : (
-                                <ArrowUpFromLine className="h-4 w-4 sm:h-5 sm:w-5" />
+                                <ArrowUpFromLine className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
                             )}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <div className="flex flex-col sm:flex-row gap-1.5 sm:gap-2 mb-1 sm:mb-1.5">
-                                <div className="flex items-center gap-1.5 sm:gap-2">
-                                    <h3 className="font-bold text-sm sm:text-base text-foreground">#{transaction.reference}</h3>
+                            <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 mb-0.5 sm:mb-1.5">
+                                <div className="flex items-center gap-1 sm:gap-2">
+                                    <h3 className="font-bold text-xs sm:text-base text-foreground">#{transaction.reference}</h3>
                                     <Button
                                         variant="ghost"
                                         size="icon"
-                                        className="h-5 w-5 sm:h-6 sm:w-6 rounded-md hover:bg-muted"
+                                        className="h-4 w-4 sm:h-6 sm:w-6 rounded-md hover:bg-muted"
                                         onClick={(e) => {
                                             e.preventDefault()
                                             e.stopPropagation()
@@ -80,27 +80,27 @@ export const TransactionCard = ({transaction} : Props) =>{
                                         title="Copier la référence"
                                     >
                                         {copiedReference === transaction.reference ? (
-                                            <Check className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-green-600" />
+                                            <Check className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-green-600" />
                                         ) : (
-                                            <Copy className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-muted-foreground hover:text-foreground" />
+                                            <Copy className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-muted-foreground hover:text-foreground" />
                                         )}
                                     </Button>
                                 </div>
-                                <div className="flex items-center gap-1.5 sm:gap-2">
+                                <div className="flex items-center gap-1 sm:gap-2">
                                     {getTypeBadge(transaction.type_trans)}
                                     {getStatusBadge(transaction.status)}
                                 </div>
 
                             </div>
-                            <div className="flex flex-row items-start sm:items-center gap-1 sm:gap-2 text-[10px] sm:text-xs text-muted-foreground">
+                            <div className="flex flex-row items-start sm:items-center gap-0.5 sm:gap-2 text-[9px] sm:text-xs text-muted-foreground">
                                 <span className="font-medium">{transaction.app_details.name}</span>
                                 <span>•</span>
                                 <span className="truncate">+{transaction.phone_number.slice(0,3)} {transaction.phone_number.slice(3)}</span>
                             </div>
                         </div>
                     </div>
-                    <div className="text-left sm:text-right shrink-0 w-full sm:w-auto border-t sm:border-t-0 pt-2 sm:pt-0 flex sm:flex-col items-start sm:items-end justify-between sm:justify-start gap-1 sm:gap-1">
-                        <p className={`text-base sm:text-lg font-bold ${
+                    <div className="text-left sm:text-right shrink-0 w-full sm:w-auto border-t sm:border-t-0 pt-1.5 sm:pt-0 flex sm:flex-col items-start sm:items-end justify-between sm:justify-start gap-0.5 sm:gap-1">
+                        <p className={`text-sm sm:text-lg font-bold ${
                             transaction.type_trans === "deposit" ? "text-deposit" : "text-withdrawal"
                         }`}>
                             {transaction.type_trans === "deposit" ? "+" : "-"}
@@ -110,7 +110,7 @@ export const TransactionCard = ({transaction} : Props) =>{
                                 minimumFractionDigits: 0,
                             })}
                         </p>
-                        <p className="text-[10px] sm:text-xs text-muted-foreground">
+                        <p className="text-[9px] sm:text-xs text-muted-foreground">
                             {format(new Date(transaction.created_at), "dd MMM à HH:mm", {
                                 locale: fr,
                             })}
