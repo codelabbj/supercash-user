@@ -1,12 +1,17 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { Separator } from "@/components/ui/separator"
-import { Badge } from "@/components/ui/badge"
+function YoutubeIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="#FF0000" aria-hidden>
+      <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+    </svg>
+  )
+}
 import type { Platform, UserAppId, Network, UserPhone } from "@/lib/types"
 
 interface AmountStepProps {
@@ -37,6 +42,7 @@ export function AmountStep({
   onNext
 }: AmountStepProps) {
   const [errors, setErrors] = useState<{ amount?: string; withdriwalCode?: string }>({})
+  const [showWithdrawalForm, setShowWithdrawalForm] = useState(false)
 
   // ... (keeping validation logic)
   const validateAmount = (value: number) => {
@@ -86,140 +92,169 @@ export function AmountStep({
     )
   }
 
-  return (
-    <div className="space-y-4 sm:space-y-6 max-w-2xl mx-auto">
-      <div className="text-center space-y-0.5 sm:space-y-1 mb-4 sm:mb-6">
-        <h2 className="text-base sm:text-xl font-bold text-foreground">Dernière étape</h2>
-        <p className="text-xs sm:text-sm text-muted-foreground">Détails et montant</p>
-      </div>
+  const minAmount = type === "deposit" ? selectedPlatform.minimun_deposit : selectedPlatform.minimun_with
+  const maxAmount = type === "deposit" ? selectedPlatform.max_deposit : selectedPlatform.max_win
 
-      {/* Transaction Summary */}
-      <Card className="border border-border/80 shadow-sm bg-card overflow-hidden rounded-xl sm:rounded-lg">
-        <div className="bg-gold h-0.5 sm:h-1 w-full" />
-        <CardContent className="p-3 sm:p-4 space-y-3 sm:space-y-4">
-          <div className="grid grid-cols-2 gap-2 sm:gap-4">
-            <div className="space-y-0.5">
-              <p className="text-[7px] sm:text-[8px] font-semibold uppercase tracking-wider text-muted-foreground">Plateforme</p>
-              <p className="font-bold text-xs sm:text-sm truncate">{selectedPlatform.name}</p>
-            </div>
-            <div className="space-y-0.5">
-              <p className="text-[7px] sm:text-[8px] font-semibold uppercase tracking-wider text-muted-foreground">ID de Pari</p>
-              <p className="font-bold text-xs sm:text-sm truncate">{selectedBetId.user_app_id}</p>
-            </div>
-            <div className="space-y-0.5">
-              <p className="text-[7px] sm:text-[8px] font-semibold uppercase tracking-wider text-muted-foreground">Réseau</p>
-              <p className="font-bold text-xs sm:text-sm truncate">{selectedNetwork.public_name}</p>
-            </div>
-            <div className="space-y-0.5">
-              <p className="text-[7px] sm:text-[8px] font-semibold uppercase tracking-wider text-muted-foreground">Numéro</p>
-              <p className="font-bold text-xs sm:text-sm truncate">+{selectedPhone.phone}</p>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
+  const withdrawalTutoLink = selectedPlatform.withdrawal_tuto_link?.trim() || null
+  const whyWithdrawalFailLink = selectedPlatform.why_withdrawal_fail?.trim() || null
 
-      {/* Amount Input area */}
-      <div className="space-y-4 sm:space-y-6">
-        <div className="relative group">
-          <div className="absolute inset-0 bg-gold/20 blur-2xl rounded-full opacity-0 group-focus-within:opacity-100 transition-opacity" />
-          <div className="relative">
-            <Label htmlFor="amount" className="text-[10px] sm:text-xs font-semibold uppercase text-muted-foreground mb-1.5 sm:mb-2 block text-center">
-              Montant (FCFA)
-            </Label>
-
-            {/* Boutons de montants rapides */}
-            <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mb-3 sm:mb-4">
-              {[1000, 5000, 10000, 25000, 50000, 100000].map((presetAmount) => (
-                <Button
-                  key={presetAmount}
-                  type="button"
-                  variant="outline"
-                  onClick={() => handleAmountChange(presetAmount.toString())}
-                  className={cn(
-                    "h-8 sm:h-10 text-[10px] sm:text-sm font-semibold transition-all rounded-lg hover:border-primary hover:bg-primary/5",
-                    amount === presetAmount && "border-primary bg-primary/10 text-primary ring-1 ring-primary/20"
-                  )}
-                >
-                  {presetAmount >= 1000 ? `${presetAmount / 1000}k` : presetAmount}
-                </Button>
-              ))}
-            </div>
-
-            <div className="relative flex items-center">
-              <span className="absolute left-3 sm:left-4 text-sm sm:text-lg font-black text-muted-foreground">XOF</span>
-              <Input
-                id="amount"
-                type="number"
-                value={amount || ""}
-                onChange={(e) => handleAmountChange(e.target.value)}
-                placeholder="0"
-                className={cn(
-                  "h-12 sm:h-16 text-xl sm:text-2xl font-bold text-center bg-card border border-border/80 shadow-sm rounded-xl focus-visible:ring-2 focus-visible:ring-gold/30 px-12 sm:px-14 transition-all",
-                  errors.amount ? "text-red-500" : "text-foreground"
-                )}
-              />
-            </div>
-          </div>
+  // Retrait : écran d’intro avec liens d’aide puis bouton pour afficher le formulaire
+  const hasTutoLinks = !!(withdrawalTutoLink || whyWithdrawalFailLink)
+  if (type === "withdrawal" && !showWithdrawalForm && hasTutoLinks) {
+    return (
+      <div className="space-y-4 max-w-xl mx-auto">
+        <div className="text-center space-y-0.5 mb-2">
+          <h2 className="text-base sm:text-lg font-bold text-foreground">Code de retrait</h2>
+          <p className="text-xs text-muted-foreground">Consultez les informations ci-dessous si besoin</p>
         </div>
 
-        {errors.amount && (
-          <p className="text-center text-sm font-bold text-red-500 animate-bounce">{errors.amount}</p>
-        )}
+        <div className="space-y-2">
+          {withdrawalTutoLink && (
+            <a
+              href={withdrawalTutoLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between gap-2 rounded-xl border border-border/60 bg-card p-3 hover:bg-muted/40 transition-colors text-left"
+            >
+              <span className="text-sm font-medium text-foreground">Comment avoir un code de retrait ?</span>
+              <YoutubeIcon className="h-6 w-6 shrink-0" />
+            </a>
+          )}
+          {whyWithdrawalFailLink && (
+            <a
+              href={whyWithdrawalFailLink}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-between gap-2 rounded-xl border border-border/60 bg-card p-3 hover:bg-muted/40 transition-colors text-left"
+            >
+              <span className="text-sm font-medium text-foreground">Pourquoi mon retrait a échoué ?</span>
+              <YoutubeIcon className="h-6 w-6 shrink-0" />
+            </a>
+          )}
+        </div>
 
-        {/* Consigne dépôt : numéro à utiliser pour le paiement */}
-        {type === "deposit" && selectedPhone && (
-          <div className="rounded-2xl bg-primary/10 border border-primary/20 p-4 flex items-start gap-3">
-            <svg className="h-5 w-5 text-primary mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <p className="text-sm text-foreground leading-relaxed">
-              <strong>Important :</strong> Le numéro <strong>{selectedPhone.phone}</strong> est celui que vous avez choisi. C&apos;est avec ce même numéro que vous devez effectuer le paiement (USSD ou lien de paiement).
-            </p>
+        <Button
+          onClick={() => setShowWithdrawalForm(true)}
+          className="w-full h-11 text-sm font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90"
+        >
+          J&apos;ai déjà un code de retrait
+        </Button>
+
+        <div className="rounded-xl border border-border/60 bg-card p-3 pt-4 mt-2">
+          <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground mb-2">Récapitulatif</p>
+          <div className="space-y-1.5 text-xs text-muted-foreground">
+            <p><span className="text-foreground font-medium">Plateforme</span> {selectedPlatform.name}</p>
+            <p><span className="text-foreground font-medium">ID</span> {selectedBetId.user_app_id}</p>
+            <p><span className="text-foreground font-medium">Réseau</span> {selectedNetwork.public_name}</p>
+            <p><span className="text-foreground font-medium">Numéro</span> +{selectedPhone.phone}</p>
           </div>
-        )}
+        </div>
+      </div>
+    )
+  }
 
-        {/* Network Message */}
-        {selectedNetwork && (() => {
-          const message = type === "deposit" ? selectedNetwork.deposit_message : selectedNetwork.withdrawal_message
-          if (!message || message.trim() === "") return null
-          return (
-            <div className="bg-gold/5 border border-dashed border-gold/20 rounded-lg p-4 text-sm text-gold font-medium text-center">
-              "{message}"
-            </div>
-          )
-        })()}
+  return (
+    <div className="space-y-4 max-w-xl mx-auto">
+      {/* Titre (style v2) */}
+      <div className="text-center space-y-0.5 mb-2">
+        <h2 className="text-base sm:text-lg font-bold text-foreground">Montant</h2>
+        <p className="text-xs text-muted-foreground">Entrez le montant en FCFA</p>
+      </div>
 
-        {/* Withdrawal Code area */}
-        {type === "withdrawal" && (
-          <div className="space-y-3 pb-4">
-            <Label htmlFor="withdriwalCode" className="text-sm font-black uppercase tracking-widest text-muted-foreground block text-center">
-              Code de Retrait Obligatoire
+      {/* Champ montant */}
+      <div className="space-y-2">
+        <div className="rounded-xl border border-border/60 bg-muted/20 p-3 space-y-2">
+          <Label htmlFor="amount" className="text-xs font-medium text-muted-foreground">
+            Montant
+          </Label>
+          <div className="flex items-center gap-2">
+            <Input
+              id="amount"
+              type="number"
+              min={minAmount}
+              max={maxAmount}
+              value={amount || ""}
+              onChange={(e) => handleAmountChange(e.target.value)}
+              placeholder="0"
+              className={cn(
+                "h-12 text-base font-semibold bg-background border border-border/60 rounded-lg focus-visible:ring-2 focus-visible:ring-primary/20 flex-1",
+                errors.amount && "border-destructive/50"
+              )}
+            />
+            <span className="text-sm font-medium text-muted-foreground shrink-0">FCFA</span>
+          </div>
+          {errors.amount && (
+            <p className="text-xs text-destructive">{errors.amount}</p>
+          )}
+          <p className="text-[10px] text-muted-foreground">
+            Min. {minAmount.toLocaleString("fr-FR")} – Max. {maxAmount.toLocaleString("fr-FR")} FCFA
+          </p>
+        </div>
+      </div>
+
+      {/* Consigne dépôt */}
+      {type === "deposit" && selectedPhone && (
+        <div className="rounded-xl border border-border/60 bg-muted/30 dark:bg-muted/20 p-3 flex items-start gap-2">
+          <svg className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            <span className="font-medium text-foreground">Important :</span> Le numéro <span className="font-medium text-foreground">+{selectedPhone.phone}</span> est celui à utiliser pour le paiement (USSD ou lien).
+          </p>
+        </div>
+      )}
+
+      {/* Message réseau */}
+      {selectedNetwork && (() => {
+        const message = type === "deposit" ? selectedNetwork.deposit_message : selectedNetwork.withdrawal_message
+        if (!message || message.trim() === "") return null
+        return (
+          <p className="text-xs text-center text-muted-foreground italic">&quot;{message}&quot;</p>
+        )
+      })()}
+
+      {/* Code retrait */}
+      {type === "withdrawal" && (
+        <div className="space-y-2">
+          <div className="rounded-xl border border-border/60 bg-muted/20 p-3 space-y-2">
+            <Label htmlFor="withdriwalCode" className="text-xs font-medium text-muted-foreground">
+              Code de retrait
             </Label>
             <Input
               id="withdriwalCode"
               type="text"
               value={withdriwalCode}
               onChange={(e) => handleWithdriwalCodeChange(e.target.value)}
-              placeholder="Entrez votre code"
+              placeholder="Saisissez le code reçu sur la plateforme"
               className={cn(
-                "h-16 text-2xl font-black text-center bg-white dark:bg-[#121212] border-none shadow-xl rounded-[var(--radius)] focus-visible:ring-4 focus-visible:ring-gold/20 dark:focus-visible:ring-turquoise/20",
-                errors.withdriwalCode ? "text-red-500" : ""
+                "h-12 text-base font-medium bg-background border border-border/60 rounded-lg focus-visible:ring-2 focus-visible:ring-primary/20",
+                errors.withdriwalCode && "border-destructive/50"
               )}
             />
             {errors.withdriwalCode && (
-              <p className="text-center text-xs font-bold text-red-500">{errors.withdriwalCode}</p>
+              <p className="text-xs text-destructive">{errors.withdriwalCode}</p>
             )}
           </div>
-        )}
+        </div>
+      )}
 
-        <Button
-          onClick={onNext}
-          disabled={!isFormValid()}
-          variant="deposit"
-          className="w-full h-11 sm:h-12 text-base sm:text-lg font-black shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all rounded-xl sm:rounded-2xl mt-3 sm:mt-4"
-        >
-          {type === "deposit" ? "Confirmer le Dépôt" : "Confirmer le Retrait"}
-        </Button>
+      <Button
+        onClick={onNext}
+        disabled={!isFormValid()}
+        className="w-full h-11 text-sm font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-opacity"
+      >
+        {type === "deposit" ? "Confirmer le dépôt" : "Confirmer le retrait"}
+      </Button>
+
+      {/* Récapitulatif en bas (style v2) */}
+      <div className="rounded-xl border border-border/60 bg-card p-3 pt-4 mt-2">
+        <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground mb-2">Récapitulatif</p>
+        <div className="space-y-1.5 text-xs text-muted-foreground">
+          <p><span className="text-foreground font-medium">Plateforme</span> {selectedPlatform.name}</p>
+          <p><span className="text-foreground font-medium">ID</span> {selectedBetId.user_app_id}</p>
+          <p><span className="text-foreground font-medium">Réseau</span> {selectedNetwork.public_name}</p>
+          <p><span className="text-foreground font-medium">Numéro</span> +{selectedPhone.phone}</p>
+        </div>
       </div>
     </div>
   )

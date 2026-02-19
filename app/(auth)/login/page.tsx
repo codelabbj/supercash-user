@@ -75,7 +75,7 @@ export default function LoginPage() {
 
       // Step 4: Redirect to dashboard
       await new Promise(resolve => setTimeout(resolve, 300))
-      router.push("/dashboard")
+      router.push("/dashboard/v2")
     } catch (error) {
       console.error("Login error:", error)
     } finally {

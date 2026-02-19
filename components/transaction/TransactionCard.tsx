@@ -12,7 +12,7 @@ interface Props {
 const statusConfig: Record<string, { label: string; className: string }> = {
     pending: { label: "En attente", className: "bg-amber-50   text-amber-600   dark:bg-amber-500/10  dark:text-amber-400" },
     init_payment: { label: "En attente", className: "bg-amber-50   text-amber-600   dark:bg-amber-500/10  dark:text-amber-400" },
-    accept: { label: "Accepté", className: "bg-emerald-50  text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+    accept: { label: "Succès", className: "bg-emerald-50  text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
     error: { label: "Erreur", className: "bg-red-50     text-red-500     dark:bg-red-500/10    dark:text-red-400" },
     reject: { label: "Rejeté", className: "bg-red-50     text-red-500     dark:bg-red-500/10    dark:text-red-400" },
     timeout: { label: "Expiré", className: "bg-slate-100  text-slate-500   dark:bg-white/10      dark:text-slate-400" },

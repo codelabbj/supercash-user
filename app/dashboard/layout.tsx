@@ -87,7 +87,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Top row with logo and user menu */}
           <div className="flex h-16 sm:h-20 items-center justify-between relative">
             <div className="flex items-center gap-2">
-              <Link href="/dashboard" className="flex items-center gap-3 group">
+              <Link href="/dashboard/v2" className="flex items-center gap-3 group">
                 <div className="relative w-11 h-11 group-hover:scale-105 transition-transform">
                   <Image
                     src={resolvedTheme === "dark" ? "/supercash-logo-mint.png" : "/supercash-logo-gold.png"}
@@ -103,15 +103,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Middle Navigation - Horizontal */}
             <nav className="hidden md:flex items-center absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-50 dark:bg-white/5 p-2 rounded-2xl border border-slate-200/60 dark:border-white/10 gap-1 sm:gap-2">
               <Link
-                href="/dashboard"
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${pathname === '/dashboard' ? 'bg-gold/10 text-gold shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
+                href="/dashboard/v2"
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${(pathname === '/dashboard' || pathname === '/dashboard/v2') ? 'bg-gold/10 text-gold shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
               >
                 <LayoutDashboard className="w-4 h-4" />
                 <span>Accueil</span>
               </Link>
               <Link
-                href="/dashboard/history"
-                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${pathname === '/dashboard/history' ? 'bg-gold/10 text-gold shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
+                href="/dashboard/history/v2"
+                className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all ${pathname.startsWith('/dashboard/history') ? 'bg-gold/10 text-gold shadow-sm' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/5'}`}
               >
                 <History className="w-4 h-4" />
                 <span>Historique</span>
@@ -142,7 +142,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   className="h-10 w-10 rounded-xl relative hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
                   asChild
                 >
-                  <Link href="/dashboard/notifications">
+                  <Link href="/dashboard/notifications/v2">
                     <Bell className="h-5 w-5 text-slate-600 dark:text-slate-300" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 bg-red-500 text-white text-[10px] font-bold rounded-full border-2 border-white dark:border-[#0F0F0F] flex items-center justify-center">
@@ -212,36 +212,31 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
         </div>
       </header>
-      {/* Mobile Bottom Navigation */}
-      <nav className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm px-4 py-3 bg-white/90 dark:bg-[#1A1A1A]/90 backdrop-blur-xl border border-slate-200 dark:border-white/10 rounded-2xl shadow-2xl flex items-center justify-around gap-2 scale-hover transition-all">
+      {/* Mobile Bottom Navigation (hidden on deposit v2 / withdrawal v2 flow pages) */}
+      {!pathname.startsWith("/dashboard/deposit/v2") && !pathname.startsWith("/dashboard/withdrawal/v2") && (
+      <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] w-[88%] max-w-[280px] px-3 py-2 bg-background/95 dark:bg-background/95 backdrop-blur-md border border-border/60 rounded-xl shadow-lg flex items-center justify-center gap-1">
         <Link
-          href="/dashboard"
-          className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${pathname === '/dashboard' ? 'text-gold bg-gold/5 px-4' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`}
+          href="/dashboard/v2"
+          className={`flex flex-1 flex-col items-center gap-0.5 py-2 rounded-lg transition-all duration-200 ${(pathname === '/dashboard' || pathname === '/dashboard/v2') ? 'text-gold bg-gold/10 dark:bg-gold/15' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}`}
         >
-          <LayoutDashboard className="w-5 h-5" />
-          <span className="text-[10px] font-bold">Accueil</span>
+          <LayoutDashboard className="h-4 w-4" />
+          <span className="text-[10px] font-medium">Accueil</span>
         </Link>
         <Link
-          href="/dashboard/history"
-          className={`flex flex-col items-center gap-1 p-2 rounded-xl transition-all ${pathname === '/dashboard/history' ? 'text-gold bg-gold/5 px-4' : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'}`}
+          href="/dashboard/history/v2"
+          className={`flex flex-1 flex-col items-center gap-0.5 py-2 rounded-lg transition-all duration-200 ${pathname.startsWith('/dashboard/history') ? 'text-gold bg-gold/10 dark:bg-gold/15' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}`}
         >
-          <History className="w-5 h-5" />
-          <span className="text-[10px] font-bold">Historique</span>
+          <History className="h-4 w-4" />
+          <span className="text-[10px] font-medium">Historique</span>
         </Link>
-
       </nav>
-      {/* Main content */}
-      <main className="flex-1 px-0 py-4 sm:py-8 relative z-20">{children}</main>
-
-      <footer className="w-full bg-background relative z-10 py-8">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-center border-t border-slate-200/60 dark:border-white/5 pt-8">
-            <p className="text-sm text-slate-400 dark:text-slate-500 font-medium">
-              © 2024 Super Cash Fintech — West African Operations
-            </p>
-          </div>
+      )}
+      {/* Main content : sur tablette et plus, largeur max type téléphone, centré */}
+      <main className="flex-1 px-0 py-4 sm:py-6 relative z-20">
+        <div className="w-full md:max-w-[480px] md:mx-auto md:px-4">
+          {children}
         </div>
-      </footer>
+      </main>
 
       {/* Floating Social Button */}
       <FloatingSocialButton />

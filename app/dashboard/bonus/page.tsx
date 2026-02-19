@@ -25,7 +25,7 @@ export default function BonusPage() {
   useEffect(() => {
     // Redirect if referral_bonus is false
     if (!isLoadingSettings && !referralBonus) {
-      router.push("/dashboard")
+      router.push("/dashboard/v2")
       toast.error("Cette fonctionnalité n'est pas disponible")
     }
   }, [referralBonus, isLoadingSettings, router])

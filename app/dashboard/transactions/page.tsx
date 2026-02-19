@@ -22,6 +22,8 @@ function TransactionDetailContent() {
   const { settings } = useSettings()
   const idParam = searchParams.get("id")
   const id = idParam ? Number(idParam) : null
+  const returnTo = searchParams.get("returnTo") || "/dashboard/v2"
+  const backHref = returnTo.startsWith("/") ? returnTo : "/dashboard/v2"
 
   const [transaction, setTransaction] = useState<Transaction | null>(null)
   const [network, setNetwork] = useState<Network | null>(null)
@@ -120,11 +122,11 @@ function TransactionDetailContent() {
         <Card className="border-dashed">
           <CardContent className="py-12 text-center space-y-4">
             <p className="text-muted-foreground font-medium">{error || "Transaction introuvable"}</p>
-            <Button variant="outline" onClick={() => router.push("/dashboard/history")} className="rounded-xl">
+            <Button variant="outline" onClick={() => router.push(backHref)} className="rounded-xl">
               Voir l&apos;historique
             </Button>
-            <Button variant="ghost" onClick={() => router.push("/dashboard")} className="block mx-auto rounded-xl">
-              Retour à l&apos;accueil
+            <Button variant="ghost" onClick={() => router.push(backHref)} className="block mx-auto rounded-xl">
+              Retour
             </Button>
           </CardContent>
         </Card>
@@ -142,7 +144,7 @@ function TransactionDetailContent() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => router.push("/dashboard")}
+            onClick={() => router.push(backHref)}
             className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl hover:bg-muted/80 shrink-0 -ml-1"
           >
             <ArrowLeft className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
@@ -159,11 +161,30 @@ function TransactionDetailContent() {
 
         {/* Bloc principal */}
         <Card className="rounded-2xl sm:rounded-xl border border-border/60 overflow-hidden">
-          <div className={isDeposit ? "bg-gold/10 border-b border-gold/20" : "bg-turquoise/10 border-b border-turquoise/20"}>
+          {(() => {
+            const statusStr = transaction.status as string
+            const isErrorStatus = statusStr === "error" || statusStr === "reject"
+            const bannerClass = isErrorStatus
+              ? "bg-red-500/15 border-b border-red-500/30"
+              : isDeposit
+                ? "bg-gold/10 border-b border-gold/20"
+                : "bg-turquoise/10 border-b border-turquoise/20"
+            const iconClass = isErrorStatus
+              ? "bg-red-500/25 text-red-600 dark:text-red-400"
+              : isDeposit
+                ? "bg-gold/20 text-gold"
+                : "bg-turquoise/20 text-turquoise"
+            const amountClass = isErrorStatus
+              ? "text-red-600 dark:text-red-400"
+              : isDeposit
+                ? "text-gold"
+                : "text-turquoise"
+            return (
+          <div className={bannerClass}>
             <CardContent className="p-3 sm:p-6">
               <div className="flex items-start justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-3">
-                  <div className={`p-2 sm:p-3 rounded-lg sm:rounded-xl shrink-0 ${isDeposit ? "bg-gold/20 text-gold" : "bg-turquoise/20 text-turquoise"}`}>
+                  <div className={`p-2 sm:p-3 rounded-lg sm:rounded-xl shrink-0 ${iconClass}`}>
                     {isDeposit ? (
                       <ArrowDownToLine className="h-5 w-5 sm:h-8 sm:w-8" />
                     ) : (
@@ -171,7 +192,7 @@ function TransactionDetailContent() {
                     )}
                   </div>
                   <div>
-                    <p className={`text-lg sm:text-2xl font-black ${isDeposit ? "text-gold" : "text-turquoise"}`}>
+                    <p className={`text-lg sm:text-2xl font-black ${amountClass}`}>
                       {isDeposit ? "+" : "-"}
                       {transaction.amount.toLocaleString("fr-FR", {
                         style: "currency",
@@ -188,6 +209,8 @@ function TransactionDetailContent() {
               </div>
             </CardContent>
           </div>
+            )
+          })()}
 
           <CardContent className="p-3 sm:p-6 space-y-3 sm:space-y-4">
             {/* Référence */}

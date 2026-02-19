@@ -145,7 +145,7 @@ export default function DashboardPage() {
         {/* ── Actions principales : Dépôt / Retrait ── */}
         <div className="grid grid-cols-2 gap-3 sm:gap-4 max-w-xs mx-auto mt-6">
           {/* Dépôt */}
-          <Link href="/dashboard/deposit" className="group">
+          <Link href="/dashboard/deposit/v2" className="group">
             <div className="flex items-center gap-3 p-4 sm:p-5 bg-gradient-to-br from-amber-100 via-amber-50 to-orange-100 dark:from-amber-500/30 dark:via-amber-400/20 dark:to-orange-500/30 rounded-2xl border border-amber-200 dark:border-amber-400/40 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
               <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-200 to-orange-200 dark:from-amber-400 dark:to-orange-400 flex items-center justify-center shrink-0 shadow-sm">
                 <ArrowDownToLine className="w-6 h-6 text-amber-700 dark:text-amber-900" />
@@ -158,7 +158,7 @@ export default function DashboardPage() {
           </Link>
 
           {/* Retrait */}
-          <Link href="/dashboard/withdrawal" className="group">
+          <Link href="/dashboard/withdrawal/v2" className="group">
             <div className="flex items-center gap-3 p-4 sm:p-5 bg-gradient-to-br from-emerald-100 via-emerald-50 to-teal-100 dark:from-emerald-500/30 dark:via-emerald-400/20 dark:to-teal-500/30 rounded-2xl border border-emerald-200 dark:border-emerald-400/40 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
               <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-emerald-200 to-teal-200 dark:from-emerald-400 dark:to-teal-400 flex items-center justify-center shrink-0 shadow-sm">
                 <ArrowUpFromLine className="w-6 h-6 text-emerald-700 dark:text-emerald-900" />
@@ -181,7 +181,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-base sm:text-lg font-bold text-foreground">Transactions récentes</h2>
               <Link
-                href="/dashboard/history"
+                href="/dashboard/history/v2"
                 className="flex items-center gap-1 text-xs sm:text-sm font-semibold text-[#DCB452] dark:text-gold hover:opacity-80 transition-opacity"
               >
                 Voir tout <ArrowRight className="w-3.5 h-3.5" />

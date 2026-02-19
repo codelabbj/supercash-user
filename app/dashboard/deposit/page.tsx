@@ -128,7 +128,7 @@ export default function DepositPage() {
       if (createdTransactionId != null) {
         router.push(`/dashboard/transactions?id=${createdTransactionId}`)
       } else {
-        router.push("/dashboard")
+        router.push("/dashboard/v2")
       }
     }
   }
@@ -359,7 +359,7 @@ export default function DepositPage() {
                     if (createdTransactionId != null) {
                       router.push(`/dashboard/transactions?id=${createdTransactionId}`)
                     } else {
-                      router.push("/dashboard")
+                      router.push("/dashboard/v2")
                     }
                   }}
                   variant="deposit"
