@@ -15,10 +15,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { LogOut, User, Loader2, Bell, Ticket, Moon, Sun, LayoutDashboard, History, Settings as SettingsIcon } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { LogOut, User, Loader2, Bell, Ticket, Moon, Sun, LayoutDashboard, History, Smartphone } from "lucide-react"
 import { MobileAppDownload } from "@/components/mobile-app-download"
 import { FloatingSocialButton } from "@/components/floating-social-button"
+import { Switch } from "@/components/ui/switch"
 import Image from "next/image";
 import { notificationApi } from "@/lib/api-client"
 
@@ -122,8 +122,21 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             {/* Right Side Tools */}
             <div className="flex items-center gap-1 sm:gap-1.5">
               <div className="flex items-center gap-0 sm:gap-0.5">
-                <MobileAppDownload variant="header" />
-                <ThemeToggle />
+                {/* Téléchargement app : masqué sur mobile */}
+                <div className="hidden sm:block">
+                  <MobileAppDownload variant="header" />
+                </div>
+                {/* Coupon icon */}
+                <Button
+                  variant="ghost"
+                  className="h-10 w-10 rounded-xl relative hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+                  asChild
+                >
+                  <Link href="/dashboard/coupon">
+                    <Ticket className="h-5 w-5 text-slate-600 dark:text-slate-300" />
+                  </Link>
+                </Button>
+                {/* Notifications */}
                 <Button
                   variant="ghost"
                   className="h-10 w-10 rounded-xl relative hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
@@ -162,10 +175,30 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     </div>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
+                  {/* Toggle thème */}
+                  <div className="flex items-center justify-between px-2 py-2 rounded-lg hover:bg-muted/50 cursor-pointer" onClick={handleThemeToggle}>
+                    <div className="flex items-center gap-2">
+                      {mounted && resolvedTheme === "dark" ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+                      <span className="text-sm font-medium">{mounted && resolvedTheme === "dark" ? "Mode sombre" : "Mode clair"}</span>
+                    </div>
+                    <Switch
+                      checked={mounted ? resolvedTheme === "dark" : false}
+                      onCheckedChange={handleThemeToggle}
+                      onClick={(e) => e.stopPropagation()}
+                      className="scale-90"
+                    />
+                  </div>
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
                     <Link href="/dashboard/profile">
                       <User className="mr-2 h-4 w-4" />
-                      <span>Profil</span>
+                      <span>Mon Profil</span>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild className="rounded-lg cursor-pointer">
+                    <Link href="/dashboard/phones">
+                      <Smartphone className="mr-2 h-4 w-4" />
+                      <span>Numéros</span>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -198,7 +231,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
       </nav>
       {/* Main content */}
-      <main className="flex-1 container mx-auto px-3 sm:px-4 py-4 sm:py-8 relative z-20">{children}</main>
+      <main className="flex-1 px-0 py-4 sm:py-8 relative z-20">{children}</main>
 
       <footer className="w-full bg-background relative z-10 py-8">
         <div className="container mx-auto px-4">

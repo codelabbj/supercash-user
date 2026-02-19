@@ -1,123 +1,78 @@
-import {Transaction} from "@/lib/types";
-import {Card, CardContent} from "@/components/ui/card";
-import {ArrowDownToLine, ArrowUpFromLine, Check, Copy} from "lucide-react";
-import {Button} from "@/components/ui/button";
-import {format} from "date-fns";
-import {fr} from "date-fns/locale";
-import {toast} from "react-hot-toast";
-import {useState} from "react";
-import {Badge} from "@/components/ui/badge";
+import { Transaction } from "@/lib/types";
+import { format } from "date-fns";
+import { fr } from "date-fns/locale";
+import { ArrowDownToLine, ArrowUpFromLine } from "lucide-react";
 
 interface Props {
     transaction: Transaction
+    /** Mode compact pour le dashboard (liste sans bordure individuelle) */
+    compact?: boolean
 }
 
-export const TransactionCard = ({transaction} : Props) =>{
-    const [copiedReference, setCopiedReference] = useState<string|null>(null)
+const statusConfig: Record<string, { label: string; className: string }> = {
+    pending: { label: "En attente", className: "bg-amber-50   text-amber-600   dark:bg-amber-500/10  dark:text-amber-400" },
+    init_payment: { label: "En attente", className: "bg-amber-50   text-amber-600   dark:bg-amber-500/10  dark:text-amber-400" },
+    accept: { label: "Accepté", className: "bg-emerald-50  text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400" },
+    error: { label: "Erreur", className: "bg-red-50     text-red-500     dark:bg-red-500/10    dark:text-red-400" },
+    reject: { label: "Rejeté", className: "bg-red-50     text-red-500     dark:bg-red-500/10    dark:text-red-400" },
+    timeout: { label: "Expiré", className: "bg-slate-100  text-slate-500   dark:bg-white/10      dark:text-slate-400" },
+}
 
-    const copyReference = async (reference: string) => {
+export const TransactionCard = ({ transaction, compact = false }: Props) => {
+    const isDeposit = transaction.type_trans === "deposit"
+    const status = statusConfig[transaction.status] ?? { label: transaction.status, className: "bg-slate-100 text-slate-500" }
+
+    const platformName = transaction.app_details?.name ?? "—"
+    const platformImage = transaction.app_details?.image ?? null
+    const initial = platformName.charAt(0).toUpperCase()
+
+    const formattedDate = (() => {
         try {
-            await navigator.clipboard.writeText(reference)
-            setCopiedReference(reference)
-            toast.success("Référence copiée!")
-            setTimeout(() => setCopiedReference(null), 2000)
-        } catch (error) {
-            toast.error("Erreur lors de la copie")
+            return format(new Date(transaction.created_at), "dd MMM yyyy, HH:mm", { locale: fr })
+        } catch {
+            return transaction.created_at
         }
-    }
+    })()
 
-    const getStatusBadge = (status: Transaction["status"]) => {
-        const statusConfig: Record<string, { variant:"pending" |"default" | "secondary" | "destructive" | "outline"; label: string }> = {
-            pending: { variant: "pending", label: "En attente" },
-            accept: { variant: "default", label: "Accepté" },
-            init_payment: { variant: "pending", label: "En attente" },
-            error: { variant: "destructive", label: "Erreur" },
-            reject: { variant: "destructive", label: "Rejeté" },
-            timeout: { variant: "outline", label: "Expiré" },
-        }
-
-        const config = statusConfig[status] || { variant: "outline" as const, label: status }
-        return <Badge variant={config.variant} className="text-[10px] sm:text-xs px-1.5 py-0 sm:px-2 sm:py-0.5">{config.label}</Badge>
-    }
-
-    const getTypeBadge = (type: Transaction["type_trans"]) => {
-        return (
-            <Badge variant={type === "deposit" ? "default" : "secondary"} className="text-[10px] sm:text-xs px-1.5 py-0 sm:px-2 sm:py-0.5">
-                {type === "deposit" ? "Dépôt" : "Retrait"}
-            </Badge>
-        )
-    }
+    const formattedAmount = transaction.amount.toLocaleString("fr-FR") + " FCFA"
 
     return (
-        <Card key={transaction.id} className="group hover:shadow-md hover:scale-[1.005] transition-all duration-200 border bg-card">
-            <CardContent className="p-2 sm:p-4 lg:p-5">
-                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-4">
-                    <div className="flex items-start gap-2 sm:gap-4 flex-1 min-w-0 w-full">
-                        <div className={`p-1.5 sm:p-3 rounded-lg shrink-0 ${
-                            transaction.type_trans === "deposit"
-                                ? "bg-deposit/5 text-deposit border border-deposit/10"
-                                : "bg-withdrawal/5 text-withdrawal border border-withdrawal/10"
-                        }`}>
-                            {transaction.type_trans === "deposit" ? (
-                                <ArrowDownToLine className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
-                            ) : (
-                                <ArrowUpFromLine className="h-3.5 w-3.5 sm:h-5 sm:w-5" />
-                            )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                            <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 mb-0.5 sm:mb-1.5">
-                                <div className="flex items-center gap-1 sm:gap-2">
-                                    <h3 className="font-bold text-xs sm:text-base text-foreground">#{transaction.reference}</h3>
-                                    <Button
-                                        variant="ghost"
-                                        size="icon"
-                                        className="h-4 w-4 sm:h-6 sm:w-6 rounded-md hover:bg-muted"
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            e.stopPropagation()
-                                            copyReference(transaction.reference)
-                                        }}
-                                        title="Copier la référence"
-                                    >
-                                        {copiedReference === transaction.reference ? (
-                                            <Check className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-green-600" />
-                                        ) : (
-                                            <Copy className="h-2.5 w-2.5 sm:h-3.5 sm:w-3.5 text-muted-foreground hover:text-foreground" />
-                                        )}
-                                    </Button>
-                                </div>
-                                <div className="flex items-center gap-1 sm:gap-2">
-                                    {getTypeBadge(transaction.type_trans)}
-                                    {getStatusBadge(transaction.status)}
-                                </div>
+        <div className="flex items-center gap-3 px-4 py-3.5 sm:px-5 sm:py-4 hover:bg-slate-50 dark:hover:bg-white/5 transition-colors cursor-default">
 
-                            </div>
-                            <div className="flex flex-row items-start sm:items-center gap-0.5 sm:gap-2 text-[9px] sm:text-xs text-muted-foreground">
-                                <span className="font-medium">{transaction.app_details.name}</span>
-                                <span>•</span>
-                                <span className="truncate">+{transaction.phone_number.slice(0,3)} {transaction.phone_number.slice(3)}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="text-left sm:text-right shrink-0 w-full sm:w-auto border-t sm:border-t-0 pt-1.5 sm:pt-0 flex sm:flex-col items-start sm:items-end justify-between sm:justify-start gap-0.5 sm:gap-1">
-                        <p className={`text-sm sm:text-lg font-bold ${
-                            transaction.type_trans === "deposit" ? "text-deposit" : "text-withdrawal"
-                        }`}>
-                            {transaction.type_trans === "deposit" ? "+" : "-"}
-                            {transaction.amount.toLocaleString("fr-FR", {
-                                style: "currency",
-                                currency: "XOF",
-                                minimumFractionDigits: 0,
-                            })}
-                        </p>
-                        <p className="text-[9px] sm:text-xs text-muted-foreground">
-                            {format(new Date(transaction.created_at), "dd MMM à HH:mm", {
-                                locale: fr,
-                            })}
-                        </p>
-                    </div>
-                </div>
-            </CardContent>
-        </Card>
+            {/* Avatar : logo plateforme ou initiale */}
+            <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full shrink-0 overflow-hidden flex items-center justify-center bg-[#1A2E5A] dark:bg-white/10">
+                {platformImage ? (
+                    <img
+                        src={platformImage}
+                        alt={platformName}
+                        className="w-full h-full object-cover"
+                        onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = "none" }}
+                    />
+                ) : (
+                    <span className="text-white font-bold text-base select-none">{initial}</span>
+                )}
+            </div>
+
+            {/* Centre : type + plateforme · date */}
+            <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm text-[#1A1A1A] dark:text-white leading-tight truncate">
+                    {isDeposit ? "Dépôt" : "Retrait"}
+                </p>
+                <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">
+                    {platformName} · {formattedDate}
+                </p>
+            </div>
+
+            {/* Droite : montant + badge statut */}
+            <div className="shrink-0 flex flex-col items-end gap-1">
+                <span className={`text-sm font-bold leading-tight ${isDeposit ? "text-[#39D196]" : "text-red-500"}`}>
+                    {isDeposit ? "+" : "−"}{formattedAmount}
+                </span>
+                <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${status.className}`}>
+                    {status.label}
+                </span>
+            </div>
+
+        </div>
     )
 }
