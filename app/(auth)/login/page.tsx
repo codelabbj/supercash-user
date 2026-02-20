@@ -265,9 +265,12 @@ export default function LoginPage() {
               </form>
 
               <div className="mt-4 pt-4 border-t border-muted/50 text-center space-y-4">
-                <p className="text-muted-foreground font-medium text-sm">Pas encore de compte? <Link href="/signup" className="text-primary font-bold hover:underline">S'inscrire</Link></p>
-                <div className="flex justify-center">
-                  <MobileAppDownload />
+                <p className="text-muted-foreground font-medium text-sm">Pas encore de compte? <Link href="/signup" className="text-primary font-bold hover:underline">S&apos;inscrire</Link></p>
+                <div className="space-y-2">
+                  <p className="text-xs font-semibold text-muted-foreground">Télécharger l&apos;application mobile</p>
+                  <div className="flex justify-center">
+                    <MobileAppDownload className="w-full sm:w-auto" />
+                  </div>
                 </div>
               </div>
             </CardContent>

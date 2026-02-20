@@ -40,24 +40,19 @@ export function MobileAppDownload({
     <Button
       variant="outline"
       className={cn(
-        "group h-11 px-5 rounded-2xl transition-all hover:bg-slate-50 dark:hover:bg-white/5",
-        "border-slate-200 dark:border-white/10 bg-white dark:bg-[#1A1A1A] text-slate-900 dark:text-white",
-        "flex items-center gap-3 font-medium",
+        "group h-11 px-5 rounded-2xl transition-all hover:bg-primary/10 dark:hover:bg-primary/10",
+        "border-2 border-primary/40 dark:border-primary/50 bg-white dark:bg-[#1A1A1A] text-slate-900 dark:text-white",
+        "flex items-center gap-3 font-semibold",
         className
       )}
       asChild
     >
-      <a href={downloadUrl} download="SuperCash.apk">
-        <div className="flex items-center gap-2">
-          <Smartphone className="h-5 w-5 text-slate-600 dark:text-slate-400 group-hover:text-gold transition-colors" />
-          <Download className="h-4 w-4 text-slate-600 dark:text-slate-400 group-hover:text-gold transition-colors" />
-        </div>
+      <a href={downloadUrl} download="SuperCash.apk" className="flex items-center gap-2 w-full justify-center sm:justify-center">
+        <Smartphone className="h-5 w-5 text-primary shrink-0" />
+        <Download className="h-4 w-4 text-primary shrink-0" />
         {showText && (
-          <span className={cn(
-            "text-sm tracking-tight",
-            "hidden sm:inline"
-          )}>
-            Télécharger l'app
+          <span className="text-sm tracking-tight">
+            Télécharger l&apos;application
           </span>
         )}
       </a>
