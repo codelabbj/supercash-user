@@ -67,7 +67,7 @@ export function NetworkStep({ selectedNetwork, onSelect, type, listLayout }: Net
                 type="button"
                 onClick={() => onSelect(network)}
                 className={cn(
-                  "w-full text-left rounded-xl overflow-hidden transition-all duration-200 active:scale-[0.99]",
+                  "w-full text-left rounded-none overflow-hidden transition-all duration-200 active:scale-[0.99]",
                   "flex items-center gap-3 py-2.5 px-3 border border-border/60",
                   selected
                     ? "bg-muted/60 dark:bg-muted/40 border-l-4 border-l-primary"
@@ -75,7 +75,7 @@ export function NetworkStep({ selectedNetwork, onSelect, type, listLayout }: Net
                 )}
               >
                 <div className={cn(
-                  "w-9 h-9 rounded-lg overflow-hidden shrink-0",
+                  "w-9 h-9 rounded-none overflow-hidden shrink-0",
                   selected ? "ring-2 ring-primary/20" : "",
                   "bg-muted/50 dark:bg-muted/50"
                 )}>
@@ -104,7 +104,7 @@ export function NetworkStep({ selectedNetwork, onSelect, type, listLayout }: Net
             <Card
               key={network.id}
               className={cn(
-                "cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.98] rounded-xl overflow-hidden",
+                "cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.98] rounded-none overflow-hidden",
                 selected
                   ? isDeposit ? "bg-gold text-white border-gold ring-2 ring-gold/30 shadow-lg" : "bg-turquoise text-white border-turquoise ring-2 ring-turquoise/30 shadow-lg"
                   : "bg-card hover:border-primary/20 border-border/80"
@@ -112,8 +112,8 @@ export function NetworkStep({ selectedNetwork, onSelect, type, listLayout }: Net
               onClick={() => onSelect(network)}
             >
               <CardContent className="p-2.5 sm:p-4 flex flex-col items-center gap-2 sm:gap-3">
-                <div className={cn("w-10 h-10 sm:w-14 sm:h-14 rounded-lg overflow-hidden p-0.5 sm:p-1 shrink-0", selected ? "bg-white/20" : "bg-muted/50")}>
-                  <SafeImage src={network.image} alt={network.name} className="w-full h-full object-cover rounded-md" fallbackText={network.public_name.charAt(0).toUpperCase()} />
+                <div className={cn("w-10 h-10 sm:w-14 sm:h-14 rounded-none overflow-hidden p-0.5 sm:p-1 shrink-0", selected ? "bg-white/20" : "bg-muted/50")}>
+                  <SafeImage src={network.image} alt={network.name} className="w-full h-full object-cover rounded-none" fallbackText={network.public_name.charAt(0).toUpperCase()} />
                 </div>
                 <div className="text-center min-w-0 w-full">
                   <h3 className="text-sm sm:text-base font-bold truncate">{network.public_name}</h3>
@@ -130,7 +130,7 @@ export function NetworkStep({ selectedNetwork, onSelect, type, listLayout }: Net
       </div>
 
       {networks.length === 0 && (
-        <Card className="border-2 border-dashed border-muted-foreground/20 bg-muted/5 rounded-xl sm:rounded-lg">
+        <Card className="border-2 border-dashed border-muted-foreground/20 bg-muted/5 rounded-none">
           <CardContent className="py-12 sm:py-20 text-center">
             <p className="text-muted-foreground font-semibold text-sm sm:text-base">Aucun réseau disponible</p>
           </CardContent>

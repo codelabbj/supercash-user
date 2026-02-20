@@ -81,8 +81,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex flex-col min-h-screen bg-background relative">
-      {/* Header */}
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm">
+      {/* Header : safe area top pour barre de statut (Capacitor / Android) */}
+      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur-sm safe-area-top">
         <div className="container mx-auto px-3 sm:px-4">
           {/* Top row with logo and user menu */}
           <div className="flex h-16 sm:h-20 items-center justify-between relative">
@@ -214,7 +214,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </header>
       {/* Mobile Bottom Navigation (hidden on deposit v2 / withdrawal v2 flow pages) */}
       {!pathname.startsWith("/dashboard/deposit/v2") && !pathname.startsWith("/dashboard/withdrawal/v2") && (
-      <nav className="md:hidden fixed bottom-4 left-1/2 -translate-x-1/2 z-[100] w-[88%] max-w-[280px] px-3 py-2 bg-background/95 dark:bg-background/95 backdrop-blur-md border border-border/60 rounded-xl shadow-lg flex items-center justify-center gap-1">
+      <nav className="md:hidden fixed bottom-0 left-1/2 -translate-x-1/2 z-[100] w-[88%] max-w-[280px] px-3 pt-2 pb-safe-nav bg-background/95 dark:bg-background/95 backdrop-blur-md border border-border/60 border-b-0 rounded-t-xl shadow-lg flex items-center justify-center gap-1">
         <Link
           href="/dashboard/v2"
           className={`flex flex-1 flex-col items-center gap-0.5 py-2 rounded-lg transition-all duration-200 ${(pathname === '/dashboard' || pathname === '/dashboard/v2') ? 'text-gold bg-gold/10 dark:bg-gold/15' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}`}

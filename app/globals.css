@@ -164,6 +164,9 @@
     font-size: 16px;
     line-height: 1.6;
     overflow-x: hidden;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
   }
 
   /* Ensure dark mode works */
@@ -587,5 +590,37 @@
 
   .shadow-premium {
     box-shadow: var(--shadow-premium);
+  }
+
+  /* Safe area insets (Capacitor / iOS / Android) */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-area-left {
+    padding-left: env(safe-area-inset-left, 0px);
+  }
+
+  .safe-area-right {
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .safe-area-x {
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+  }
+
+  .safe-area-y {
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Barre de navigation fixe : padding bas = safe area avec minimum 0.5rem */
+  .pb-safe-nav {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
   }
 }

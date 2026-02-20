@@ -163,7 +163,11 @@ export function PhoneStep({ selectedNetwork, selectedPhone, onSelect, type, list
           <Loader2 className="h-8 w-8 sm:h-10 sm:w-10 animate-spin text-gold dark:text-turquoise" />
         </div>
       ) : (
-        <div className={cn(listLayout ? "flex flex-col gap-2.5" : "grid grid-cols-2 gap-2 sm:gap-4")}>
+        <div className="flex flex-col gap-3 min-h-0">
+          <div className={cn(
+            "overflow-y-auto min-h-0 overscroll-contain",
+            listLayout ? "flex flex-col gap-2.5 max-h-[45vh]" : "grid grid-cols-2 gap-2 sm:gap-4 max-h-[50vh] content-start"
+          )}>
           {phones.map((phone) => {
             const selected = selectedPhone?.id === phone.id
             const isDeposit = type === "deposit"
@@ -176,7 +180,7 @@ export function PhoneStep({ selectedNetwork, selectedPhone, onSelect, type, list
                   onClick={() => onSelect(phone)}
                   onKeyDown={(e) => e.key === "Enter" && onSelect(phone)}
                   className={cn(
-                    "rounded-xl overflow-hidden transition-all duration-200 active:scale-[0.99] cursor-pointer",
+                    "rounded-none overflow-hidden transition-all duration-200 active:scale-[0.99] cursor-pointer",
                     "flex items-center gap-3 py-2.5 px-3 border border-border/60",
                     selected
                       ? "bg-muted/60 dark:bg-muted/40 border-l-4 border-l-primary"
@@ -184,7 +188,7 @@ export function PhoneStep({ selectedNetwork, selectedPhone, onSelect, type, list
                   )}
                 >
                   <div className={cn(
-                    "w-9 h-9 rounded-lg flex items-center justify-center shrink-0 text-[10px] font-semibold bg-muted/50 dark:bg-muted/50 text-foreground",
+                    "w-9 h-9 rounded-none flex items-center justify-center shrink-0 text-[10px] font-semibold bg-muted/50 dark:bg-muted/50 text-foreground",
                     selected && "ring-2 ring-primary/20"
                   )}>
                     +{phone.phone.slice(0, 3)}
@@ -215,14 +219,14 @@ export function PhoneStep({ selectedNetwork, selectedPhone, onSelect, type, list
               <Card
                 key={phone.id}
                 className={cn(
-                  "relative overflow-hidden cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.98] rounded-xl sm:rounded-lg",
+                  "relative overflow-hidden cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.98] rounded-none",
                   selected ? (isDeposit ? "bg-gold text-white shadow-lg ring-2 ring-gold/30" : "bg-turquoise text-white shadow-lg ring-2 ring-turquoise/30") : "bg-card border-border/80 hover:border-primary/20"
                 )}
                 onClick={() => onSelect(phone)}
               >
                 <CardContent className="p-2.5 sm:p-4 min-h-[88px] sm:min-h-[108px] flex flex-col justify-between relative z-10">
                   <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-                    <div className={cn("w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl flex items-center justify-center shrink-0 text-[10px] sm:text-xs font-black", selected ? "bg-white/20" : "bg-gold/10 text-gold dark:bg-turquoise/10 dark:text-turquoise")}>+{phone.phone.slice(0, 3)}</div>
+                    <div className={cn("w-8 h-8 sm:w-10 sm:h-10 rounded-none flex items-center justify-center shrink-0 text-[10px] sm:text-xs font-black", selected ? "bg-white/20" : "bg-gold/10 text-gold dark:bg-turquoise/10 dark:text-turquoise")}>+{phone.phone.slice(0, 3)}</div>
                     <div className="min-w-0 flex-1">
                       <h3 className="text-sm sm:text-base font-black tracking-tight break-all">{phone.phone.slice(3)}</h3>
                       <p className={cn("text-[7px] sm:text-[8px] font-bold uppercase tracking-wider opacity-60", selected ? "text-white" : "text-muted-foreground")}>Enregistré</p>
@@ -242,24 +246,25 @@ export function PhoneStep({ selectedNetwork, selectedPhone, onSelect, type, list
               </Card>
             )
           })}
+          </div>
 
           <button
             type="button"
             onClick={() => setIsAddDialogOpen(true)}
             className={cn(
-              "rounded-lg border-2 border-dashed transition-all flex items-center justify-center gap-2 py-2.5 px-3 group",
+              "shrink-0 rounded-none border-2 border-dashed transition-all flex items-center justify-center gap-2 py-2.5 px-3 group bg-card border-border",
               listLayout
-                ? "border-border/60 hover:border-border hover:bg-muted/40 dark:hover:bg-muted/30 text-muted-foreground hover:text-foreground"
-                : "min-h-[88px] sm:min-h-[108px] rounded-xl sm:rounded-2xl border-muted-foreground/25 hover:border-gold/50 dark:hover:border-turquoise/50 hover:bg-gold/5 dark:hover:bg-turquoise/5"
+                ? "hover:border-foreground/30 hover:bg-muted/50 dark:hover:bg-muted/40 text-foreground"
+                : "min-h-[72px] sm:min-h-[88px] rounded-none hover:border-gold/60 dark:hover:border-turquoise/60 hover:bg-gold/10 dark:hover:bg-turquoise/10"
             )}
           >
             <div className={cn(
               "rounded-full flex items-center justify-center transition-colors",
-              listLayout ? "w-8 h-8 bg-muted/60 group-hover:bg-muted text-foreground" : "w-8 h-8 sm:w-10 sm:h-10 bg-muted group-hover:bg-gold dark:group-hover:bg-turquoise group-hover:text-white dark:group-hover:text-black"
+              listLayout ? "w-8 h-8 bg-primary/15 text-primary group-hover:bg-primary group-hover:text-primary-foreground" : "w-8 h-8 sm:w-10 sm:h-10 bg-muted group-hover:bg-gold dark:group-hover:bg-turquoise group-hover:text-white dark:group-hover:text-black"
             )}>
               <Plus className={listLayout ? "h-4 w-4" : "h-4 w-4 sm:h-5 sm:w-5"} />
             </div>
-            <span className={cn("font-semibold text-muted-foreground transition-colors", listLayout ? "text-xs group-hover:text-foreground" : "text-xs sm:text-sm group-hover:text-gold dark:group-hover:text-turquoise")}>Ajouter</span>
+            <span className={cn("font-semibold transition-colors", listLayout ? "text-xs text-foreground" : "text-xs sm:text-sm text-muted-foreground group-hover:text-gold dark:group-hover:text-turquoise")}>Ajouter un numéro</span>
           </button>
         </div>
       )}

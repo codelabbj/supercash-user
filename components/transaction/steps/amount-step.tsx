@@ -114,7 +114,7 @@ export function AmountStep({
               href={withdrawalTutoLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between gap-2 rounded-xl border border-border/60 bg-card p-3 hover:bg-muted/40 transition-colors text-left"
+              className="flex items-center justify-between gap-2 rounded-none border border-border/60 bg-card p-3 hover:bg-muted/40 transition-colors text-left"
             >
               <span className="text-sm font-medium text-foreground">Comment avoir un code de retrait ?</span>
               <YoutubeIcon className="h-6 w-6 shrink-0" />
@@ -125,7 +125,7 @@ export function AmountStep({
               href={whyWithdrawalFailLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-between gap-2 rounded-xl border border-border/60 bg-card p-3 hover:bg-muted/40 transition-colors text-left"
+              className="flex items-center justify-between gap-2 rounded-none border border-border/60 bg-card p-3 hover:bg-muted/40 transition-colors text-left"
             >
               <span className="text-sm font-medium text-foreground">Pourquoi mon retrait a échoué ?</span>
               <YoutubeIcon className="h-6 w-6 shrink-0" />
@@ -135,12 +135,12 @@ export function AmountStep({
 
         <Button
           onClick={() => setShowWithdrawalForm(true)}
-          className="w-full h-11 text-sm font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90"
+          className="w-full h-11 text-sm font-semibold rounded-none bg-primary text-primary-foreground hover:bg-primary/90"
         >
           J&apos;ai déjà un code de retrait
         </Button>
 
-        <div className="rounded-xl border border-border/60 bg-card p-3 pt-4 mt-2">
+        <div className="rounded-none border border-border/60 bg-card p-3 pt-4 mt-2">
           <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground mb-2">Récapitulatif</p>
           <div className="space-y-1.5 text-xs text-muted-foreground">
             <p><span className="text-foreground font-medium">Plateforme</span> {selectedPlatform.name}</p>
@@ -163,7 +163,7 @@ export function AmountStep({
 
       {/* Champ montant */}
       <div className="space-y-2">
-        <div className="rounded-xl border border-border/60 bg-muted/20 p-3 space-y-2">
+        <div className="rounded-none border border-border/60 bg-muted/20 p-3 space-y-2">
           <Label htmlFor="amount" className="text-xs font-medium text-muted-foreground">
             Montant
           </Label>
@@ -194,7 +194,7 @@ export function AmountStep({
 
       {/* Consigne dépôt */}
       {type === "deposit" && selectedPhone && (
-        <div className="rounded-xl border border-border/60 bg-muted/30 dark:bg-muted/20 p-3 flex items-start gap-2">
+        <div className="rounded-none border border-border/60 bg-muted/30 dark:bg-muted/20 p-3 flex items-start gap-2">
           <svg className="h-4 w-4 text-muted-foreground mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
@@ -216,7 +216,7 @@ export function AmountStep({
       {/* Code retrait */}
       {type === "withdrawal" && (
         <div className="space-y-2">
-          <div className="rounded-xl border border-border/60 bg-muted/20 p-3 space-y-2">
+          <div className="rounded-none border border-border/60 bg-muted/20 p-3 space-y-2">
             <Label htmlFor="withdriwalCode" className="text-xs font-medium text-muted-foreground">
               Code de retrait
             </Label>
@@ -241,13 +241,13 @@ export function AmountStep({
       <Button
         onClick={onNext}
         disabled={!isFormValid()}
-        className="w-full h-11 text-sm font-semibold rounded-xl bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-opacity"
+        className="w-full h-11 text-sm font-semibold rounded-none bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-opacity"
       >
         {type === "deposit" ? "Confirmer le dépôt" : "Confirmer le retrait"}
       </Button>
 
       {/* Récapitulatif en bas (style v2) */}
-      <div className="rounded-xl border border-border/60 bg-card p-3 pt-4 mt-2">
+      <div className="rounded-none border border-border/60 bg-card p-3 pt-4 mt-2">
         <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground mb-2">Récapitulatif</p>
         <div className="space-y-1.5 text-xs text-muted-foreground">
           <p><span className="text-foreground font-medium">Plateforme</span> {selectedPlatform.name}</p>
