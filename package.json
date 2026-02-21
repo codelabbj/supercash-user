@@ -21,8 +21,7 @@
     "cap:sync": "npx cap sync",
     "cap:open": "npx cap open",
     "cap:run": "npx cap run",
-    "cap:assets": "npx @capacitor/assets generate --iconBackgroundColor '#22C55E' --iconBackgroundColorDark '#16A34A'",
-    "postinstall": "patch-package"
+    "cap:assets": "npx @capacitor/assets generate --iconBackgroundColor '#22C55E' --iconBackgroundColorDark '#16A34A'"
   },
   "dependencies": {
     "@hookform/resolvers": "latest",
