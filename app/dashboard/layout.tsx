@@ -126,16 +126,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <div className="hidden sm:block">
                   <MobileAppDownload variant="header" />
                 </div>
-                {/* Coupon icon */}
-                <Button
-                  variant="ghost"
-                  className="h-10 w-10 rounded-xl relative hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
-                  asChild
-                >
-                  <Link href="/dashboard/coupon">
-                    <Ticket className="h-5 w-5 text-slate-600 dark:text-slate-300" />
-                  </Link>
-                </Button>
                 {/* Notifications */}
                 <Button
                   variant="ghost"
@@ -214,22 +204,22 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </header>
       {/* Mobile Bottom Navigation (hidden on deposit v2 / withdrawal v2 flow pages) */}
       {!pathname.startsWith("/dashboard/deposit/v2") && !pathname.startsWith("/dashboard/withdrawal/v2") && (
-      <nav className="md:hidden fixed bottom-0 left-1/2 -translate-x-1/2 z-[100] w-[88%] max-w-[280px] px-3 pt-2 pb-safe-nav bg-background/95 dark:bg-background/95 backdrop-blur-md border border-border/60 border-b-0 rounded-t-xl shadow-lg flex items-center justify-center gap-1">
-        <Link
-          href="/dashboard/v2"
-          className={`flex flex-1 flex-col items-center gap-0.5 py-2 rounded-lg transition-all duration-200 ${(pathname === '/dashboard' || pathname === '/dashboard/v2') ? 'text-gold bg-gold/10 dark:bg-gold/15' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}`}
-        >
-          <LayoutDashboard className="h-4 w-4" />
-          <span className="text-[10px] font-medium">Accueil</span>
-        </Link>
-        <Link
-          href="/dashboard/history/v2"
-          className={`flex flex-1 flex-col items-center gap-0.5 py-2 rounded-lg transition-all duration-200 ${pathname.startsWith('/dashboard/history') ? 'text-gold bg-gold/10 dark:bg-gold/15' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}`}
-        >
-          <History className="h-4 w-4" />
-          <span className="text-[10px] font-medium">Historique</span>
-        </Link>
-      </nav>
+        <nav className="md:hidden fixed bottom-0 left-1/2 -translate-x-1/2 z-[100] w-[88%] max-w-[280px] px-3 pt-2 pb-safe-nav bg-background/95 dark:bg-background/95 backdrop-blur-md border border-border/60 border-b-0 rounded-t-xl shadow-lg flex items-center justify-center gap-1">
+          <Link
+            href="/dashboard/v2"
+            className={`flex flex-1 flex-col items-center gap-0.5 py-2 rounded-lg transition-all duration-200 ${(pathname === '/dashboard' || pathname === '/dashboard/v2') ? 'text-gold bg-gold/10 dark:bg-gold/15' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}`}
+          >
+            <LayoutDashboard className="h-4 w-4" />
+            <span className="text-[10px] font-medium">Accueil</span>
+          </Link>
+          <Link
+            href="/dashboard/history/v2"
+            className={`flex flex-1 flex-col items-center gap-0.5 py-2 rounded-lg transition-all duration-200 ${pathname.startsWith('/dashboard/history') ? 'text-gold bg-gold/10 dark:bg-gold/15' : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'}`}
+          >
+            <History className="h-4 w-4" />
+            <span className="text-[10px] font-medium">Historique</span>
+          </Link>
+        </nav>
       )}
       {/* Main content : sur tablette et plus, largeur max type téléphone, centré */}
       <main className="flex-1 px-0 py-4 sm:py-6 relative z-20">

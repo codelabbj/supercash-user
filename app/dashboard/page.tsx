@@ -99,77 +99,77 @@ export default function DashboardPage() {
       {/* ── Section avec arrière-plan coloré ── */}
       <div className="bg-gradient-to-b from-orange-200 via-amber-100 to-white dark:from-slate-800 dark:via-slate-800/90 dark:to-slate-950 pb-8 -mx-6 sm:-mx-8 md:-mx-4 lg:mx-0 px-6 sm:px-8 md:px-4 lg:px-0 rounded-b-3xl">
         <div className="mx-auto max-w-6xl">
-        {/* ── Bannière publicitaire ── */}
-        {isLoadingAd ? (
-          <div className="w-full aspect-[2/1] sm:aspect-[21/6] rounded-2xl bg-muted/40 animate-pulse flex items-center justify-center">
-            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
-          </div>
-        ) : advertisements.length > 0 && advertisements.find((ad) => ad.enable) ? (
-          <div
-            ref={carouselRef}
-            onMouseEnter={() => setIsCarouselHovered(true)}
-            onMouseLeave={() => setIsCarouselHovered(false)}
-          >
-            <Carousel className="w-full" opts={{ loop: true }}>
-              <CarouselContent>
-                {advertisements.map((ad, index) =>
-                  ad.enable ? (
-                    <CarouselItem key={index}>
-                      <div
-                        className="relative w-full aspect-[2/1] sm:aspect-[21/6] rounded-2xl overflow-hidden bg-muted/10 cursor-zoom-in group"
-                        onClick={() => { setSelectedAdIndex(index); setIsModalOpen(true) }}
-                      >
-                        <Image
-                          src={ad.image}
-                          alt={`Publicité ${index + 1}`}
-                          fill
-                          className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
-                          priority={index === 0}
-                        />
-                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
-                      </div>
-                    </CarouselItem>
-                  ) : null
+          {/* ── Bannière publicitaire ── */}
+          {isLoadingAd ? (
+            <div className="w-full aspect-[2/1] sm:aspect-[21/6] rounded-2xl bg-muted/40 animate-pulse flex items-center justify-center">
+              <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+            </div>
+          ) : advertisements.length > 0 && advertisements.find((ad) => ad.enable) ? (
+            <div
+              ref={carouselRef}
+              onMouseEnter={() => setIsCarouselHovered(true)}
+              onMouseLeave={() => setIsCarouselHovered(false)}
+            >
+              <Carousel className="w-full" opts={{ loop: true }}>
+                <CarouselContent>
+                  {advertisements.map((ad, index) =>
+                    ad.enable ? (
+                      <CarouselItem key={index}>
+                        <div
+                          className="relative w-full aspect-[2/1] sm:aspect-[21/6] rounded-2xl overflow-hidden bg-muted/10 cursor-zoom-in group"
+                          onClick={() => { setSelectedAdIndex(index); setIsModalOpen(true) }}
+                        >
+                          <Image
+                            src={ad.image}
+                            alt={`Publicité ${index + 1}`}
+                            fill
+                            className="object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                            priority={index === 0}
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-300" />
+                        </div>
+                      </CarouselItem>
+                    ) : null
+                  )}
+                </CarouselContent>
+                {advertisements.length > 1 && (
+                  <>
+                    <CarouselPrevious id="previous" className="left-2 sm:left-4" />
+                    <CarouselNext id="next" className="right-2 sm:right-4" />
+                  </>
                 )}
-              </CarouselContent>
-              {advertisements.length > 1 && (
-                <>
-                  <CarouselPrevious id="previous" className="left-2 sm:left-4" />
-                  <CarouselNext id="next" className="right-2 sm:right-4" />
-                </>
-              )}
-            </Carousel>
+              </Carousel>
+            </div>
+          ) : null}
+
+          {/* ── Actions principales : Dépôt / Retrait / Coupon (Circulaires) ── */}
+          <div className="flex items-center justify-center gap-6 sm:gap-10 mx-auto mt-6 pb-2">
+            
+            {/* Dépôt */}
+            <Link href="/dashboard/deposit/v2" className="flex flex-col items-center gap-2 group">
+              <div className="w-[68px] h-[68px] sm:w-[72px] sm:h-[72px] rounded-full bg-gradient-to-br from-amber-200/80 to-orange-200/80 dark:from-amber-500/40 dark:to-orange-500/40 border border-amber-300/60 dark:border-amber-500/30 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all group-hover:scale-105">
+                 <ArrowDownToLine className="w-7 h-7 text-amber-800 dark:text-amber-200" strokeWidth={2.5} />
+              </div>
+              <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 dark:text-slate-200/90 tracking-wide">Dépôt</span>
+            </Link>
+
+            {/* Retrait */}
+            <Link href="/dashboard/withdrawal/v2" className="flex flex-col items-center gap-2 group">
+              <div className="w-[68px] h-[68px] sm:w-[72px] sm:h-[72px] rounded-full bg-gradient-to-br from-emerald-200/80 to-teal-200/80 dark:from-emerald-500/40 dark:to-teal-500/40 border border-emerald-300/60 dark:border-emerald-500/30 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all group-hover:scale-105">
+                 <ArrowUpFromLine className="w-7 h-7 text-emerald-800 dark:text-emerald-200" strokeWidth={2.5} />
+              </div>
+              <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 dark:text-slate-200/90 tracking-wide">Retrait</span>
+            </Link>
+
+            {/* Coupon */}
+            <Link href="/dashboard/coupon" className="flex flex-col items-center gap-2 group">
+              <div className="w-[68px] h-[68px] sm:w-[72px] sm:h-[72px] rounded-full bg-gradient-to-br from-cyan-200/80 to-blue-200/80 dark:from-cyan-500/40 dark:to-blue-500/40 border border-cyan-300/60 dark:border-cyan-500/30 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all group-hover:scale-105">
+                 <Ticket className="w-7 h-7 text-cyan-800 dark:text-cyan-200" strokeWidth={2.5} />
+              </div>
+              <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 dark:text-slate-200/90 tracking-wide">Coupon</span>
+            </Link>
+
           </div>
-        ) : null}
-
-        {/* ── Actions principales : Dépôt / Retrait ── */}
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 max-w-xs mx-auto mt-6">
-          {/* Dépôt */}
-          <Link href="/dashboard/deposit/v2" className="group">
-            <div className="flex items-center gap-3 p-4 sm:p-5 bg-gradient-to-br from-amber-100 via-amber-50 to-orange-100 dark:from-amber-500/30 dark:via-amber-400/20 dark:to-orange-500/30 rounded-2xl border border-amber-200 dark:border-amber-400/40 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-amber-200 to-orange-200 dark:from-amber-400 dark:to-orange-400 flex items-center justify-center shrink-0 shadow-sm">
-                <ArrowDownToLine className="w-6 h-6 text-amber-700 dark:text-amber-900" />
-              </div>
-              <div className="min-w-0">
-                <p className="font-bold text-sm text-amber-900 dark:text-amber-100 leading-tight">Dépôt</p>
-                <p className="text-[10px] text-amber-700 dark:text-amber-300 mt-0.5 leading-tight">Dépôt</p>
-              </div>
-            </div>
-          </Link>
-
-          {/* Retrait */}
-          <Link href="/dashboard/withdrawal/v2" className="group">
-            <div className="flex items-center gap-3 p-4 sm:p-5 bg-gradient-to-br from-emerald-100 via-emerald-50 to-teal-100 dark:from-emerald-500/30 dark:via-emerald-400/20 dark:to-teal-500/30 rounded-2xl border border-emerald-200 dark:border-emerald-400/40 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200">
-              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-emerald-200 to-teal-200 dark:from-emerald-400 dark:to-teal-400 flex items-center justify-center shrink-0 shadow-sm">
-                <ArrowUpFromLine className="w-6 h-6 text-emerald-700 dark:text-emerald-900" />
-              </div>
-              <div className="min-w-0">
-                <p className="font-bold text-sm text-emerald-900 dark:text-emerald-100 leading-tight">Retrait</p>
-                <p className="text-[10px] text-emerald-700 dark:text-emerald-300 mt-0.5 leading-tight">Retrait</p>
-              </div>
-            </div>
-          </Link>
-        </div>
         </div>
       </div>
 
@@ -226,6 +226,7 @@ export default function DashboardPage() {
             <DialogTitle className="sr-only">Aperçu Publicité</DialogTitle>
             <div className="relative w-full h-[100dvh] flex flex-col items-center justify-center">
               <button
+                aria-label="Fermer la publicité"
                 onClick={() => setIsModalOpen(false)}
                 className="fixed top-6 right-6 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all z-[120] backdrop-blur-sm border border-white/20 shadow-2xl active:scale-95"
               >
@@ -263,6 +264,7 @@ export default function DashboardPage() {
 
       {/* ── Bouton d'action flottant (FAB) ── */}
       <button
+        aria-label="Contacter le support"
         className="fixed bottom-6 right-6 w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-300 flex items-center justify-center z-40 md:bottom-8 md:right-8"
         onClick={() => {
           // Action pour le support/chat
