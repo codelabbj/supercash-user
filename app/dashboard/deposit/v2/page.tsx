@@ -259,23 +259,22 @@ export default function DepositV2Page() {
             <PlatformHelpLinks platform={selectedPlatform} type="deposit" />
           )}
           {renderCurrentStep()}
+          
+          {currentStep !== 1 && currentStep !== 3 && currentStep <= 5 && (
+            <div className="mt-6 sm:mt-8">
+              <StepNavigation
+                currentStep={currentStep}
+                totalSteps={totalSteps}
+                onPrevious={handlePrevious}
+                onNext={handleNext}
+                isNextDisabled={!isStepValid()}
+              />
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Suivant / Précédent en bas (fixe sur mobile) */}
-      {currentStep <= 5 && (
-        <div className="fixed bottom-0 left-0 right-0 z-50 md:relative md:z-0 bg-background/95 dark:bg-background/95 backdrop-blur-md border-t border-border/60 md:border-t-0 md:px-4 md:pb-0 md:pt-2 pb-safe-nav">
-          <div className="px-4 py-3 md:max-w-2xl md:mx-auto">
-            <StepNavigation
-              currentStep={currentStep}
-              totalSteps={totalSteps}
-              onPrevious={handlePrevious}
-              onNext={handleNext}
-              isNextDisabled={!isStepValid()}
-            />
-          </div>
-        </div>
-      )}
+      {/* Navigation des étapes placée directement dans le flux (ci-dessus) */}
 
       <ConfirmationDialog
         isOpen={isConfirmationOpen}

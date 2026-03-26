@@ -1,7 +1,6 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
-import { ChevronLeft, ChevronRight } from "lucide-react"
 
 interface StepNavigationProps {
   currentStep: number
@@ -23,26 +22,22 @@ export function StepNavigation({
   previousLabel = "Précédent"
 }: StepNavigationProps) {
   return (
-    <div className="flex justify-between pt-2 sm:pt-4 gap-2 sm:gap-4">
+    <div className="flex justify-between pt-2 sm:pt-4 gap-3 sm:gap-4 w-full px-1">
       <Button
         variant="outline"
         onClick={onPrevious}
         disabled={currentStep === 1}
-        className="flex items-center justify-center gap-1.5 sm:gap-2 h-10 sm:h-11 text-sm font-semibold flex-1 sm:flex-initial min-w-0 rounded-xl border-border/80 hover:bg-muted/80"
+        className="flex-1 h-12 sm:h-14 text-[15px] sm:text-[16px] font-semibold rounded-2xl border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5 active:scale-[0.98] transition-all"
       >
-        <ChevronLeft className="h-4 w-4 shrink-0" />
-        <span className="hidden xs:inline">{previousLabel}</span>
-        <span className="xs:hidden">Préc.</span>
+        {previousLabel}
       </Button>
 
       <Button
         onClick={onNext}
         disabled={isNextDisabled}
-        className="flex items-center justify-center gap-1.5 sm:gap-2 h-10 sm:h-11 text-sm font-semibold flex-1 sm:flex-initial min-w-0 rounded-xl bg-gold hover:bg-gold/90 text-white shadow-sm"
+        className="flex-1 h-12 sm:h-14 text-[15px] sm:text-[16px] font-semibold rounded-2xl bg-gold hover:bg-gold/90 text-white shadow-sm active:scale-[0.98] transition-all disabled:opacity-50"
       >
-        <span className="hidden xs:inline">{nextLabel}</span>
-        <span className="xs:hidden">Suiv.</span>
-        <ChevronRight className="h-4 w-4 shrink-0" />
+        {nextLabel}
       </Button>
     </div>
   )

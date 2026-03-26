@@ -58,7 +58,8 @@ export function BetIdStep({ selectedPlatform, selectedBetId, onSelect, type, lis
     setIsLoading(true)
     try {
       const data = await userAppIdApi.getByPlatform(selectedPlatform.id)
-      setBetIds(data)
+      const filteredData = data.filter(item => item.app_details?.id === selectedPlatform.id)
+      setBetIds(filteredData)
     } catch (error) {
       toast.error("Erreur lors du chargement des IDs de pari")
     } finally {
