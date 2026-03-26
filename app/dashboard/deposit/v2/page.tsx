@@ -97,11 +97,18 @@ export default function DepositV2Page() {
         setTimeout(() => {
           window.location.href = `tel:${code}`
         }, 300)
+        
+        setTimeout(() => {
+          setIsUSSDDialogOpen(false)
+          router.push("/dashboard/v2")
+        }, 7000)
       } else if (response.transaction_link) {
         setTransactionLink(response.transaction_link)
         setIsTransactionLinkModalOpen(true)
       } else {
-        router.push(`/dashboard/transactions?id=${response.id}`)
+        setTimeout(() => {
+          router.push("/dashboard/v2")
+        }, 7000)
       }
     } catch {
       // Error handled by API interceptor
@@ -114,21 +121,13 @@ export default function DepositV2Page() {
     if (transactionLink) {
       window.open(transactionLink, "_blank", "noopener,noreferrer")
       setIsTransactionLinkModalOpen(false)
-      if (createdTransactionId != null) {
-        router.push(`/dashboard/transactions?id=${createdTransactionId}`)
-      } else {
-        router.push("/dashboard/v2")
-      }
+      router.push("/dashboard/v2")
     }
   }
 
   const goToDetailOrHome = () => {
     setIsUSSDDialogOpen(false)
-    if (createdTransactionId != null) {
-      router.push(`/dashboard/transactions?id=${createdTransactionId}`)
-    } else {
-      router.push("/dashboard/v2")
-    }
+    router.push("/dashboard/v2")
   }
 
   const isStepValid = () => {
@@ -165,7 +164,6 @@ export default function DepositV2Page() {
             }}
             onNext={handleNext}
             type="deposit"
-            listLayout
           />
         )
       case 2:
@@ -191,7 +189,6 @@ export default function DepositV2Page() {
               setTimeout(handleNext, 300)
             }}
             type="deposit"
-            listLayout
           />
         )
       case 4:

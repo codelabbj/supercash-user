@@ -114,33 +114,26 @@ export function PlatformStep({ selectedPlatform, onSelect, type, listLayout }: P
             <Card
               key={platform.id}
               className={cn(
-                "cursor-pointer transition-all duration-200 border shadow-sm hover:shadow-md active:scale-[0.98] rounded-none overflow-hidden",
+                "cursor-pointer transition-all duration-200 border bg-white dark:bg-card hover:shadow-md active:scale-[0.98] rounded-xl flex flex-col items-center justify-center aspect-square shadow-sm",
                 selected
                   ? isDeposit
-                    ? "bg-gold text-white border-gold ring-2 ring-gold/30 shadow-lg"
-                    : "bg-turquoise text-white border-turquoise ring-2 ring-turquoise/30 shadow-lg"
-                  : "bg-card hover:border-primary/20 border-border/80"
+                    ? "border-amber-500 ring-1 ring-amber-500 bg-amber-50/50 dark:bg-amber-950/20"
+                    : "border-emerald-500 ring-1 ring-emerald-500 bg-emerald-50/50 dark:bg-emerald-950/20"
+                  : "border-slate-200 dark:border-border/80 hover:border-slate-300 dark:hover:border-border"
               )}
               onClick={() => onSelect(platform)}
             >
-              <CardContent className="p-2.5 sm:p-4 flex flex-col items-center gap-2 sm:gap-3">
-                <div className={cn(
-                  "w-10 h-10 sm:w-14 sm:h-14 rounded-none overflow-hidden p-0.5 sm:p-1 shrink-0",
-                  selected ? "bg-white/20" : "bg-muted/50"
-                )}>
+              <CardContent className="p-2 sm:p-4 flex flex-col items-center justify-center h-full w-full gap-2 sm:gap-3">
+                <div className={cn("w-14 h-14 sm:w-16 sm:h-16 shrink-0 flex items-center justify-center")}>
                   <SafeImage
                     src={platform.image}
                     alt={platform.name}
-                    className="w-full h-full object-cover rounded-none"
+                    className="max-w-full max-h-full object-contain rounded-sm"
                     fallbackText={platform.name.charAt(0).toUpperCase()}
                   />
                 </div>
-                <div className="text-center min-w-0 w-full">
-                  <h3 className="text-sm sm:text-base font-bold truncate px-0.5">{platform.name}</h3>
-                  <div className="flex flex-wrap justify-center gap-1 mt-0.5">
-                    <Badge variant="secondary" className={cn("font-semibold text-[10px] px-1.5 py-0", selected ? "bg-white/20 text-white" : "bg-gold/10 text-gold")}>Instantané</Badge>
-                    <Badge variant="outline" className={cn("font-bold text-[10px] border px-1.5 py-0", selected ? "border-white/30 text-white" : "border-muted")}>Min {platform.minimun_deposit >= 1000 ? `${platform.minimun_deposit / 1000}k` : platform.minimun_deposit}</Badge>
-                  </div>
+                <div className="text-center w-full px-1">
+                  <h3 className="text-sm sm:text-[15px] font-medium text-slate-800 dark:text-slate-200 truncate">{platform.name}</h3>
                 </div>
               </CardContent>
             </Card>

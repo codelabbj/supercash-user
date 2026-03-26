@@ -30,6 +30,7 @@ import {
   Loader2,
   X,
   Wallet,
+  Ticket,
 } from "lucide-react"
 
 export default function DashboardV2Page() {
@@ -189,32 +190,31 @@ export default function DashboardV2Page() {
       </section>
 
       {/* ── Actions principales ── */}
-      <section className="px-4 sm:px-6 pt-4 sm:pt-5">
+      <section className="px-4 sm:px-6 pt-6 sm:pt-8 pb-2">
         <h2 className="sr-only">Actions principales</h2>
-        <div className="grid grid-cols-2 gap-2 sm:gap-3">
-          <Link
-            href="/dashboard/deposit/v2"
-            className="group flex items-center gap-3 rounded-xl border border-gold/20 bg-gold/5 dark:bg-gold/10 p-3 sm:p-3.5 transition-all duration-200 hover:border-gold/40 hover:bg-gold/10 dark:hover:bg-gold/15 active:scale-[0.99]"
-          >
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-gold/20 text-gold dark:bg-gold/30">
-              <ArrowDownToLine className="h-4 w-4 sm:h-5 sm:w-5" />
+        <div className="flex items-center justify-center gap-6 sm:gap-10 mx-auto">
+          {/* Dépôt */}
+          <Link href="/dashboard/deposit/v2" className="flex flex-col items-center gap-2 group">
+            <div className="w-[68px] h-[68px] sm:w-[72px] sm:h-[72px] rounded-full bg-gradient-to-br from-amber-200/80 to-orange-200/80 dark:from-amber-500/40 dark:to-orange-500/40 border border-amber-300/60 dark:border-amber-500/30 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all group-hover:scale-105">
+               <ArrowDownToLine className="w-7 h-7 text-amber-800 dark:text-amber-200" strokeWidth={2.5} />
             </div>
-            <div className="min-w-0">
-              <p className="font-semibold text-sm text-foreground">Dépôt</p>
-              <p className="text-[10px] sm:text-xs text-muted-foreground truncate">Approvisionner</p>
-            </div>
+            <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 dark:text-slate-200/90 tracking-wide">Dépôt</span>
           </Link>
-          <Link
-            href="/dashboard/withdrawal/v2"
-            className="group flex items-center gap-3 rounded-xl border border-turquoise/20 bg-turquoise/5 dark:bg-turquoise/10 p-3 sm:p-3.5 transition-all duration-200 hover:border-turquoise/40 hover:bg-turquoise/10 dark:hover:bg-turquoise/15 active:scale-[0.99]"
-          >
-            <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-lg bg-turquoise/20 text-turquoise dark:bg-turquoise/30">
-              <ArrowUpFromLine className="h-4 w-4 sm:h-5 sm:w-5" />
+
+          {/* Retrait */}
+          <Link href="/dashboard/withdrawal/v2" className="flex flex-col items-center gap-2 group">
+            <div className="w-[68px] h-[68px] sm:w-[72px] sm:h-[72px] rounded-full bg-gradient-to-br from-emerald-200/80 to-teal-200/80 dark:from-emerald-500/40 dark:to-teal-500/40 border border-emerald-300/60 dark:border-emerald-500/30 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all group-hover:scale-105">
+               <ArrowUpFromLine className="w-7 h-7 text-emerald-800 dark:text-emerald-200" strokeWidth={2.5} />
             </div>
-            <div className="min-w-0">
-              <p className="font-semibold text-sm text-foreground">Retrait</p>
-              <p className="text-[10px] sm:text-xs text-muted-foreground truncate">Retirer mes gains</p>
+            <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 dark:text-slate-200/90 tracking-wide">Retrait</span>
+          </Link>
+
+          {/* Coupon */}
+          <Link href="/dashboard/coupon" className="flex flex-col items-center gap-2 group">
+            <div className="w-[68px] h-[68px] sm:w-[72px] sm:h-[72px] rounded-full bg-gradient-to-br from-cyan-200/80 to-blue-200/80 dark:from-cyan-500/40 dark:to-blue-500/40 border border-cyan-300/60 dark:border-cyan-500/30 flex items-center justify-center shadow-sm group-hover:shadow-md transition-all group-hover:scale-105">
+               <Ticket className="w-7 h-7 text-cyan-800 dark:text-cyan-200" strokeWidth={2.5} />
             </div>
+            <span className="text-[13px] sm:text-[14px] font-semibold text-slate-800 dark:text-slate-200/90 tracking-wide">Coupon</span>
           </Link>
         </div>
       </section>
@@ -284,6 +284,7 @@ export default function DashboardV2Page() {
                 type="button"
                 onClick={() => setIsModalOpen(false)}
                 className="fixed top-6 right-6 z-[120] flex h-10 w-10 items-center justify-center rounded-full border border-white/20 bg-white/10 text-white backdrop-blur-sm hover:bg-white/20 transition-colors"
+                aria-label="Fermer la publicité"
               >
                 <X className="h-5 w-5" />
               </button>

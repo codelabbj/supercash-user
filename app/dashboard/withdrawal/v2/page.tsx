@@ -75,11 +75,9 @@ export default function WithdrawalV2Page() {
 
       toast.success("Retrait initié avec succès!")
       setIsConfirmationOpen(false)
-      if (response?.id != null) {
-        router.push(`/dashboard/transactions?id=${response.id}`)
-      } else {
+      setTimeout(() => {
         router.push("/dashboard/v2")
-      }
+      }, 7000)
     } catch {
       // Error handled by API interceptor
     } finally {
@@ -122,7 +120,6 @@ export default function WithdrawalV2Page() {
             }}
             onNext={handleNext}
             type="withdrawal"
-            listLayout
           />
         )
       case 2:
@@ -148,7 +145,6 @@ export default function WithdrawalV2Page() {
               setTimeout(handleNext, 300)
             }}
             type="withdrawal"
-            listLayout
           />
         )
       case 4:
