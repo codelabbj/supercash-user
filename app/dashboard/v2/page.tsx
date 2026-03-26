@@ -109,7 +109,7 @@ export default function DashboardV2Page() {
     <div className="-mt-4 sm:-mt-8 min-h-screen pb-20 md:pb-2">
       {/* ── Hero : Bonjour + pub en arrière-plan (collé à l'app bar) ── */}
       <section
-        className="relative min-h-[260px] sm:min-h-[300px] overflow-hidden border-b border-border/60"
+        className="relative min-h-[260px] sm:min-h-[300px] overflow-hidden"
         onMouseEnter={() => setIsCarouselHovered(true)}
         onMouseLeave={() => setIsCarouselHovered(false)}
       >
@@ -190,7 +190,7 @@ export default function DashboardV2Page() {
       </section>
 
       {/* ── Actions principales ── */}
-      <section className="px-4 sm:px-6 pt-6 sm:pt-8 pb-2">
+      <section className="bg-gradient-to-b from-gold/20 via-gold/5 to-transparent dark:from-gold/15 dark:via-gold/5 dark:to-transparent px-4 sm:px-6 pt-6 sm:pt-8 pb-4">
         <h2 className="sr-only">Actions principales</h2>
         <div className="flex items-center justify-center gap-6 sm:gap-10 mx-auto">
           {/* Dépôt */}

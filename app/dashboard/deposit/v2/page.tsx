@@ -38,8 +38,9 @@ export default function DepositV2Page() {
   const [selectedBetId, setSelectedBetId] = useState<UserAppId | null>(null)
   const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null)
   const [selectedPhone, setSelectedPhone] = useState<UserPhone | null>(null)
-  const [amount, setAmount] = useState(0)
-
+  const [amount, setAmount] = useState<number>(0)
+  const [withdriwalCode, setWithdriwalCode] = useState("")
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [isUSSDDialogOpen, setIsUSSDDialogOpen] = useState(false)
   const [ussdCode, setUssdCode] = useState("")
   const [copiedUSSD, setCopiedUSSD] = useState(false)
@@ -145,7 +146,8 @@ export default function DepositV2Page() {
           amount > 0 &&
           selectedPlatform &&
           amount >= selectedPlatform.minimun_deposit &&
-          amount <= selectedPlatform.max_deposit
+          amount <= selectedPlatform.max_deposit &&
+          acceptedTerms
         )
       default:
         return false
@@ -210,14 +212,16 @@ export default function DepositV2Page() {
           <AmountStep
             amount={amount}
             setAmount={setAmount}
-            withdriwalCode=""
-            setWithdriwalCode={() => {}}
+            withdriwalCode={withdriwalCode}
+            setWithdriwalCode={setWithdriwalCode}
             selectedPlatform={selectedPlatform}
             selectedBetId={selectedBetId}
             selectedNetwork={selectedNetwork}
             selectedPhone={selectedPhone}
             type="deposit"
             onNext={handleNext}
+            acceptedTerms={acceptedTerms}
+            setAcceptedTerms={setAcceptedTerms}
           />
         )
       default:
@@ -268,6 +272,7 @@ export default function DepositV2Page() {
                 onPrevious={handlePrevious}
                 onNext={handleNext}
                 isNextDisabled={!isStepValid()}
+                nextLabel={currentStep === 5 ? "Continuer" : "Suivant"}
               />
             </div>
           )}

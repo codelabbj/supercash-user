@@ -30,8 +30,9 @@ export default function WithdrawalV2Page() {
   const [selectedBetId, setSelectedBetId] = useState<UserAppId | null>(null)
   const [selectedNetwork, setSelectedNetwork] = useState<Network | null>(null)
   const [selectedPhone, setSelectedPhone] = useState<UserPhone | null>(null)
-  const [amount, setAmount] = useState(0)
+  const [amount, setAmount] = useState<number>(0)
   const [withdriwalCode, setWithdriwalCode] = useState("")
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
 
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -99,9 +100,10 @@ export default function WithdrawalV2Page() {
         return (
           amount > 0 &&
           selectedPlatform &&
-          withdriwalCode.length >= 4 &&
           amount >= selectedPlatform.minimun_with &&
-          amount <= selectedPlatform.max_win
+          amount <= selectedPlatform.max_win &&
+          withdriwalCode.length > 0 &&
+          acceptedTerms
         )
       default:
         return false
@@ -173,7 +175,9 @@ export default function WithdrawalV2Page() {
             selectedNetwork={selectedNetwork}
             selectedPhone={selectedPhone}
             type="withdrawal"
-            onNext={handleNext}
+            onNext={handleConfirmTransaction}
+            acceptedTerms={acceptedTerms}
+            setAcceptedTerms={setAcceptedTerms}
           />
         )
       default:
@@ -224,6 +228,7 @@ export default function WithdrawalV2Page() {
                 onPrevious={handlePrevious}
                 onNext={handleNext}
                 isNextDisabled={!isStepValid()}
+                nextLabel={currentStep === 5 ? "Continuer" : "Suivant"}
               />
             </div>
           )}
