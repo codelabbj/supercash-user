@@ -137,7 +137,7 @@ export const userAppIdApi = {
   create: async (user_app_id: string, app: string) => {
     const { data } = await api.post<UserAppId>("/mobcash/user-app-id/", {
       user_app_id,
-      app,
+      app_name: app,
     })
     return data
   },
@@ -145,7 +145,7 @@ export const userAppIdApi = {
   update: async (id: number, user_app_id: string, app: string) => {
     const { data } = await api.patch<UserAppId>(`/mobcash/user-app-id/${id}/`, {
       user_app_id,
-      app,
+      app_name: app,
     })
     return data
   },
