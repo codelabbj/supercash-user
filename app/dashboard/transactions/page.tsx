@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { ArrowLeft, Copy, Check, Loader2, ArrowDownToLine, ArrowUpFromLine, ExternalLink } from "lucide-react"
+import { ArrowLeft, Copy, Check, Loader2, ArrowDownToLine, ArrowUpFromLine } from "lucide-react"
 import { transactionApi, networkApi } from "@/lib/api-client"
 import type { Transaction, Network } from "@/lib/types"
 import { toast } from "react-hot-toast"
@@ -278,68 +278,7 @@ function TransactionDetailContent() {
               <span className="font-semibold text-xs sm:text-base">+{transaction.phone_number}</span>
             </div>
 
-            {/* Lien / Code de paiement (transaction_link ou ussd_code) */}
-            {(transaction.transaction_link || transaction.ussd_code) && (
-              <div className="pt-1.5 sm:pt-2 border-t border-border/60 space-y-3">
-                {transaction.transaction_link && (
-                  <div className="space-y-2">
-                    <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-muted-foreground">Lien de paiement</p>
-                    <div className="flex items-center gap-2">
-                      <code className="flex-1 min-w-0 text-xs sm:text-sm font-mono bg-muted/50 rounded-lg px-2 py-1.5 break-all select-all">
-                        {transaction.transaction_link}
-                      </code>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 shrink-0 rounded-lg"
-                        onClick={() => {
-                          navigator.clipboard.writeText(transaction.transaction_link!).then(() => toast.success("Copié"))
-                        }}
-                        title="Copier"
-                      >
-                        <Copy className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <Button
-                      variant={isDeposit ? "default" : "secondary"}
-                      className="w-full rounded-xl h-9 sm:h-10 text-xs sm:text-sm bg-gold hover:bg-gold/90 dark:bg-turquoise dark:hover:bg-turquoise/90"
-                      onClick={() => window.open(transaction.transaction_link!, "_blank")}
-                    >
-                      <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
-                      Ouvrir le lien de paiement
-                    </Button>
-                  </div>
-                )}
-                {transaction.ussd_code && (
-                  <div className="space-y-2">
-                    <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-wider text-muted-foreground">Code USSD</p>
-                    <div className="flex items-center gap-2">
-                      <code className="flex-1 min-w-0 text-xs sm:text-sm font-mono bg-muted/50 rounded-lg px-2 py-1.5 break-all select-all">
-                        {transaction.ussd_code}
-                      </code>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 shrink-0 rounded-lg"
-                        onClick={() => {
-                          navigator.clipboard.writeText(transaction.ussd_code!).then(() => toast.success("Copié"))
-                        }}
-                        title="Copier"
-                      >
-                        <Copy className="h-4 w-4" />
-                      </Button>
-                    </div>
-                    <Button
-                      variant="outline"
-                      className="w-full rounded-xl h-9 sm:h-10 text-xs sm:text-sm border-2"
-                      onClick={() => window.location.assign(`tel:${transaction.ussd_code}`)}
-                    >
-                      Composer le code USSD
-                    </Button>
-                  </div>
-                )}
-              </div>
-            )}
+
           </CardContent>
         </Card>
 
